@@ -14,19 +14,21 @@ import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
+import java.util.*
 
 class MainFragment : Fragment(), OnItemClickListener {
 
-    private val nbaTeams = listOf(
-        Team("Raising Arizona" ),
-        Team("Vampire's Kiss"),
-        Team("Con Air"),
-        Team("Gone in 60 Seconds"),
-        Team("National Treasure"),
-        Team("The Wicker Man"),
-        Team("Ghost Rider"),
-        Team("Knowing")
-    )
+
+//        listOf(
+//        Team("Raising Arizona" , UUID.randomUUID().toString()),
+//        Team("Vampire's Kiss"),
+//        Team("Con Air"),
+//        Team("Gone in 60 Seconds"),
+//        Team("National Treasure"),
+//        Team("The Wicker Man"),
+//        Team("Ghost Rider"),
+//        Team("Knowing")
+//    )
 
     private lateinit var viewModel: MainViewModel
 
@@ -40,15 +42,20 @@ class MainFragment : Fragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val nbaTeams = viewModel.teams.value ?: emptyList()
         team_recycle_view.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = TeamListAdapter(nbaTeams, this@MainFragment)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        val nbaTeams = viewModel.teams.value ?: emptyList()
+//        team_recycle_view.apply {
+//            layoutManager = LinearLayoutManager(activity)
+//            adapter = TeamListAdapter(nbaTeams, this@MainFragment)
+//        }
     }
 
     override fun onTeamClicked(team: Team) {
