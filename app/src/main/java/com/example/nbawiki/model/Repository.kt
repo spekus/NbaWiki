@@ -6,7 +6,7 @@ import java.util.*
 
 object Repository {
 
-    private var _team : MutableLiveData<List<Team>> = MutableLiveData(mutableListOf(
+    private var _teams : MutableLiveData<List<Team>> = MutableLiveData(mutableListOf(
         Team("Raising Arizona" , UUID.randomUUID().toString()),
         Team("Vampire's Kiss", UUID.randomUUID().toString()),
         Team("Con Air", UUID.randomUUID().toString()),
@@ -17,11 +17,19 @@ object Repository {
         Team("Knowing", UUID.randomUUID().toString())
     ))
 
-    val team : LiveData<List<Team>>
-        get() = _team
+    val NbaTeams : LiveData<List<Team>>
+        get() = _teams
 
     fun getTeams(): LiveData<List<Team>> {
-        return team
+        return NbaTeams
+    }
+
+    fun getTheTeam(teamName: String): LiveData<Team> {
+        val theTeam : Team? = _teams.value?.first {
+            it.teamName.equals(teamName)
+        }
+//        return MutableLiveData<Team>(theTeam)
+        return MutableLiveData<Team>(theTeam)
     }
 
 }

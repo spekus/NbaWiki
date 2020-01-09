@@ -12,9 +12,10 @@ import com.example.nbawiki.databinding.TeamFragmentBinding
 import com.example.nbawiki.model.Team
 
 class TeamFragment : Fragment() {
-
     lateinit var teamName : String
-    var team : Team = Team("sadsdfsdf", "dafsdfsdf")
+    private val team : Team  by lazy  {
+        viewModel.team.value ?: Team()
+    }
 
     companion object {
         fun newInstance() = TeamFragment()
@@ -27,19 +28,17 @@ class TeamFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         arguments?.let {
            teamName = TeamFragmentArgs.fromBundle(it).teamName
         }
 
         val binding = DataBindingUtil.inflate<TeamFragmentBinding>(inflater, R.layout.team_fragment, container, false)
+
+        viewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
+        viewModel.loadTeam(teamName)
+
         binding.team = team
         return binding.root
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }
