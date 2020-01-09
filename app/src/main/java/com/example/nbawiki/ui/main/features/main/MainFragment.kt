@@ -2,20 +2,29 @@ package com.example.nbawiki.ui.main.features.main
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import com.example.nbawiki.R
+import com.example.nbawiki.model.Team
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
+    private val nbaTeams = listOf(
+        Team("Raising Arizona" ),
+        Team("Vampire's Kiss"),
+        Team("Con Air"),
+        Team("Gone in 60 Seconds"),
+        Team("National Treasure"),
+        Team("The Wicker Man"),
+        Team("Ghost Rider"),
+        Team("Knowing")
+    )
 
     companion object {
         fun newInstance() =
@@ -31,6 +40,8 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -41,9 +52,12 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        team_recycle_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = ListAdapter(nbaTeams)
+        }
         main_fragment_button.setOnClickListener{
             view.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
         }
-
     }
 }
