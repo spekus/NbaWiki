@@ -18,18 +18,6 @@ import java.util.*
 
 class MainFragment : Fragment(), OnItemClickListener {
 
-
-//        listOf(
-//        Team("Raising Arizona" , UUID.randomUUID().toString()),
-//        Team("Vampire's Kiss"),
-//        Team("Con Air"),
-//        Team("Gone in 60 Seconds"),
-//        Team("National Treasure"),
-//        Team("The Wicker Man"),
-//        Team("Ghost Rider"),
-//        Team("Knowing")
-//    )
-
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
