@@ -28,8 +28,6 @@ object Repository {
         val theTeam : Team? = _teams.value?.first {
             it.teamName.equals(teamName)
         }
-//        return MutableLiveData<Team>(theTeam)
         return MutableLiveData<Team>(theTeam)
     }
-
 }
