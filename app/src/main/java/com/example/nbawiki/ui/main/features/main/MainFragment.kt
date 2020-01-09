@@ -45,12 +45,10 @@ class MainFragment : Fragment(), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        team_recycle_view.apply {
-//            layoutManager = LinearLayoutManager(activity)
-//            adapter = TeamListAdapter(nbaTeams)
-//        }
-        team_recycle_view.layoutManager = LinearLayoutManager(activity)
-        team_recycle_view.adapter = TeamListAdapter(nbaTeams, this)
+        team_recycle_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = TeamListAdapter(nbaTeams, this@MainFragment)
+        }
     }
 
     override fun onTeamClicked(team: Team) {
