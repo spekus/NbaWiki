@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     companion object {
         fun newInstance() =
@@ -32,6 +35,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
+
     }
 
 
@@ -40,5 +44,6 @@ class MainFragment : Fragment() {
         main_fragment_button.setOnClickListener{
             view.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
         }
+
     }
 }
