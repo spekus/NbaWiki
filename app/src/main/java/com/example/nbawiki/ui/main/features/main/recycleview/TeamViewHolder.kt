@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.features.main
+package com.example.nbawiki.ui.main.features.main.recycleview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ class TeamViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.team_card_item, parent, false)) {
     private var mTitleView: TextView? = null
     private var mDescriptionView: TextView? = null
-
 
     init {
         mTitleView = itemView.findViewById(R.id.team_title)

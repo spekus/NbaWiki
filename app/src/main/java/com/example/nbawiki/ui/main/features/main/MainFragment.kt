@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import com.example.nbawiki.R
 import com.example.nbawiki.model.Team
+import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
@@ -26,11 +26,6 @@ class MainFragment : Fragment() {
         Team("Knowing")
     )
 
-    companion object {
-        fun newInstance() =
-            MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -40,8 +35,6 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -49,12 +42,11 @@ class MainFragment : Fragment() {
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         team_recycle_view.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = ListAdapter(nbaTeams)
+            adapter = TeamListAdapter(nbaTeams)
         }
         main_fragment_button.setOnClickListener{
             view.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
