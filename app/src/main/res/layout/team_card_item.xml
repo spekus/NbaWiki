@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.MaterialComponents.CardView"
@@ -14,8 +11,7 @@
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing"
         app:contentPadding="10dp"
-        android:minHeight="200dp"
-        app:cardCornerRadius="2dp">
+        android:minHeight="200dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,34 +22,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <!--            <ImageView-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:src="@mipmap/ic_launcher_round"-->
-                <!--                android:layout_alignParentTop="true"-->
-                <!--                android:layout_centerHorizontal="true"-->
-                <!--                android:scaleType="centerCrop"-->
-                <!--                />-->
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="76dp"
                     android:layout_height="76dp"
                     android:src="@mipmap/ic_launcher_round"
                     app:civ_border_color="#FF000000"
-                    app:civ_border_width="2dp"
-                    app:civ_shadow_color="#8BC34A" />
+                    app:civ_border_width="2dp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     tools:text="Title Team Name" />
-
-
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -71,9 +56,6 @@
                     android:layout_height="wrap_content"
                     android:text="Lorem ipsum" />
             </LinearLayout>
-
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </layout>
