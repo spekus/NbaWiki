@@ -47,6 +47,7 @@ class MainFragment : Fragment(), OnItemClickListener {
 
     override fun onTeamClicked(team: Team) {
         Log.e("MainFragment", "${team.teamName}")
-        view!!.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
+        val action = MainFragmentDirections.actionMainFragmentToTeamFragment(team.teamName)
+        view!!.findNavController().navigate(action)
     }
 }

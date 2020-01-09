@@ -11,11 +11,16 @@
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_teamFragment"
-            app:destination="@id/teamFragment" />
+            app:destination="@+id/teamFragment" />
     </fragment>
     <fragment
         android:id="@+id/teamFragment"
         android:name="com.example.nbawiki.ui.main.team.TeamFragment"
         android:label="team_fragment"
-        tools:layout="@layout/team_fragment" />
+        tools:layout="@layout/team_fragment" >
+        <argument
+            android:name="teamName"
+            app:argType="string"
+            android:defaultValue="No Name" />
+    </fragment>
 </navigation>
