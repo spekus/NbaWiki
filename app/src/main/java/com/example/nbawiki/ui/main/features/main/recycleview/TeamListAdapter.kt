@@ -9,7 +9,7 @@ import com.example.nbawiki.R
 import com.example.nbawiki.model.Team
 
 
-class TeamListAdapter(private val list: List<Team>) : RecyclerView.Adapter<TeamViewHolder>() {
+class TeamListAdapter(private val list: List<Team>, val itemClickListener : OnItemClickListener) : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,11 +21,7 @@ class TeamListAdapter(private val list: List<Team>) : RecyclerView.Adapter<TeamV
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         val team: Team = list[position]
-        holder.bind(team)
-        holder.itemView.setOnClickListener {
-            Log.e("TeamListAdapter", "${team.teamName}")
-            it.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
-        }
+        holder.bind(team,itemClickListener)
     }
 
     override fun getItemCount(): Int = list.size

@@ -2,6 +2,7 @@ package com.example.nbawiki.ui.main.features.main
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.model.Team
+import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), OnItemClickListener {
 
     private val nbaTeams = listOf(
         Team("Raising Arizona" ),
@@ -39,17 +41,20 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        team_recycle_view.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = TeamListAdapter(nbaTeams)
-        }
-        main_fragment_button.setOnClickListener{
-            view.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
-        }
+//        team_recycle_view.apply {
+//            layoutManager = LinearLayoutManager(activity)
+//            adapter = TeamListAdapter(nbaTeams)
+//        }
+        team_recycle_view.layoutManager = LinearLayoutManager(activity)
+        team_recycle_view.adapter = TeamListAdapter(nbaTeams, this)
+    }
+
+    override fun onTeamClicked(team: Team) {
+        Log.e("MainFragment", "${team.teamName}")
+        view!!.findNavController().navigate(R.id.action_mainFragment_to_teamFragment)
     }
 }
