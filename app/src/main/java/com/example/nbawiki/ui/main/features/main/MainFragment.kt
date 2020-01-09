@@ -1,12 +1,12 @@
 package com.example.nbawiki.ui.main.features.main
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
@@ -14,7 +14,6 @@ import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
-import java.util.*
 
 class MainFragment : Fragment(), OnItemClickListener {
 
