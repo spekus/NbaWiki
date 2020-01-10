@@ -1,6 +1,7 @@
 package com.example.nbawiki.ui.main.team
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -155,6 +156,10 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
 
     override fun onTeamClicked(team: Team) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onItemClicked(id: Int) {
+        Log.e("PlayerListFragment", "$id")
     }
 }
 
