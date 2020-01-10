@@ -16,6 +16,7 @@ import com.example.nbawiki.R
 import com.example.nbawiki.databinding.TeamFragmentBinding
 import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.team.tabs.news.NewsListAdapter
 import com.example.nbawiki.ui.main.team.tabs.players.PlayerListAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -96,22 +97,37 @@ private const val ID_OBJECT = "teamID"
 
 class NewsListFragment : Fragment() {
 
+    lateinit var viewModel : TeamViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_collection_object, container, false)
+        var teamName : String = ""
+        arguments?.takeIf { it.containsKey(ID_OBJECT) }?.apply {
+            //            val textView = view.findViewById<TextView>(R.id.tab_text)
+            teamName = getString(ID_OBJECT).toString()
+        }
+
+
+        viewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
+        viewModel.initializeTeamData(teamName)
+        return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
-//            val textView = view.findViewById<TextView>(R.id.tab_text)
-//            textView.text = getInt(ARG_OBJECT).toString()
+        val news = viewModel.team.value?.news ?: emptyList()
+        team_recycle_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = NewsListAdapter(news)
         }
 
+
     }
+
+
 }
 
 class PlayerListFragment : Fragment(), OnItemClickListener {

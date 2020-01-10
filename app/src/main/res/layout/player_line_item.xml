@@ -36,5 +36,14 @@
             app:layout_constraintStart_toEndOf="@+id/circleImageView"
             app:layout_constraintTop_toTopOf="@+id/circleImageView"
             tools:text="Title Team Name" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/cardview_dark_background"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageView"
+            tools:layout_editor_absoluteX="4dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
