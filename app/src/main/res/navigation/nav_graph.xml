@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_teamFragment_to_playerListFragment"
             app:destination="@id/playerListFragment" />
+        <action
+            android:id="@+id/action_teamFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsListFragment"
@@ -42,5 +45,14 @@
         android:name="com.example.nbawiki.ui.main.team.tabs.players.PlayerListFragment"
         android:label="PlayerListFragment" >
         <argument android:name="teamName" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.nbawiki.ui.main.player.PlayerFragment"
+        android:label="player_fragment"
+        tools:layout="@layout/player_fragment" >
+        <argument
+            android:name="playerId"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.model.Team
+import com.example.nbawiki.ui.main.features.main.MainFragmentDirections
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.team.TeamFragment
+import com.example.nbawiki.ui.main.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.Constants.ID_OBJECT
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -56,6 +59,7 @@ class PlayerListFragment : Fragment(),
     }
 
     override fun onItemClicked(id: Int) {
-        Log.e("PlayerListFragment", "$id")
+        val action = TeamFragmentDirections.actionTeamFragmentToPlayerFragment(id)
+        view!!.findNavController().navigate(action)
     }
 }

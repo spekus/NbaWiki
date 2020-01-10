@@ -36,15 +36,6 @@ class MainFragment : Fragment(), OnItemClickListener {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        val nbaTeams = viewModel.teams.value ?: emptyList()
-//        team_recycle_view.apply {
-//            layoutManager = LinearLayoutManager(activity)
-//            adapter = TeamListAdapter(nbaTeams, this@MainFragment)
-//        }
-    }
-
     override fun onTeamClicked(team: Team) {
         Log.e("MainFragment", "${team.teamName}")
         val action = MainFragmentDirections.actionMainFragmentToTeamFragment(team.teamName)
