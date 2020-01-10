@@ -22,5 +22,25 @@
             android:name="teamName"
             app:argType="string"
             android:defaultValue="No Name" />
+        <action
+            android:id="@+id/action_teamFragment_to_newsListFragment"
+            app:destination="@id/newsListFragment" />
+        <action
+            android:id="@+id/action_teamFragment_to_playerListFragment"
+            app:destination="@id/playerListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsListFragment"
+        android:name="com.example.nbawiki.ui.main.team.NewsListFragment"
+        android:label="NewsListFragment" >
+        <argument
+            android:name="teamName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerListFragment"
+        android:name="com.example.nbawiki.ui.main.team.PlayerListFragment"
+        android:label="PlayerListFragment" >
+        <argument android:name="teamName" />
     </fragment>
 </navigation>

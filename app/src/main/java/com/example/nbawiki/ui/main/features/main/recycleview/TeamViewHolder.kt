@@ -11,16 +11,13 @@ import com.example.nbawiki.model.Team
 class TeamViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.team_card_item, parent, false)) {
     private var mTitleView: TextView? = null
-    private var mDescriptionView: TextView? = null
 
     init {
-        mTitleView = itemView.findViewById(R.id.team_title)
-        mDescriptionView = itemView.findViewById(R.id.team_description)
+        mTitleView = itemView.findViewById(R.id.player_name)
     }
 
     fun bind(team: Team, itemClickListener: OnItemClickListener) {
         mTitleView?.text = team.teamName
-        mDescriptionView?.text = team.teamDescription
         itemView.findViewById<CardView>(R.id.team_card).setOnClickListener {
             itemClickListener.onTeamClicked(team)
         }
