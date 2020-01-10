@@ -4,5 +4,6 @@ data class Team (
     val teamName : String = "DefaultName",
     val teamDescription : String = "DefaultDescription",
     val teamIcon : String = "iconLink",
-    val teamMembers : List<Player> = emptyList()
+    val teamMembers : List<Player> = emptyList(),
+    val news : List<News> = emptyList()
 )
