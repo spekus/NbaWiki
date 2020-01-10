@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 
 import com.example.nbawiki.R
+import com.example.nbawiki.databinding.PlayerFragmentBinding
+import com.example.nbawiki.databinding.TeamFragmentBinding
+import com.example.nbawiki.ui.main.team.TeamFragmentArgs
 
 class PlayerFragment : Fragment() {
 
@@ -21,13 +25,30 @@ class PlayerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.player_fragment, container, false)
+        val binding = DataBindingUtil.inflate<PlayerFragmentBinding>(
+            inflater,
+            R.layout.player_fragment,
+            container,
+            false
+        )
+
+        val playerId: Int = arguments?.let {
+            PlayerFragmentArgs.fromBundle(it).playerId
+        } ?: 0
+
+        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
+        viewModel.initializePlayerData(playerId)
+
+        binding.player = viewModel.player.value
+
+        return binding.root
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
-        // TODO: Use the ViewModel
+
+
     }
 
 }

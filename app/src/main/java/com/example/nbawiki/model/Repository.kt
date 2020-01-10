@@ -31,4 +31,8 @@ object Repository {
         }
         return MutableLiveData<Team>(theTeam)
     }
+
+    fun getThePlayer(playerId: Int): LiveData<Player>{
+        return MutableLiveData<Player>(_teams.value!!.find { it.teamMembers.any { it.id == playerId} }!!.teamMembers.find { it.id == playerId })
+    }
 }

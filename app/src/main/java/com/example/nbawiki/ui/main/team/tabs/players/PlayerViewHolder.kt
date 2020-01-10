@@ -20,7 +20,7 @@ class PlayerViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     fun bind(player: Player, itemClickListener: OnItemClickListener) {
         mName?.text = player.name
         itemView.findViewById<ConstraintLayout>(R.id.player_line_card).setOnClickListener {
-            itemClickListener.onItemClicked(1)
+            itemClickListener.onItemClicked(player.id)
         }
     }
 }
