@@ -62,7 +62,7 @@
                         app:autoSizeTextType="uniform"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/imageView"
-                        tools:text="BIG TEAM" />
+                        tools:text="BIG GUY" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -80,7 +80,7 @@
                         app:autoSizeMinTextSize="12dp"
                         app:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:text="Age" />
+                        android:text="@{@string/age(player.age)}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -92,7 +92,7 @@
                         app:autoSizeMinTextSize="12dp"
                         app:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:text="Height" />
+                        android:text="@{@string/height(player.height)}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -104,10 +104,9 @@
                         app:autoSizeMinTextSize="12dp"
                         app:autoSizeTextType="uniform"
                         android:gravity="center"
-                        android:text="Weight" />
+                        android:text="@{@string/weight(player.weight)}"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
-
 </layout>
