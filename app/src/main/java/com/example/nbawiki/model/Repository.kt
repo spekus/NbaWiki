@@ -10,7 +10,9 @@ object Repository {
         Team(teamName = "Raising ARIZONA",
             teamDescription = UUID.randomUUID().toString(),
             news = listOf(News("Raising Arizona","Vampire's Kiss"),
-                News("Raising Arizona2","Vampire's Kiss2"))),
+                News("Raising Arizona2","Vampire's Kiss2")),
+            teamMembers = listOf(Player("James"), Player("Augustas"))
+        ),
         Team("Vampire's Kiss", UUID.randomUUID().toString()),
         Team("Con Air", UUID.randomUUID().toString()),
         Team("Gone in 60 Seconds", UUID.randomUUID().toString()),
