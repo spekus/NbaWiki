@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="com.example.nbawiki.ui.main.team.NewsListFragment"
+        android:name="com.example.nbawiki.ui.main.team.tabs.news.NewsListFragment"
         android:label="NewsListFragment" >
         <argument
             android:name="teamName"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/playerListFragment"
-        android:name="com.example.nbawiki.ui.main.team.PlayerListFragment"
+        android:name="com.example.nbawiki.ui.main.team.tabs.players.PlayerListFragment"
         android:label="PlayerListFragment" >
         <argument android:name="teamName" />
     </fragment>
