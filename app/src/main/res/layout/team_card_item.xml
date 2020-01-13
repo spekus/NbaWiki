@@ -13,8 +13,7 @@
         android:layout_marginRight="@dimen/mtrl_card_spacing"
         app:contentPadding="10dp"
         android:minHeight="200dp"
-        app:strokeColor="@color/cardview_dark_background"
-        app:strokeWidth="2dp"
+        android:elevation="8dp"
         >
 
         <LinearLayout
@@ -34,7 +33,7 @@
                     android:layout_width="76dp"
                     android:layout_height="76dp"
                     android:src="@mipmap/ic_launcher_round"
-                    app:civ_border_color="#FF000000"
+                    app:civ_border_color="#AA424242"
                     app:civ_border_width="2dp" />
 
                 <TextView
@@ -48,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="4dp"
-                android:background="@color/cardview_dark_background"/>
+                android:background="#AA424242"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
