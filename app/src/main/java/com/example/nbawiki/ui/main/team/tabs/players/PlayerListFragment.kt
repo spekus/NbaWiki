@@ -5,11 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
+import com.example.nbawiki.databinding.MainFragmentBinding
+import com.example.nbawiki.databinding.PlayerLineItemBinding
 import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.MainFragmentDirections
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
@@ -37,15 +40,20 @@ class PlayerListFragment : Fragment(),
         viewModel = ViewModelProviders.of(this)
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamName)
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
+        val binding = DataBindingUtil.inflate<MainFragmentBinding>(
+            inflater,
+            R.layout.main_fragment,
+            container,
+            false
+        )
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val players = viewModel.team.value?.teamMembers ?: emptyList()
-        team_recycle_view.apply {
+        binding.teamRecycleView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = PlayerListAdapter(players, this@PlayerListFragment)
         }
+
+        return binding.root
     }
 
     override fun onTeamClicked(team: Team) {

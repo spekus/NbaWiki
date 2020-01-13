@@ -40,6 +40,7 @@ class TeamFragment : Fragment() {
 
         binding.team = viewModel.team.value
 
+
         binding.teamBackArrow.setOnClickListener {
             findNavController().navigateUp()
         }
