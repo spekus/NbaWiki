@@ -1,6 +1,7 @@
 package com.example.nbawiki.model
 
 import com.github.javafaker.Faker
+import java.text.SimpleDateFormat
 
 object DataCreator {
 
@@ -56,9 +57,12 @@ object DataCreator {
     }
 
     private fun createNewsItem(): News {
+        val pattern = "MMMM-dd"
+        val simpleDateFormat = SimpleDateFormat(pattern)
         return News(
             team = faker.name().firstName(),
-            ennemyTeam = faker.name().firstName()
+            ennemyTeam = faker.name().firstName(),
+            date = simpleDateFormat.format(faker.date().birthday())
         )
     }
 }
