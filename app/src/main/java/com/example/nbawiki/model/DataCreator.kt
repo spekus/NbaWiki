@@ -57,7 +57,7 @@ object DataCreator {
     }
 
     private fun createNewsItem(): News {
-        val pattern = "MMMM-dd"
+        val pattern = "MMMM d"
         val simpleDateFormat = SimpleDateFormat(pattern)
         return News(
             team = faker.name().firstName(),
