@@ -4,6 +4,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.TeamCardItemBinding
 import com.example.nbawiki.model.Team
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -18,27 +20,32 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
         mDescription =binding.TVDescription
         mIcon  =binding.CIVIcon
 
-        Picasso
-            .get()
-            .setLoggingEnabled(true)
+        setUpImage()
 
-//        Picasso
-//            .get()
-//            .load("http://via.placeholder.com/300.png")
-//            .placeholder(R.mipmap.ic_launcher_round)
-//            .into(mIcon)
-
-
-//        Glide.with(parent.context).load("http://via.placeholder.com/300.png").into(mIcon)
     }
-
     fun bind(team: Team, itemClickListener: OnItemClickListener) {
 
-        binding
         mTitleView?.text = team.teamName
         mDescription?.text = team.teamDescription
         binding.teamCard.setOnClickListener {
             itemClickListener.onItemClicked(team.id)
         }
+    }
+
+    private fun setUpImage() {
+        Picasso
+            .get()
+            .setLoggingEnabled(true)
+
+        val url  =        "https://loremflickr.com/g/90/90/icon"
+        Picasso.get()
+            .invalidate(url)
+
+        Picasso
+            .get()
+            .load(url)
+            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+            .into(mIcon)
     }
 }
