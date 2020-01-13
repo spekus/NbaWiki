@@ -2,6 +2,7 @@ package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.javafaker.Faker
 import java.util.*
 
 object Repository {
@@ -40,7 +41,8 @@ object Repository {
     }
 
     private fun createRandomTeam() : Team {
-        return Team("Gone in 50 Seconds", UUID.randomUUID().toString())
+        var faker : Faker = Faker()
+        return Team(faker.name().fullName(), faker.gameOfThrones().quote())
     }
 
 }
