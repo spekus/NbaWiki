@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -70,41 +69,77 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        app:autoSizeMaxTextSize="60dp"
-                        app:autoSizeMinTextSize="12dp"
-                        app:autoSizeTextType="uniform"
-                        android:gravity="center"
-                        android:text="@{@string/age(player.age)}" />
+                        android:orientation="vertical"
+                        android:gravity="center">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        app:autoSizeMaxTextSize="60dp"
-                        app:autoSizeMinTextSize="12dp"
-                        app:autoSizeTextType="uniform"
-                        android:gravity="center"
-                        android:text="@{@string/height(player.height)}" />
+                        <TextView
+                            app:autoSizeTextType="uniform"
+                            android:text="@string/age"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"/>
 
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{player.age}"
+                            android:layout_centerInParent="true"
+                            tools:text = "152"/>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        app:autoSizeMaxTextSize="60dp"
-                        app:autoSizeMinTextSize="12dp"
-                        app:autoSizeTextType="uniform"
-                        android:gravity="center"
-                        android:text="@{@string/weight(player.weight)}"/>
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            app:autoSizeTextType="uniform"
+                            android:text="@string/height"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{Integer.toString(player.height)}"
+                            android:layout_centerInParent="true"
+                            tools:text = "202"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            app:autoSizeTextType="uniform"
+                            android:text="@string/weight"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{Integer.toString(player.weight)}"
+                            android:layout_centerInParent="true"
+                            tools:text = "122"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
