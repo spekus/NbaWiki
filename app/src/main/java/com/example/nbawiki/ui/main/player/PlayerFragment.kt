@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerFragmentBinding
@@ -41,13 +42,16 @@ class PlayerFragment : Fragment() {
 
         binding.player = viewModel.player.value
 
+        binding.playerBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         return binding.root
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
     }
 

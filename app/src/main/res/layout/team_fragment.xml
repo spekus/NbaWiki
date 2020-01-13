@@ -9,6 +9,7 @@
         <variable
             name="team"
             type="com.example.nbawiki.model.Team" />
+
     </data>
 
     <LinearLayout
@@ -58,7 +59,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             app:srcCompat="@drawable/ic_left_arrow"
-                            android:id="@+id/imageButton"
+                            android:id="@+id/team_back_arrow"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:layout_margin="15dp"
