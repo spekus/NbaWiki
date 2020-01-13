@@ -8,7 +8,7 @@ import com.example.nbawiki.model.Team
 class TeamViewModel : ViewModel() {
     lateinit var team : LiveData<Team>
 
-    fun initializeTeamData(teamName: String) {
-        team  =  Repository.getTheTeam(teamName)
+    fun initializeTeamData(teamId: Int) {
+        team  =  Repository.getTheTeam(teamId)
     }
 }

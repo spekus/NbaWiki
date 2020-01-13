@@ -21,15 +21,15 @@ class NewsListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var teamName: String = ""
+        var teamId: Int = 0
         arguments?.takeIf { it.containsKey(Constants.ID_OBJECT) }?.apply {
-            teamName = getString(Constants.ID_OBJECT).toString()
+            teamId = getInt(Constants.ID_OBJECT)
         }
 
 
         viewModel = ViewModelProviders.of(this)
             .get(TeamViewModel::class.java)
-        viewModel.initializeTeamData(teamName)
+        viewModel.initializeTeamData(teamId)
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 

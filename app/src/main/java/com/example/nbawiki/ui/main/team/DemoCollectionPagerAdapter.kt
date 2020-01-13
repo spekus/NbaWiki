@@ -8,7 +8,7 @@ import com.example.nbawiki.ui.main.team.tabs.news.NewsListFragment
 import com.example.nbawiki.ui.main.team.tabs.players.PlayerListFragment
 import com.example.nbawiki.ui.main.util.Constants
 
-class DemoCollectionPagerAdapter(fm: FragmentManager, val teamName: String) : FragmentStatePagerAdapter(fm) {
+class DemoCollectionPagerAdapter(fm: FragmentManager, val teamId: Int) : FragmentStatePagerAdapter(fm) {
     override fun getCount(): Int = 2
     override fun getItem(tabNumber: Int): Fragment {
         val fragment = when (tabNumber) {
@@ -17,8 +17,7 @@ class DemoCollectionPagerAdapter(fm: FragmentManager, val teamName: String) : Fr
         }
 
         fragment.arguments = Bundle().apply {
-            putString(Constants.ID_OBJECT, teamName)
-
+            putInt(Constants.ID_OBJECT, teamId)
         }
         return fragment
     }

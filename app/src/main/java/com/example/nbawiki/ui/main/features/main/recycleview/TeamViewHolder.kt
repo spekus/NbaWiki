@@ -22,7 +22,7 @@ class TeamViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mTitleView?.text = team.teamName
         mDescription?.text = team.teamDescription
         itemView.findViewById<CardView>(R.id.team_card).setOnClickListener {
-            itemClickListener.onTeamClicked(team)
+            itemClickListener.onItemClicked(team.id)
         }
     }
 }

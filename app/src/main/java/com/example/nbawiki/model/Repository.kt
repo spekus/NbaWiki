@@ -13,13 +13,12 @@ object Repository {
         get() = _teams
 
     fun getTeams(): LiveData<List<Team>> {
-        NbaTeams
         return NbaTeams
     }
 
-    fun getTheTeam(teamName: String): LiveData<Team> {
+    fun getTheTeam(teamId: Int): LiveData<Team> {
         val theTeam: Team? = _teams.value?.first {
-            it.teamName.equals(teamName)
+            it.id == teamId
         }
         return MutableLiveData<Team>(theTeam)
     }

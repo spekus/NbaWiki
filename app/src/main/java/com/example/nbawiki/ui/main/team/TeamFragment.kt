@@ -24,9 +24,9 @@ class TeamFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val teamName: String = arguments?.let {
-            TeamFragmentArgs.fromBundle(it).teamName
-        } ?: ""
+        val teamId: Int = arguments?.let {
+            TeamFragmentArgs.fromBundle(it).teamId
+        } ?: 0
 
         val binding = DataBindingUtil.inflate<TeamFragmentBinding>(
             inflater,
@@ -36,7 +36,7 @@ class TeamFragment : Fragment() {
         )
 
         viewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
-        viewModel.initializeTeamData(teamName)
+        viewModel.initializeTeamData(teamId)
 
         binding.team = viewModel.team.value
 
@@ -50,7 +50,7 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, viewModel.team.value?.teamName ?:"" )
+        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, viewModel.team.value?.id ?:0 )
         viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = demoCollectionPagerAdapter
 
