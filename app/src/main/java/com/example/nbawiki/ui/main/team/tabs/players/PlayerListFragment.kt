@@ -43,15 +43,9 @@ class PlayerListFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val players = viewModel.team.value?.teamMembers ?: emptyList()
         team_recycle_view.apply {
-            layoutManager =
-                LinearLayoutManager(activity)
-            adapter =
-                PlayerListAdapter(
-                    players,
-                    this@PlayerListFragment
-                )
+            layoutManager = LinearLayoutManager(activity)
+            adapter = PlayerListAdapter(players, this@PlayerListFragment)
         }
-
     }
 
     override fun onTeamClicked(team: Team) {
