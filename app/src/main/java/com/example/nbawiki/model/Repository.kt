@@ -35,7 +35,12 @@ object Repository {
         ),
         Team("Vampire's Kiss", UUID.randomUUID().toString()),
         Team("Con Air", UUID.randomUUID().toString()),
-        Team("Gone in 60 Seconds", UUID.randomUUID().toString()))
+        Team("Gone in 60 Seconds", UUID.randomUUID().toString()),
+        createRandomTeam())
+    }
+
+    private fun createRandomTeam() : Team {
+        return Team("Gone in 50 Seconds", UUID.randomUUID().toString())
     }
 
 }
