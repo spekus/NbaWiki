@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerFragmentBinding
 import com.example.nbawiki.databinding.TeamFragmentBinding
+import com.example.nbawiki.model.TeamRepository
 import com.example.nbawiki.ui.main.team.TeamFragmentArgs
+import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 
 class PlayerFragment : Fragment() {
 
@@ -37,7 +39,8 @@ class PlayerFragment : Fragment() {
             PlayerFragmentArgs.fromBundle(it).playerId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { PlayerViewModel(TeamRepository) })
+            .get(PlayerViewModel::class.java)
         viewModel.initializePlayerData(playerId)
 
         binding.player = viewModel.player.value
@@ -49,10 +52,4 @@ class PlayerFragment : Fragment() {
         return binding.root
 
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
-
 }
