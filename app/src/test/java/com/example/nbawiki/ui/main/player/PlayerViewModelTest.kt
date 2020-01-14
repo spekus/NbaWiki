@@ -7,9 +7,11 @@ import com.example.nbawiki.model.Repository
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
+import org.mockito.Mockito.times
 import org.mockito.MockitoAnnotations
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 
@@ -21,44 +23,48 @@ class PlayerViewModelTest {
 
     val mockRepository = Mockito.mock(Repository::class.java)
 
-
     lateinit var viewModel: PlayerViewModel
+    val platerId = 1
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        this.viewModel = PlayerViewModel()
-        Mockito
-//            .`when`(mockRepository.getThePlayer(any()))
-            .`when`(mockRepository.getThePlayer(1))
-            .thenReturn (MutableLiveData<Player>())
+
+        Mockito.`when`(mockRepository.getThePlayer(1))
+            .thenReturn(MutableLiveData<Player>(Player()))
     }
 
     @Test
-    fun doTesting(){
-        Mockito
-//            .`when`(mockRepository.getThePlayer(any()))
-            .`when`(mockRepository.getThePlayer(1))
-            .thenReturn (MutableLiveData<Player>())
+    fun initializePlayerData_validID_liveDataUpdatedWithPlayer() {
 
-        val viewModel = PlayerViewModel()
-        viewModel.initializePlayerData(1)
-        viewModel.player.observeForever{}
+        viewModel = PlayerViewModel(mockRepository)
+        viewModel.initializePlayerData(platerId)
+        viewModel.player.observeForever {}
 
         assertNotNull(viewModel.player.value)
     }
 
-
     @Test
-    fun getPlayer() {
+    fun initializePlayerData_validID_playerWithSameId() {
+
+        Mockito.`when`(mockRepository.getThePlayer(platerId))
+            .thenReturn(MutableLiveData<Player>(Player(id = platerId)))
+
+        viewModel = PlayerViewModel(mockRepository)
+        viewModel.initializePlayerData(platerId)
+        viewModel.player.observeForever {}
+
+        assertEquals(platerId, viewModel.player.value!!.id)
     }
 
     @Test
-    fun setPlayer() {
-    }
+    fun initializePlayerData__repoCalledOnlyOnce() {
+        viewModel = PlayerViewModel(mockRepository)
+        viewModel.initializePlayerData(platerId)
 
-    @Test
-    fun initializePlayerData() {
+        Mockito.verify(mockRepository, times(0)).getTeams()
+        Mockito.verify(mockRepository, times(0)).getTheTeam( ArgumentMatchers.anyInt())
+        Mockito.verify(mockRepository, times(1)).getThePlayer( ArgumentMatchers.anyInt())
     }
-
 }
+
