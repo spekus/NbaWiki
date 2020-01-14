@@ -15,14 +15,5 @@ class PlayerViewModel : ViewModel() {
         player  =  TeamRepository.getThePlayer(id)
     }
 
-    companion object {
-        @JvmStatic
-        @BindingAdapter("android:src")
-        fun bindCurrency(view: ImageView, url : String) {
-            Picasso
-                .get()
-                .load(url)
-                .into(view)
-        }
-    }
+
 }
