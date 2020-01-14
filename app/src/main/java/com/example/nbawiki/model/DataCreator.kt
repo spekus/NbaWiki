@@ -6,7 +6,8 @@ import java.text.SimpleDateFormat
 object DataCreator {
 
     val faker = Faker()
-    var id: Int = 0
+    var playerId: Int = 100
+    var teamId: Int = 0
 
     fun createTeams(): List<Team> {
         return listOf(
@@ -18,9 +19,9 @@ object DataCreator {
     }
 
     private fun createRandomTeam(): Team {
-        id = id.inc()
+        teamId = teamId.inc()
         return Team(
-            id = id + 1,
+            id = teamId + 1,
             teamName = faker.name().fullName(),
             teamDescription = faker.gameOfThrones().quote(),
             news = createNews(),
@@ -38,9 +39,9 @@ object DataCreator {
     }
 
     private fun createPlayer(): Player {
-        id = id.inc()
+        playerId = playerId.inc()
         return Player(
-            id = id,
+            id = playerId,
             name = faker.name().firstName(),
             sureName = faker.name().lastName(),
             description = faker.chuckNorris().fact()
