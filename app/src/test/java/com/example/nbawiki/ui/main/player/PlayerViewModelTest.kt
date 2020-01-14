@@ -58,7 +58,7 @@ class PlayerViewModelTest {
     }
 
     @Test
-    fun initializePlayerData__repoCalledOnlyOnce() {
+    fun initializePlayerData_validId_callRepoOnlyOnce() {
         viewModel = PlayerViewModel(mockRepository)
         viewModel.initializePlayerData(platerId)
 
