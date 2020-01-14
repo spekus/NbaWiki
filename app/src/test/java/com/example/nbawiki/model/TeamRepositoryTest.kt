@@ -7,6 +7,7 @@ import org.junit.Assert.*
 class TeamRepositoryTest {
 
     private val validTeamId : Int = 2
+    private val validTeamId2 : Int = 3
 
     @Test
     fun getTeams__returnsNotEmptyList() {

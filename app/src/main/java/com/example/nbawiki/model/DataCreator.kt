@@ -21,7 +21,7 @@ object DataCreator {
     private fun createRandomTeam(): Team {
         teamId = teamId.inc()
         return Team(
-            id = teamId + 1,
+            id = teamId,
             teamName = faker.name().fullName(),
             teamDescription = faker.gameOfThrones().quote(),
             news = createNews(),
