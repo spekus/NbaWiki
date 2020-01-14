@@ -13,6 +13,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/LL_team"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
