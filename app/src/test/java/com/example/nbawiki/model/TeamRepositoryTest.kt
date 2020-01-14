@@ -3,11 +3,15 @@ package com.example.nbawiki.model
 import org.junit.Test
 
 import org.junit.Assert.*
+import kotlin.test.assertFailsWith
 
 class TeamRepositoryTest {
 
-    private val validTeamId : Int = 2
-    private val validTeamId2 : Int = 3
+    private val validTeamId : Int = 1
+    private val validTeamId2 : Int = 2
+    private val inValidTeamId : Int = -1
+
+    //TEAM TESTS:
 
     @Test
     fun getTeams__returnsNotEmptyList() {
@@ -37,13 +41,16 @@ class TeamRepositoryTest {
     @Test
     fun getTheTeamTwice_differentId_ReturnsDifferentTeams() {
         val firstTeam = TeamRepository.getTheTeam(validTeamId).value!!
-//        val secondTeam = TeamRepository.getTheTeam(validTeamId).value!!
-//        assertEquals(firstTeam, secondTeam)
+        val secondTeam = TeamRepository.getTheTeam(validTeamId2).value!!
+        assertNotEquals(firstTeam, secondTeam)
     }
 
     @Test
-    fun getTheTeam_InvalidId_() {
+    fun getTheTeam_InvalidId_failsWithException() {
+        assertFailsWith<NoSuchElementException> { TeamRepository.getTheTeam(inValidTeamId).value }
     }
+
+    //PLAYER TESTS
 
     @Test
     fun getThePlayer_validId_returnsPlayerWithThatID() {
