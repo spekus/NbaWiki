@@ -20,11 +20,11 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
         mDescription =binding.TVDescription
         mIcon  =binding.CIVIcon
 
-        setUpImage()
+
 
     }
     fun bind(team: Team, itemClickListener: OnItemClickListener) {
-
+        setUpImage(team.imageUrl)
         mTitleView?.text = team.teamName
         mDescription?.text = team.teamDescription
         binding.teamCard.setOnClickListener {
@@ -32,18 +32,17 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
         }
     }
 
-    private fun setUpImage() {
+    private fun setUpImage(image : String) {
         Picasso
             .get()
             .setLoggingEnabled(true)
-
-        val url  =        "https://loremflickr.com/g/90/90/icon"
-        Picasso.get()
-            .invalidate(url)
+//
+//        Picasso.get()
+//            .invalidate(url)
 
         Picasso
             .get()
-            .load(url)
+            .load(image)
             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
             .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .into(mIcon)

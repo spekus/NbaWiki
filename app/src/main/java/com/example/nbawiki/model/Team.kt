@@ -6,5 +6,6 @@ data class Team (
     val teamDescription : String = "DefaultDescription",
     val teamIcon : String = "iconLink",
     val teamMembers : List<Player> = emptyList(),
-    val news : List<News> = emptyList()
+    val news : List<News> = emptyList(),
+    val imageUrl : String = "https://i.picsum.photos/id/$id/200/200.jpg"
 )
