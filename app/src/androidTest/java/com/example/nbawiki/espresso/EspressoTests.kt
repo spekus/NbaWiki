@@ -25,17 +25,15 @@ class EspressoTests {
     val activityRule = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun listGoesOverTheFold() {
-
-
+    fun onTeamClick__ValidTeamNameDisplayed() {
         onView(withId(R.id.team_recycle_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(1, click()))
 
+        val teamName = TeamRepository.getTheTeam(2).value!!.teamName
+
         onView(withId(R.id.teamName))
             .check(matches(isDisplayed()))
-//        onView(withText()).perform(click())
-
-        val teamName = TeamRepository.getTheTeam(1).value!!.teamName
+            .check(matches(withText(teamName)))
     }
 
 }
