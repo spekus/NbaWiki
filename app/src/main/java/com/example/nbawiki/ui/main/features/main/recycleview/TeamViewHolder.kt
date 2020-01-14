@@ -4,8 +4,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.TeamCardItemBinding
 import com.example.nbawiki.model.Team
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -19,10 +17,8 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
         mTitleView = binding.playerName
         mDescription =binding.TVDescription
         mIcon  =binding.CIVIcon
-
-
-
     }
+
     fun bind(team: Team, itemClickListener: OnItemClickListener) {
         setUpImage(team.imageUrl)
         mTitleView?.text = team.teamName
@@ -36,15 +32,10 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
         Picasso
             .get()
             .setLoggingEnabled(true)
-//
-//        Picasso.get()
-//            .invalidate(url)
 
         Picasso
             .get()
             .load(image)
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .into(mIcon)
     }
 }
