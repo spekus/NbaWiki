@@ -3,6 +3,7 @@ package com.example.nbawiki.model
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Before
 import kotlin.test.assertFailsWith
 
 class TeamRepositoryTest {
@@ -12,6 +13,12 @@ class TeamRepositoryTest {
     private val inValidId: Int = -1
 
     //TEAM TESTS:
+
+
+    @Before
+    fun initializeRepo() {
+
+    }
 
     @Test
     fun getTeams__returnsNotEmptyList() {
