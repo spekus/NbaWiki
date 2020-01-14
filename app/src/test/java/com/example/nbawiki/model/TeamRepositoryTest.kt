@@ -7,15 +7,15 @@ import kotlin.test.assertFailsWith
 
 class TeamRepositoryTest {
 
-    private val validTeamId : Int = 1
-    private val validTeamId2 : Int = 2
-    private val inValidTeamId : Int = -1
+    private val validTeamId: Int = 1
+    private val validTeamId2: Int = 2
+    private val inValidId: Int = -1
 
     //TEAM TESTS:
 
     @Test
     fun getTeams__returnsNotEmptyList() {
-        val teamList  =  TeamRepository.getTeams().value!!
+        val teamList = TeamRepository.getTeams().value!!
         assertFalse(teamList.isEmpty())
     }
 
@@ -47,12 +47,43 @@ class TeamRepositoryTest {
 
     @Test
     fun getTheTeam_InvalidId_failsWithException() {
-        assertFailsWith<NoSuchElementException> { TeamRepository.getTheTeam(inValidTeamId).value }
+        assertFailsWith<NoSuchElementException> { TeamRepository.getTheTeam(inValidId).value }
     }
 
     //PLAYER TESTS
 
+    private val validPlayerId = 101
+    private val validPlayerId2 = 102
+
     @Test
-    fun getThePlayer_validId_returnsPlayerWithThatID() {
+    fun getThePlayer_validId_returnsAPlayer() {
+        val team = TeamRepository.getThePlayer(validPlayerId).value
+        assertNotNull(team)
     }
+
+    @Test
+    fun getThePlayer_validId_returnsPlayerWithSameId() {
+        val actualPlayerID = TeamRepository.getThePlayer(validPlayerId).value!!.id
+        assertEquals(validPlayerId, actualPlayerID)
+    }
+
+    @Test
+    fun getThePlayerTwice_sameId_returnsSameTwoPlayer() {
+        val actualPlayer1 = TeamRepository.getThePlayer(validPlayerId).value!!
+        val actualPlayer2 = TeamRepository.getThePlayer(validPlayerId).value!!
+        assertEquals(actualPlayer1, actualPlayer2)
+    }
+
+    @Test
+    fun getThePlayerTwice_differentId_returnsTwoDifferentPlayers() {
+        val actualPlayer1 = TeamRepository.getThePlayer(validPlayerId).value!!
+        val actualPlayer2 = TeamRepository.getThePlayer(validPlayerId2).value!!
+        assertNotEquals(actualPlayer1, actualPlayer2)
+    }
+
+    @Test
+    fun getThePlayer_inValidId_failsWithException() {
+        assertFailsWith<KotlinNullPointerException> { TeamRepository.getThePlayer(inValidId) }
+    }
+
 }
