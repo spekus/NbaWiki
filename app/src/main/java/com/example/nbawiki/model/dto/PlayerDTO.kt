@@ -19,7 +19,7 @@ data class PlayerDTO(
     val idTeam: Int,
     val idTeam2: String,
     val idTeamNational: String,
-    val idSoccerXML: Int,
+//    val idSoccerXML: Int?,
     val idAPIfootball: String,
     val idPlayerManager: String,
     val strNationality: String,
@@ -80,7 +80,7 @@ data class PlayerDTO(
         json.getInt("idTeam"),
         json.getString("idTeam2"),
         json.getString("idTeamNational"),
-        json.getInt("idSoccerXML"),
+//        json.getInt("idSoccerXML"),
         json.getString("idAPIfootball"),
         json.getString("idPlayerManager"),
         json.getString("strNationality"),
@@ -137,3 +137,4 @@ data class PlayerDTO(
         json.getString("strLocked")
     )
 }
+

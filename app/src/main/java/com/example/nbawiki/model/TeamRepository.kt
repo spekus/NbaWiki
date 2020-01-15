@@ -59,6 +59,7 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
     }
 
     override fun getTheTeam(id: Int): LiveData<Team> {
+        // BAD THIS IS CALLED ALL THE TIME
         coroutineScope.launch(Dispatchers.Main) {
             val news = nbaApiService.getNews(id.toString()).map { it.asPresentationModel() }
 
@@ -71,6 +72,9 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
             theTeam!!.news = news
 
             _theTeam.postValue(theTeam)
+
+            val value = nbaApiService.getPlayers(theTeam.teamName)
+            value.get(0)
         }
 
         val theTeam: Team? = _teams.value?.first {
@@ -81,6 +85,12 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
     }
 
     override fun getThePlayer(id: Int): LiveData<Player> {
+//        coroutineScope.launch(Dispatchers.Main) {
+////            val value = nbaApiService.getPlayers("")
+////            value.get(0)
+//        }
+
+
         return MutableLiveData<Player>(_teams.value!!.find { it.teamMembers.any { it.id == id } }!!.teamMembers.find { it.id == id })
     }
 }

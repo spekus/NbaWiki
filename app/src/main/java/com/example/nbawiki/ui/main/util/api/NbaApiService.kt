@@ -1,6 +1,7 @@
 package com.example.nbawiki.ui.main.util.api
 
 import com.example.nbawiki.model.dto.NewsDto
+import com.example.nbawiki.model.dto.PlayerDTO
 import com.example.nbawiki.model.dto.TeamsGenerated
 import com.example.nbawiki.model.dto.TeamDTO
 import kotlinx.coroutines.Dispatchers
@@ -66,10 +67,22 @@ class NbaApiService : ApiService {
         return news
     }
 
-    override suspend fun getPlayers(teamName: String)  {
+    override suspend fun getPlayers(teamName: String) : List<PlayerDTO> {
         val lookUpUrl = "searchplayers.php?t=$teamName"
-        val newsString = makeAPICallWith(baseUrl + lookUpUrl)
+        val playersString = makeAPICallWith(baseUrl + lookUpUrl)
 //        https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?t=Atlanta Hawks
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return getPlayersFromString(playersString)
+    }
+
+    private fun getPlayersFromString(playersString: String): List<PlayerDTO> {
+        var players: MutableList<PlayerDTO> =
+            mutableListOf()
+
+        val jsonObject = JSONObject(playersString)
+        val jsonArray = jsonObject.getJSONArray("player")
+        for (i in 0 until jsonArray.length()) {
+            players.add(PlayerDTO(jsonArray.getJSONObject(i)))
+        }
+        return players
     }
 }
