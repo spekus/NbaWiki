@@ -36,7 +36,7 @@ class MainFragment : Fragment(), OnItemClickListener {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         val nbaTeams = viewModel.teams.value ?: emptyList()
-        binding.teamRecycleView.apply {
+        binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
         }

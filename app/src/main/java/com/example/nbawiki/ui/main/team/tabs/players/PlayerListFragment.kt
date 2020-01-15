@@ -43,7 +43,7 @@ class PlayerListFragment : Fragment(),
         )
 
         val players = viewModel.team.value?.teamMembers ?: emptyList()
-        binding.teamRecycleView.apply {
+        binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = PlayerListAdapter(players, this@PlayerListFragment)
         }

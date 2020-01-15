@@ -36,7 +36,7 @@ class NewsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val news = viewModel.team.value?.news ?: emptyList()
-        team_recycle_view.apply {
+        team_recycler_view.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = NewsListAdapter(news)
         }

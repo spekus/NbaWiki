@@ -52,6 +52,7 @@ class TeamFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, viewModel.team.value?.id ?:0 )
         viewPager = view.findViewById(R.id.pager)
+
         viewPager.adapter = demoCollectionPagerAdapter
 
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
