@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.DataCreator.createTeams
 import com.example.nbawiki.ui.main.util.api.ApiService
+import kotlinx.coroutines.*
+import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -12,12 +14,27 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
 
+
+    private val parentJob = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
+
+
     val NbaTeams: LiveData<List<Team>>
         get() = _teams
 
     override fun getTeams(): LiveData<List<Team>> {
-        val textas = nbaApiService.getAllteams()
-        Log.e("TeamRepository", textas.toString())
+         coroutineScope.launch(Dispatchers.Main) {
+             val teamsFromApi =  nbaApiService.getAllteams()
+//            val teamas = withContext(Dispatchers.Default) {nbaApiService.getAllteams() }
+            Timber.e("team count - ${teamsFromApi.count()}")
+            //here live data should be updated
+         }
+
+
+//        Log.e("TeamRepository", teamsss.toString())
+
+
+
         return NbaTeams
     }
 
