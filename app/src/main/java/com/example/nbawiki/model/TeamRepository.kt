@@ -47,19 +47,14 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 //             val teamName : String = "DefaultName",
 //             val teamDescription : String = "DefaultDescription",
 //             val teamIcon : String = "iconLink",
-//             val teamMembers : List<Player> = emptyList(),
+//             val teamMembers : List<com.example.nbawiki.model.dto.Player> = emptyList(),
 //             val news : List<News> = emptyList(),
 //             val imageUrl : String = "https://i.picsum.photos/id/$id/200/200.jpg"
 
 
             //here live data should be updated
          }
-
-
 //        Log.e("TeamRepository", teamsss.toString())
-
-
-
         return nbaTeams
     }
 

@@ -19,14 +19,14 @@ class NbaApiService : ApiService {
 
     override suspend fun getAllteams(): List<TeamsGenerated> {
         val lookUpUrl = "lookup_all_teams.php/?id=4387"
-        val teamsString = makeCallForString(baseUrl + lookUpUrl)
+        val teamsString = makeAPICallWith(baseUrl + lookUpUrl)
         val teams: MutableList<TeamsGenerated> = getTeamsFromString(teamsString)
         return teams
     }
 
 
 
-    private suspend fun makeCallForString(url: String): String {
+    private suspend fun makeAPICallWith(url: String): String {
         return withContext(Dispatchers.Default) {
             val connection = URL(url).openConnection() as HttpURLConnection
             connection.inputStream.bufferedReader().readText()
@@ -48,9 +48,11 @@ class NbaApiService : ApiService {
 
     override suspend fun getNews(teamID : String): List<NewsDto>  {
         val lookUpUrl = "eventslast.php?id=$teamID"
-        val newsString = makeCallForString(baseUrl + lookUpUrl)
+        val newsString = makeAPICallWith(baseUrl + lookUpUrl)
         return getNewsFromString(newsString)
     }
+
+
 
     private fun getNewsFromString(newsString: String) : List<NewsDto> {
         var news: MutableList<NewsDto> =
@@ -62,5 +64,12 @@ class NbaApiService : ApiService {
             news.add(NewsDto(jsonArray.getJSONObject(i)))
         }
         return news
+    }
+
+    override suspend fun getPlayers(teamName: String)  {
+        val lookUpUrl = "searchplayers.php?t=$teamName"
+        val newsString = makeAPICallWith(baseUrl + lookUpUrl)
+//        https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?t=Atlanta Hawks
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
