@@ -7,5 +7,6 @@ interface ApiService {
 
     fun getATeams(id : String) :TeamDTO
     suspend fun getAllteams() : List<TeamsGenerated>
+//    suspend fun getNews() :
 
 }

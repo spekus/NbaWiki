@@ -2,7 +2,6 @@ package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.model.DataCreator.createTeams
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -12,13 +11,19 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 //    private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
+    private var _theTeam: MutableLiveData<Team> = MutableLiveData()
+
+    override val nbaTeams: LiveData<List<Team>>
+        get() = _teams
+
+    override val selectedTeam: LiveData<Team>
+        get() = _theTeam
+
 
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
 
 
-    override val NbaTeams: LiveData<List<Team>>
-        get() = _teams
 
     override fun getTeams(): LiveData<List<Team>> {
          coroutineScope.launch(Dispatchers.Main) {
@@ -53,14 +58,20 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
 
 
-        return NbaTeams
+        return nbaTeams
     }
 
     override fun getTheTeam(id: Int): LiveData<Team> {
+//        coroutineScope.launch(Dispatchers.Main) {
+//            _theTeam.postValue(nbaApiService.getATeams(id.toString()))
+//        }
+
         val theTeam: Team? = _teams.value?.first {
             it.id == id
         }
-        return MutableLiveData<Team>(theTeam)
+//        return MutableLiveData<Team>(theTeam)
+
+        return selectedTeam
     }
 
     override fun getThePlayer(id: Int): LiveData<Player> {

@@ -38,65 +38,8 @@ class NbaApiService : ApiService {
 
         val jsonArray = jsonObject.getJSONArray("teams")
         for (i in 0 until jsonArray.length()) {
-            teams.add(createTeamFromJson(jsonArray.getJSONObject(i)))
+            teams.add(TeamsGenerated(jsonArray.getJSONObject(i)))
         }
-
         return teams
-    }
-
-    private fun createTeamFromJson(jsonObject: JSONObject): TeamsGenerated {
-        return TeamsGenerated(
-            jsonObject.getInt("idTeam"),
-            jsonObject.getString("idSoccerXML"),
-            jsonObject.getInt("idAPIfootball"),
-            jsonObject.getString("intLoved"),
-            jsonObject.getString("strTeam"),
-            jsonObject.getString("strTeamShort"),
-            jsonObject.getString("strAlternate"),
-            jsonObject.getInt("intFormedYear"),
-            jsonObject.getString("strSport"),
-            jsonObject.getString("strLeague"),
-            jsonObject.getInt("idLeague"),
-            jsonObject.getString("strDivision"),
-            jsonObject.getString("strManager"),
-            jsonObject.getString("strStadium"),
-            jsonObject.getString("strKeywords"),
-            jsonObject.getString("strRSS"),
-            jsonObject.getString("strStadiumThumb"),
-            jsonObject.getString("strStadiumDescription"),
-            jsonObject.getString("strStadiumLocation"),
-            jsonObject.getInt("intStadiumCapacity"),
-            jsonObject.getString("strWebsite"),
-            jsonObject.getString("strFacebook"),
-            jsonObject.getString("strTwitter"),
-            jsonObject.getString("strInstagram"),
-            jsonObject.getString("strDescriptionEN"),
-            jsonObject.getString("strDescriptionDE"),
-            jsonObject.getString("strDescriptionFR"),
-            jsonObject.getString("strDescriptionCN"),
-            jsonObject.getString("strDescriptionIT"),
-            jsonObject.getString("strDescriptionJP"),
-            jsonObject.getString("strDescriptionRU"),
-            jsonObject.getString("strDescriptionES"),
-            jsonObject.getString("strDescriptionPT"),
-            jsonObject.getString("strDescriptionSE"),
-            jsonObject.getString("strDescriptionNL"),
-            jsonObject.getString("strDescriptionHU"),
-            jsonObject.getString("strDescriptionNO"),
-            jsonObject.getString("strDescriptionIL"),
-            jsonObject.getString("strDescriptionPL"),
-            jsonObject.getString("strGender"),
-            jsonObject.getString("strCountry"),
-            jsonObject.getString("strTeamBadge"),
-            jsonObject.getString("strTeamJersey"),
-            jsonObject.getString("strTeamLogo"),
-            jsonObject.getString("strTeamFanart1"),
-            jsonObject.getString("strTeamFanart2"),
-            jsonObject.getString("strTeamFanart3"),
-            jsonObject.getString("strTeamFanart4"),
-            jsonObject.getString("strTeamBanner"),
-            jsonObject.getString("strYoutube"),
-            jsonObject.getString("strLocked")
-        )
     }
 }

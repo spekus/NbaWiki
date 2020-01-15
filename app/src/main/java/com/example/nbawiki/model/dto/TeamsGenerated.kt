@@ -1,4 +1,8 @@
-package com.example.nbawiki.model.dto/*
+package com.example.nbawiki.model.dto
+
+import org.json.JSONObject
+
+/*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -11,7 +15,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 
 
 data class TeamsGenerated (
-	val idTeam : Int = 0,
+	var idTeam : Int = 0,
 	val idSoccerXML : String? = "",
 	val idAPIfootball : Int? = 0,
 	val intLoved : String? = "",
@@ -62,4 +66,59 @@ data class TeamsGenerated (
 	val strTeamBanner : String? = "",
 	val strYoutube : String? = "",
 	val strLocked : String? = ""
-)
+) {
+
+	constructor(jsonObject: JSONObject): this(
+			jsonObject.getInt("idTeam"),
+			jsonObject.getString("idSoccerXML"),
+			jsonObject.getInt("idAPIfootball"),
+			jsonObject.getString("intLoved"),
+			jsonObject.getString("strTeam"),
+			jsonObject.getString("strTeamShort"),
+			jsonObject.getString("strAlternate"),
+			jsonObject.getInt("intFormedYear"),
+			jsonObject.getString("strSport"),
+			jsonObject.getString("strLeague"),
+			jsonObject.getInt("idLeague"),
+			jsonObject.getString("strDivision"),
+			jsonObject.getString("strManager"),
+			jsonObject.getString("strStadium"),
+			jsonObject.getString("strKeywords"),
+			jsonObject.getString("strRSS"),
+			jsonObject.getString("strStadiumThumb"),
+			jsonObject.getString("strStadiumDescription"),
+			jsonObject.getString("strStadiumLocation"),
+			jsonObject.getInt("intStadiumCapacity"),
+			jsonObject.getString("strWebsite"),
+			jsonObject.getString("strFacebook"),
+			jsonObject.getString("strTwitter"),
+			jsonObject.getString("strInstagram"),
+			jsonObject.getString("strDescriptionEN"),
+			jsonObject.getString("strDescriptionDE"),
+			jsonObject.getString("strDescriptionFR"),
+			jsonObject.getString("strDescriptionCN"),
+			jsonObject.getString("strDescriptionIT"),
+			jsonObject.getString("strDescriptionJP"),
+			jsonObject.getString("strDescriptionRU"),
+			jsonObject.getString("strDescriptionES"),
+			jsonObject.getString("strDescriptionPT"),
+			jsonObject.getString("strDescriptionSE"),
+			jsonObject.getString("strDescriptionNL"),
+			jsonObject.getString("strDescriptionHU"),
+			jsonObject.getString("strDescriptionNO"),
+			jsonObject.getString("strDescriptionIL"),
+			jsonObject.getString("strDescriptionPL"),
+			jsonObject.getString("strGender"),
+			jsonObject.getString("strCountry"),
+			jsonObject.getString("strTeamBadge"),
+			jsonObject.getString("strTeamJersey"),
+			jsonObject.getString("strTeamLogo"),
+			jsonObject.getString("strTeamFanart1"),
+			jsonObject.getString("strTeamFanart2"),
+			jsonObject.getString("strTeamFanart3"),
+			jsonObject.getString("strTeamFanart4"),
+			jsonObject.getString("strTeamBanner"),
+			jsonObject.getString("strYoutube"),
+			jsonObject.getString("strLocked")
+	)
+}
