@@ -7,6 +7,10 @@ import com.example.nbawiki.model.Team
 
 class MainViewModel(teamRepository : Repository) : ViewModel() {
 
-    val teams : LiveData<List<Team>> = teamRepository.getTeams()
+    val teams : LiveData<List<Team>> = teamRepository.NbaTeams
+
+    init {
+        teamRepository.getTeams()
+    }
 
 }

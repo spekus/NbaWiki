@@ -1,32 +1,50 @@
 package com.example.nbawiki.model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.DataCreator.createTeams
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
 import timber.log.Timber
-import java.net.HttpURLConnection
-import java.net.URL
 
 class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
-    private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
+//    private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
+    private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
 
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
 
 
-    val NbaTeams: LiveData<List<Team>>
+    override val NbaTeams: LiveData<List<Team>>
         get() = _teams
 
     override fun getTeams(): LiveData<List<Team>> {
          coroutineScope.launch(Dispatchers.Main) {
-             val teamsFromApi =  nbaApiService.getAllteams()
+             val teamsDTO =  nbaApiService.getAllteams()
 //            val teamas = withContext(Dispatchers.Default) {nbaApiService.getAllteams() }
-            Timber.e("team count - ${teamsFromApi.count()}")
+            Timber.e("team count - ${teamsDTO.count()}")
+
+            val teams :List<Team> =  teamsDTO.map {
+                 Team(
+                     id = it.idTeam,
+                     teamName = it.strTeam ?: "",
+                     teamDescription = it.strDescriptionEN ?: "",
+                     imageUrl  = it.strTeamBanner ?: "https://i.picsum.photos/id/1/200/200.jpg"
+                 )
+             }
+             _teams.postValue(teams)
+
+//             val id : Int ,
+//             val teamName : String = "DefaultName",
+//             val teamDescription : String = "DefaultDescription",
+//             val teamIcon : String = "iconLink",
+//             val teamMembers : List<Player> = emptyList(),
+//             val news : List<News> = emptyList(),
+//             val imageUrl : String = "https://i.picsum.photos/id/$id/200/200.jpg"
+
+
             //here live data should be updated
          }
 

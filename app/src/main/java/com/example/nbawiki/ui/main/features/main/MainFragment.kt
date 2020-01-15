@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.MainFragmentBinding
-import com.example.nbawiki.model.TeamRepository
+import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants.repository
-import com.example.nbawiki.ui.main.util.api.NbaApiService
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel
@@ -40,11 +40,25 @@ class MainFragment : Fragment(), OnItemClickListener {
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(repository) })
             .get(MainViewModel::class.java)
 
+//        viewModel.teams.observe{
+
         val nbaTeams = viewModel.teams.value ?: emptyList()
-        binding.teamRecyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
-        }
+
+//        binding.teamRecyclerView.apply {
+//            layoutManager = LinearLayoutManager(activity)
+//            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
+//        }
+        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
+            //HACK, should carry refresh instead
+            binding.teamRecyclerView.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = TeamListAdapter(it, this@MainFragment, layoutInflater)
+            }
+
+        })
+
+
+
     }
 
     override fun onItemClicked(teamId: Int){

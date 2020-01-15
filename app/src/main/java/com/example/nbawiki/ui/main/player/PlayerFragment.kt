@@ -44,8 +44,6 @@ class PlayerFragment : Fragment() {
         binding.playerBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
-
         return binding.root
-
     }
 }
