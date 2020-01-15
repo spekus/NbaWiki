@@ -62,16 +62,17 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
     }
 
     override fun getTheTeam(id: Int): LiveData<Team> {
-//        coroutineScope.launch(Dispatchers.Main) {
+        coroutineScope.launch(Dispatchers.Main) {
+            val newsDto = nbaApiService.getNews(id.toString())
 //            _theTeam.postValue(nbaApiService.getATeams(id.toString()))
-//        }
+        }
 
         val theTeam: Team? = _teams.value?.first {
             it.id == id
         }
-//        return MutableLiveData<Team>(theTeam)
+        theTeam!!.news =
 
-        return selectedTeam
+        return MutableLiveData<Team>(theTeam)
     }
 
     override fun getThePlayer(id: Int): LiveData<Player> {
