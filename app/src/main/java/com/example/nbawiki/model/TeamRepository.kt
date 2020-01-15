@@ -9,15 +9,15 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class TeamRepository(private val nbaApiService : ApiService) : Repository{
-    init {
 
-    }
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
 
     val NbaTeams: LiveData<List<Team>>
         get() = _teams
 
     override fun getTeams(): LiveData<List<Team>> {
+        val textas = nbaApiService.getAllteams()
+        Log.e("TeamRepository", textas.toString())
         return NbaTeams
     }
 
