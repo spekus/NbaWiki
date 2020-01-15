@@ -2,6 +2,8 @@ package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.nbawiki.model.dto.NewsDto
+import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -63,8 +65,17 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
     override fun getTheTeam(id: Int): LiveData<Team> {
         coroutineScope.launch(Dispatchers.Main) {
-            val newsDto = nbaApiService.getNews(id.toString())
+            val news = nbaApiService.getNews(id.toString()).map { it.asPresentationModel() }
+
 //            _theTeam.postValue(nbaApiService.getATeams(id.toString()))
+
+            var theTeam: Team? = _teams.value?.first {
+                it.id == id
+            }
+
+            theTeam!!.news = news
+
+            _theTeam.postValue(theTeam)
         }
 
         val theTeam: Team? = _teams.value?.first {

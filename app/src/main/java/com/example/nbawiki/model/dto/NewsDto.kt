@@ -1,5 +1,6 @@
 package com.example.nbawiki.model.dto
 
+import com.example.nbawiki.model.News
 import org.json.JSONObject
 
 /*
@@ -135,5 +136,12 @@ data class NewsDto(
      eventJson.getString("strTweet3") ,
      eventJson.getString("strVideo") ,
      eventJson.getString("strLocked")
+    )
+}
+fun NewsDto.asPresentationModel() : News {
+    return News(
+        team = this.strHomeTeam ,
+        ennemyTeam = this.strAwayTeam,
+        date = this.dateEvent
     )
 }
