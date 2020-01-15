@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ class PlayerListFragment : Fragment(),
     OnItemClickListener {
 
     lateinit var viewModel : TeamViewModel
+    lateinit var binding : MainFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +39,7 @@ class PlayerListFragment : Fragment(),
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(Constants.repository) })
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
-        val binding = DataBindingUtil.inflate<MainFragmentBinding>(
+        binding = DataBindingUtil.inflate<MainFragmentBinding>(
             inflater,
             R.layout.main_fragment,
             container,
@@ -51,6 +53,19 @@ class PlayerListFragment : Fragment(),
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+//            val players = viewModel.team.value?.teamMembers ?: emptyList()
+            binding.teamRecyclerView.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = PlayerListAdapter(it.teamMembers, this@PlayerListFragment)
+            }
+
+        })
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onItemClicked(id: Int) {
