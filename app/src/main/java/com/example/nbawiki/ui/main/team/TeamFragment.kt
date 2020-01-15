@@ -11,10 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.TeamFragmentBinding
+import com.example.nbawiki.model.TeamRepository
+import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.Constants.repository
+import com.example.nbawiki.ui.main.util.api.NbaApiService
 import com.google.android.material.tabs.TabLayout
 
 class TeamFragment : Fragment() {
-
     private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var viewModel : TeamViewModel
@@ -35,7 +38,8 @@ class TeamFragment : Fragment() {
             false
         )
 
-        viewModel = ViewModelProviders.of(this).get(TeamViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
+            .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
 
         binding.team = viewModel.team.value

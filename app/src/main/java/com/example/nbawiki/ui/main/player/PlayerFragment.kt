@@ -1,23 +1,19 @@
 package com.example.nbawiki.ui.main.player
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerFragmentBinding
-import com.example.nbawiki.databinding.TeamFragmentBinding
-import com.example.nbawiki.model.TeamRepository
-import com.example.nbawiki.ui.main.team.TeamFragmentArgs
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.Constants.repository
 
 class PlayerFragment : Fragment() {
-
     companion object {
         fun newInstance() = PlayerFragment()
     }
@@ -39,7 +35,7 @@ class PlayerFragment : Fragment() {
             PlayerFragmentArgs.fromBundle(it).playerId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { PlayerViewModel(TeamRepository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { PlayerViewModel(repository) })
             .get(PlayerViewModel::class.java)
         viewModel.initializePlayerData(playerId)
 

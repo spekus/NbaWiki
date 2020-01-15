@@ -15,6 +15,8 @@ import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.team.TeamViewModel
+import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.Constants
 import com.example.nbawiki.ui.main.util.Constants.ID_OBJECT
 
 class PlayerListFragment : Fragment(),
@@ -32,7 +34,7 @@ class PlayerListFragment : Fragment(),
         }
 
 
-        viewModel = ViewModelProviders.of(this)
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(Constants.repository) })
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
         val binding = DataBindingUtil.inflate<MainFragmentBinding>(

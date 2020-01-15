@@ -11,11 +11,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.MainFragmentBinding
+import com.example.nbawiki.model.TeamRepository
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
+import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.Constants.repository
+import com.example.nbawiki.ui.main.util.api.NbaApiService
 
 class MainFragment : Fragment(), OnItemClickListener {
-
     private lateinit var viewModel: MainViewModel
     private lateinit var binding : MainFragmentBinding
 
@@ -34,7 +37,9 @@ class MainFragment : Fragment(), OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(repository) })
+            .get(MainViewModel::class.java)
+
         val nbaTeams = viewModel.teams.value ?: emptyList()
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)

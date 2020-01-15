@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.ui.main.team.TeamViewModel
+import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants
+import com.example.nbawiki.ui.main.util.Constants.repository
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class NewsListFragment : Fragment() {
@@ -27,7 +29,7 @@ class NewsListFragment : Fragment() {
         }
 
 
-        viewModel = ViewModelProviders.of(this)
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
         return inflater.inflate(R.layout.main_fragment, container, false)

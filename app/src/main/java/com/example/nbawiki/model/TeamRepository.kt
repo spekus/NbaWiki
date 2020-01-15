@@ -1,10 +1,17 @@
 package com.example.nbawiki.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.DataCreator.createTeams
+import com.example.nbawiki.ui.main.util.api.ApiService
+import java.net.HttpURLConnection
+import java.net.URL
 
-object TeamRepository : Repository{
+class TeamRepository(private val nbaApiService : ApiService) : Repository{
+    init {
+
+    }
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData(createTeams())
 
     val NbaTeams: LiveData<List<Team>>
