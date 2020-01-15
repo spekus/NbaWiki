@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.TeamFragmentBinding
+import com.example.nbawiki.model.Team
 import com.example.nbawiki.model.TeamRepository
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants.repository
@@ -41,10 +43,11 @@ class TeamFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
-        viewModel.initializeTeamData(teamId)
 
-        binding.team = viewModel.team.value
-
+        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+            viewModel.initializeTeamData(teamId)
+            binding.team = it
+        })
 
         binding.teamBackArrow.setOnClickListener {
             findNavController().navigateUp()

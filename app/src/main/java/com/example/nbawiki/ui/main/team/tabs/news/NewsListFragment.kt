@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
+import com.example.nbawiki.model.Team
 import com.example.nbawiki.ui.main.team.TeamFragmentArgs
 import com.example.nbawiki.ui.main.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
@@ -38,11 +40,14 @@ class NewsListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
 
-        val news = viewModel.team.value?.news ?: emptyList()
-        team_recycler_view.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = NewsListAdapter(news)
-        }
+            team_recycler_view.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = NewsListAdapter(it.news)
+            }
+
+        })
+
     }
 }

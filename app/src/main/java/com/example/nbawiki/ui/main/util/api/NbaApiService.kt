@@ -47,10 +47,8 @@ class NbaApiService : ApiService {
     }
 
     override suspend fun getNews(teamID : String): List<NewsDto>  {
-//        https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=134880
-        val lookUpUrl = "eventslast.php?id=134880"
+        val lookUpUrl = "eventslast.php?id=$teamID"
         val newsString = makeCallForString(baseUrl + lookUpUrl)
-//        val tmp = "https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?t=Atlanta Hawks"
         return getNewsFromString(newsString)
     }
 
