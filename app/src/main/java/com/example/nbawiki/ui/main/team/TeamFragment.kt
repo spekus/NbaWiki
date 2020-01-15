@@ -21,13 +21,14 @@ class TeamFragment : Fragment() {
     private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var viewModel : TeamViewModel
+    private var teamId : Int = 0
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val teamId: Int = arguments?.let {
+        teamId = arguments?.let {
             TeamFragmentArgs.fromBundle(it).teamId
         } ?: 0
 
@@ -54,7 +55,7 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, viewModel.team.value?.id ?:0 )
+        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, teamId )
         viewPager = view.findViewById(R.id.pager)
 
         viewPager.adapter = demoCollectionPagerAdapter

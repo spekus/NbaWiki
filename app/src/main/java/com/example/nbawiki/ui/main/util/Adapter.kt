@@ -8,7 +8,7 @@ object Adapter {
 
         @JvmStatic
         @BindingAdapter("android:src")
-        fun bindImageFromUrl(view: ImageView, url : String) {
+        fun bindImageFromUrl(view: ImageView, url : String?) {
             Picasso
                 .get()
                 .load(url)

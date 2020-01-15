@@ -7,9 +7,10 @@ import com.example.nbawiki.model.TeamRepository
 import com.example.nbawiki.model.Team
 
 class TeamViewModel(private val teamRepository : Repository) : ViewModel() {
-    lateinit var team : LiveData<Team>
+    
+    val team : LiveData<Team> = teamRepository.selectedTeam
 
     fun initializeTeamData(teamId: Int) {
-        team  =  teamRepository.getTheTeam(teamId)
+         teamRepository.getTheTeam(teamId)
     }
 }

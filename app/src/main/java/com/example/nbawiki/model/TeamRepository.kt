@@ -81,7 +81,6 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
         val theTeam: Team? = _teams.value?.first {
             it.id == id
         }
-        theTeam!!.news =
 
         return MutableLiveData<Team>(theTeam)
     }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
+import com.example.nbawiki.ui.main.team.TeamFragmentArgs
 import com.example.nbawiki.ui.main.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants
@@ -23,6 +24,7 @@ class NewsListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         var teamId: Int = 0
         arguments?.takeIf { it.containsKey(Constants.ID_OBJECT) }?.apply {
             teamId = getInt(Constants.ID_OBJECT)
