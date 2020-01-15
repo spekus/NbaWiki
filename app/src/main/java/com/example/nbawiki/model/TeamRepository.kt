@@ -73,8 +73,9 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
             _theTeam.postValue(theTeam)
 
-            val value = nbaApiService.getPlayers(theTeam.teamName)
-            value.get(0)
+            val player = nbaApiService.getPlayers(theTeam.teamName).map { it.asPresentationModel() }
+            theTeam.teamMembers = player
+            _theTeam.postValue(theTeam)
         }
 
         val theTeam: Team? = _teams.value?.first {

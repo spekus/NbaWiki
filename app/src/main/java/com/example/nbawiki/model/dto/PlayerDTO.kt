@@ -1,6 +1,8 @@
 package com.example.nbawiki.model.dto
 
+import com.example.nbawiki.model.Player
 import org.json.JSONObject
+import java.util.*
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -138,3 +140,17 @@ data class PlayerDTO(
     )
 }
 
+fun PlayerDTO.asPresentationModel() : Player {
+    return Player(
+        id = this.idPlayer,
+        name = this.strPlayer,
+        sureName = this.strNationality,
+//        height = this.strHeight.toInt(),
+        height = 7,
+//        weight = this.strWeight.toInt(),
+        weight = 78,
+        age = this.strWage,
+        description = this.strDescriptionEN,
+        imageUrl = this.strThumb
+    )
+}
