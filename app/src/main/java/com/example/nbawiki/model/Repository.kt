@@ -8,8 +8,9 @@ import com.example.nbawiki.model.presentation.Team
 interface Repository {
     val nbaTeams: LiveData<List<Team>>
     val selectedTeam: LiveData<Team>
+    val selectedPlayer: LiveData<Player>
 
     fun updateTeams()
     fun updateTheTeam(id : Int)
-    fun updateThePlayer(id : Int) : MutableLiveData<Player>
+    fun updateThePlayer(id : Int)
 }

@@ -2,14 +2,15 @@ package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 class TeamRepository(private val nbaApiService: ApiService) : Repository {
+
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
     private var _theTeam: MutableLiveData<Team> = MutableLiveData()
@@ -19,6 +20,22 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
 
     override val selectedTeam: LiveData<Team>
         get() = _theTeam
+
+
+    private var selectedPlayerId: MutableLiveData<String> = MutableLiveData()
+
+    override val selectedPlayer: LiveData<Player>
+        get() = _player
+
+    private var _player: LiveData<Player> = Transformations.switchMap(
+        selectedPlayerId,
+        ::getPlayer
+    )
+
+    private fun getPlayer(playerId: String): LiveData<Player> {
+        return MutableLiveData(selectedTeam?.value?.teamMembers?.firstOrNull() { it.id.toString() == playerId } ?: Player())
+    }
+
 
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
@@ -50,7 +67,7 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         }
     }
 
-    override fun updateThePlayer(id: Int): MutableLiveData<Player> {
-        return MutableLiveData<Player>(_teams.value!!.find { it.teamMembers.any { it.id == id } }!!.teamMembers.find { it.id == id })
+    override fun updateThePlayer(id: Int){
+        selectedPlayerId.postValue(id.toString())
     }
 }

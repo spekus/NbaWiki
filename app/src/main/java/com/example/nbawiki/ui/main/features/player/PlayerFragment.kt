@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.R
@@ -46,7 +47,9 @@ class PlayerFragment : Fragment() {
             .get(PlayerViewModel::class.java)
         viewModel.initializePlayerData(playerId)
 
-        binding.player = viewModel.player.value
+        viewModel.player.observe(viewLifecycleOwner, Observer {
+            binding.player = viewModel.player.value
+        })
 
         binding.playerBackButton.setOnClickListener {
             findNavController().navigateUp()
