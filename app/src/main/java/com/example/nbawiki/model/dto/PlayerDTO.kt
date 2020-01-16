@@ -2,7 +2,6 @@ package com.example.nbawiki.model.dto
 
 import android.annotation.TargetApi
 import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.nbawiki.model.presentation.Player
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -152,17 +151,21 @@ fun PlayerDTO.asPresentationModel(): Player {
         id = this.idPlayer,
         name = this.strPlayer.trim(),
         sureName = this.strNationality.trim(),
-        height = this.strHeight,
-        weight = this.strWeight,
-        age = getTheAge(this.dateBorn),
+        height = clearString(this.strHeight),
+        weight = clearString(this.strWeight),
+        age = parseAge(this.dateBorn),
         description = this.strDescriptionEN,
         imageUrl = this.strThumb
     )
 }
 
+fun clearString(str: String): String {
+    return str.substringAfter("(").substringBefore(')')
+}
+
 @TargetApi(Build.VERSION_CODES.O)
-fun getTheAge(dateBorn: String): String {
-    // NEEDS REWORK
+fun parseAge(dateBorn: String): String {
+    // NEEDS REWORK - hacky
     val DtoPatern = "yyyy-mm-dd"
     val date: Date? = SimpleDateFormat(DtoPatern).parse(dateBorn)
     val start = LocalDate.of(date!!.year + 1900, date!!.month +1, date!!.date)
