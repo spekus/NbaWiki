@@ -125,7 +125,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{Integer.toString(player.height)}"
+                            android:text="@{player.height}"
                             android:layout_centerInParent="true"
                             tools:text = "202"/>
                     </LinearLayout>
@@ -149,7 +149,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{Integer.toString(player.weight)}"
+                            android:text="@{player.weight}"
                             android:layout_centerInParent="true"
                             tools:text = "122"/>
                     </LinearLayout>

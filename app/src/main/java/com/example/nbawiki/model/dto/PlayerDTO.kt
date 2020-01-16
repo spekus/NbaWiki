@@ -145,11 +145,9 @@ fun PlayerDTO.asPresentationModel() : Player {
         id = this.idPlayer,
         name = this.strPlayer,
         sureName = this.strNationality,
-//        height = this.strHeight.toInt(),
-        height = 7,
-//        weight = this.strWeight.toInt(),
-        weight = 78,
-        age = this.strWage,
+        height = this.strHeight,
+        weight = this.strWeight,
+        age = this.dateBorn,
         description = this.strDescriptionEN,
         imageUrl = this.strThumb
     )
