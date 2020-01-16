@@ -1,6 +1,5 @@
 package com.example.nbawiki.ui.main.util.api
 
-import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.dto.NewsDTO
 import com.example.nbawiki.model.dto.PlayerDTO
 import com.example.nbawiki.model.dto.TeamsDTO
@@ -14,15 +13,25 @@ class NbaApiService : ApiService {
 
     val baseUrl: String = "https://www.thesportsdb.com/api/v1/json/1/"
 
-    override suspend fun getTheTeam(id: String): TeamsDTO {
-        return TeamsDTO()
-    }
-
     override suspend fun getAllTeams(): List<TeamsDTO> {
         val lookUpUrl = "lookup_all_teams.php/?id=4387"
         val teamsString = makeAPICallWith(baseUrl + lookUpUrl)
-        val teams: MutableList<TeamsDTO> = getTeamsFromString(teamsString)
+        val teams: List<TeamsDTO> = getTeamsFromString(teamsString)
         return teams
+    }
+
+    private fun getTeamsFromString(teamsString: String): List<TeamsDTO> {
+        val jsonObjects: List<JSONObject> = getJson(teamsString, "teams")
+        return jsonObjects.map { TeamsDTO(it) }
+    }
+
+    private fun getJson(stringToDecode : String ,arrayName: String): List<JSONObject> {
+        val jsonArray = JSONObject(stringToDecode).getJSONArray(arrayName)
+        val list :MutableList<JSONObject> = mutableListOf<JSONObject>()
+        for (i in 0 until jsonArray.length()) {
+            list.add(jsonArray.getJSONObject(i))
+        }
+        return list
     }
 
     private suspend fun makeAPICallWith(url: String): String {
@@ -32,67 +41,25 @@ class NbaApiService : ApiService {
         }
     }
 
-    private fun getTeamsFromString(teamsString: String): MutableList<TeamsDTO> {
-        var teams: MutableList<com.example.nbawiki.model.dto.TeamsDTO> =
-            mutableListOf<com.example.nbawiki.model.dto.TeamsDTO>()
-
-        val jsonObject = JSONObject(teamsString)
-
-        val jsonArray = jsonObject.getJSONArray("teams")
-        for (i in 0 until jsonArray.length()) {
-            teams.add(TeamsDTO(jsonArray.getJSONObject(i)))
-        }
-        return teams
-    }
-
     override suspend fun getNews(teamID : String): List<NewsDTO>  {
         val lookUpUrl = "eventslast.php?id=$teamID"
         val newsString = makeAPICallWith(baseUrl + lookUpUrl)
         return getNewsFromString(newsString)
     }
 
-
-
     private fun getNewsFromString(newsString: String) : List<NewsDTO> {
-        var news: MutableList<NewsDTO> =
-            mutableListOf()
-
-        val jsonObject = JSONObject(newsString)
-        val jsonArray = jsonObject.getJSONArray("results")
-        for (i in 0 until jsonArray.length()) {
-            news.add(NewsDTO(jsonArray.getJSONObject(i)))
-        }
-        return news
+        val jsonObjects: List<JSONObject> = getJson(newsString, "results")
+        return jsonObjects.map { NewsDTO(it) }
     }
 
     override suspend fun getPlayers(teamName: String) : List<PlayerDTO> {
         val lookUpUrl = "searchplayers.php?t=$teamName"
         val playersString = makeAPICallWith(baseUrl + lookUpUrl)
-//        https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?t=Atlanta Hawks
         return getPlayersFromString(playersString)
     }
 
     private fun getPlayersFromString(playersString: String): List<PlayerDTO> {
-        var players: MutableList<PlayerDTO> =
-            mutableListOf()
-
-        val jsonObject = JSONObject(playersString)
-        val jsonArray = jsonObject.getJSONArray("player")
-        for (i in 0 until jsonArray.length()) {
-            players.add(PlayerDTO(jsonArray.getJSONObject(i)))
-        }
-        return players
+        val jsonObjects: List<JSONObject> = getJson(playersString, "player")
+        return jsonObjects.map { PlayerDTO(it) }
     }
-
-//    private fun getDtoFromString(dataString : String, arrayKeyWord : String , ){
-//        var dtoList: MutableList<Dto> = mutableListOf()
-//
-//        val jsonObject = JSONObject(dataString)
-//        val jsonArray = jsonObject.getJSONArray(arrayKeyWord)
-//
-//        for (i in 0 until jsonArray.length()) {
-//            dtoList.add(PlayerDTO(jsonArray.getJSONObject(i)))
-//        }
-//
-//    }
 }
