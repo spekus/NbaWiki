@@ -40,11 +40,10 @@ class PlayerFragment : Fragment() {
         } ?: 0
 
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
-            PlayerViewModel(
-                repository
-            )
+            PlayerViewModel(repository)
         })
             .get(PlayerViewModel::class.java)
+
         viewModel.initializePlayerData(playerId)
 
         viewModel.player.observe(viewLifecycleOwner, Observer {

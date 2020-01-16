@@ -53,19 +53,30 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         selectedPlayerId.postValue(id.toString())
     }
 
-    override fun refreshTheTeam(id: Int) {
+    override fun refreshTheTeam(teamID: Int) {
         coroutineScope.launch(Dispatchers.Main) {
-            val news = nbaApiService.getNews(id.toString()).map { it.asPresentationModel() }
-            var theTeam: Team? = _teams.value?.first {
-                it.id == id
-            }
+            refreshTeamNews(teamID)
+            refreshTeamPlayer(teamID)
+        }
+    }
 
-            theTeam!!.news = news
-            _theTeam.postValue(theTeam)
+    private suspend fun refreshTeamPlayer(teamID: Int) {
+        var theTeam: Team? =  getSelectedTeam(teamID)
+        val player = nbaApiService.getPlayers(theTeam!!.teamName).map { it.asPresentationModel() }
+        theTeam.teamMembers = player
+        _theTeam.postValue(theTeam)
+    }
 
-            val player = nbaApiService.getPlayers(theTeam.teamName).map { it.asPresentationModel() }
-            theTeam.teamMembers = player
-            _theTeam.postValue(theTeam)
+    private suspend fun refreshTeamNews(teamId: Int) {
+        val news = nbaApiService.getNews(teamId.toString()).map { it.asPresentationModel() }
+        var theTeam: Team? = getSelectedTeam(teamId)
+        theTeam!!.news = news
+        _theTeam.postValue(theTeam)
+    }
+
+    private fun getSelectedTeam(teamId : Int) : Team? {
+        return _teams.value?.first {
+            it.id == teamId
         }
     }
 }
