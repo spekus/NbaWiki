@@ -11,15 +11,6 @@ object JsonWizard {
         return jsonObjects.map { TeamsDTO(it) }
     }
 
-    private fun getJson(stringToDecode: String, arrayName: String): List<JSONObject> {
-        val jsonArray = JSONObject(stringToDecode).getJSONArray(arrayName)
-        val list: MutableList<JSONObject> = mutableListOf()
-        for (i in 0 until jsonArray.length()) {
-            list.add(jsonArray.getJSONObject(i))
-        }
-        return list
-    }
-
     fun mapNewsFromString(newsString: String): List<NewsDTO> {
         val jsonObjects: List<JSONObject> = getJson(newsString, "results")
         return jsonObjects.map { NewsDTO(it) }
@@ -29,6 +20,15 @@ object JsonWizard {
     fun mapPlayersFromString(playersString: String): List<PlayerDTO> {
         val jsonObjects: List<JSONObject> = getJson(playersString, "player")
         return jsonObjects.map { PlayerDTO(it) }
+    }
+
+    private fun getJson(stringToDecode: String, arrayName: String): List<JSONObject> {
+        val jsonArray = JSONObject(stringToDecode).getJSONArray(arrayName)
+        val list: MutableList<JSONObject> = mutableListOf()
+        for (i in 0 until jsonArray.length()) {
+            list.add(jsonArray.getJSONObject(i))
+        }
+        return list
     }
 }
 
