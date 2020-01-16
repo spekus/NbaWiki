@@ -2,6 +2,8 @@ package com.example.nbawiki.model.dto
 
 import com.example.nbawiki.model.presentation.News
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -142,6 +144,13 @@ fun NewsDTO.asPresentationModel() : News {
     return News(
         team = this.strHomeTeam,
         ennemyTeam = this.strAwayTeam,
-        date = this.dateEvent
+        date = parseDateToString(this.dateEvent)
     )
+}
+
+fun parseDateToString(dateAsString: String): String {
+    val paternToDisplay = "MMMM d"
+    val DtoPatern = "yyyy-MM-dd"
+    val date: Date? = SimpleDateFormat(DtoPatern).parse(dateAsString)
+    return SimpleDateFormat(paternToDisplay).format(date) ?: ""
 }
