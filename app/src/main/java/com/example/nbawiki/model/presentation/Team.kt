@@ -1,4 +1,7 @@
-package com.example.nbawiki.model
+package com.example.nbawiki.model.presentation
+
+import com.example.nbawiki.model.presentation.News
+import com.example.nbawiki.model.presentation.Player
 
 data class Team (
     val id : Int,

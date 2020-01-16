@@ -7,7 +7,7 @@
 
         <variable
             name="news"
-            type="com.example.nbawiki.model.News" />
+            type="com.example.nbawiki.model.presentation.News" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,6 +1,8 @@
 package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
+import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.Team
 
 interface Repository {
     val nbaTeams: LiveData<List<Team>>

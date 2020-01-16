@@ -2,7 +2,7 @@ package com.example.nbawiki.ui.main.player
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.model.Player
+import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.Repository
 import org.junit.Before
 import org.junit.Rule
@@ -31,7 +31,9 @@ class PlayerViewModelTest {
         MockitoAnnotations.initMocks(this)
 
         Mockito.`when`(mockRepository.getThePlayer(1))
-            .thenReturn(MutableLiveData<Player>(Player()))
+            .thenReturn(MutableLiveData<Player>(
+                Player()
+            ))
     }
 
     @Test
@@ -48,7 +50,9 @@ class PlayerViewModelTest {
     fun initializePlayerData_validID_playerWithSameId() {
 
         Mockito.`when`(mockRepository.getThePlayer(platerId))
-            .thenReturn(MutableLiveData<Player>(Player(id = platerId)))
+            .thenReturn(MutableLiveData<Player>(
+                Player(id = platerId)
+            ))
 
         viewModel = PlayerViewModel(mockRepository)
         viewModel.initializePlayerData(platerId)

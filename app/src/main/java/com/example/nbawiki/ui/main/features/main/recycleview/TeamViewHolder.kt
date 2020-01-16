@@ -3,7 +3,7 @@ package com.example.nbawiki.ui.main.features.main.recycleview
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.TeamCardItemBinding
-import com.example.nbawiki.model.Team
+import com.example.nbawiki.model.presentation.Team
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 

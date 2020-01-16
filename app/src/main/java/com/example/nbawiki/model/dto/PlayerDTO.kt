@@ -1,8 +1,7 @@
 package com.example.nbawiki.model.dto
 
-import com.example.nbawiki.model.Player
+import com.example.nbawiki.model.presentation.Player
 import org.json.JSONObject
-import java.util.*
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com

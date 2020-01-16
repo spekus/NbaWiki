@@ -3,11 +3,10 @@ package com.example.nbawiki.ui.main.features.main.recycleview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nbawiki.databinding.MainFragmentBinding
 import com.example.nbawiki.databinding.TeamCardItemBinding
-import com.example.nbawiki.model.Team
+import com.example.nbawiki.model.presentation.Team
 
-class TeamListAdapter(private val list: List<Team>, val itemClickListener : OnItemClickListener , private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<TeamViewHolder>() {
+class TeamListAdapter(private val list: List<Team>, val itemClickListener : OnItemClickListener, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
 //        val inflater = LayoutInflater.from(parent.context)

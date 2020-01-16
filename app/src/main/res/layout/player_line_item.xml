@@ -7,7 +7,7 @@
 
         <variable
             name="player"
-            type="com.example.nbawiki.model.Player" />
+            type="com.example.nbawiki.model.presentation.Player" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

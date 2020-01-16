@@ -8,7 +8,7 @@
 
         <variable
             name="team"
-            type="com.example.nbawiki.model.Team" />
+            type="com.example.nbawiki.model.presentation.Team" />
 
     </data>
 

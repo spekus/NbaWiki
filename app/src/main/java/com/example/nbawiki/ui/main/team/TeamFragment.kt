@@ -12,11 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.TeamFragmentBinding
-import com.example.nbawiki.model.Team
-import com.example.nbawiki.model.TeamRepository
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants.repository
-import com.example.nbawiki.ui.main.util.api.NbaApiService
 import com.google.android.material.tabs.TabLayout
 
 class TeamFragment : Fragment() {

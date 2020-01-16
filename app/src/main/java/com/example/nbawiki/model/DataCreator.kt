@@ -1,5 +1,8 @@
 package com.example.nbawiki.model
 
+import com.example.nbawiki.model.presentation.News
+import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.Team
 import com.github.javafaker.Faker
 import java.text.SimpleDateFormat
 

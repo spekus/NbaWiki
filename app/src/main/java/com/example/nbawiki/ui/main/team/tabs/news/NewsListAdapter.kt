@@ -3,7 +3,7 @@ package com.example.nbawiki.ui.main.team.tabs.news
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nbawiki.model.News
+import com.example.nbawiki.model.presentation.News
 
 class NewsListAdapter(private val list: List<News>) : RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {

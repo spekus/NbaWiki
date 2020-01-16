@@ -1,4 +1,4 @@
-package com.example.nbawiki.model
+package com.example.nbawiki.model.presentation
 
 import java.util.*
 

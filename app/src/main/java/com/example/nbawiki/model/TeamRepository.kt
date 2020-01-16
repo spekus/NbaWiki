@@ -3,6 +3,8 @@ package com.example.nbawiki.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.dto.asPresentationModel
+import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -33,12 +35,12 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
             Timber.e("team count - ${teamsDTO.count()}")
 
             val teams :List<Team> =  teamsDTO.map {
-                 Team(
-                     id = it.idTeam,
-                     teamName = it.strTeam ?: "",
-                     teamDescription = it.strDescriptionEN ?: "",
-                     imageUrl  = it.strTeamBanner ?: "https://i.picsum.photos/id/1/200/200.jpg"
-                 )
+                Team(
+                    id = it.idTeam,
+                    teamName = it.strTeam ?: "",
+                    teamDescription = it.strDescriptionEN ?: "",
+                    imageUrl = it.strTeamBanner ?: "https://i.picsum.photos/id/1/200/200.jpg"
+                )
              }
              _teams.postValue(teams)
 

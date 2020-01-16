@@ -12,7 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.MainFragmentBinding
-import com.example.nbawiki.model.Team
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.team.TeamViewModel

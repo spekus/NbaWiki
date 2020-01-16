@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.R
-import com.example.nbawiki.model.Player
+import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView

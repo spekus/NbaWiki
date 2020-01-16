@@ -3,7 +3,7 @@ package com.example.nbawiki.ui.main.team.tabs.players
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nbawiki.model.Player
+import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 
 class PlayerListAdapter (private val list: List<Player>, val itemClickListener : OnItemClickListener) : RecyclerView.Adapter<PlayerViewHolder>() {
