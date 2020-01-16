@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.player
+package com.example.nbawiki.ui.main.features.player
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,8 @@ import com.example.nbawiki.ui.main.util.Constants.repository
 
 class PlayerFragment : Fragment() {
     companion object {
-        fun newInstance() = PlayerFragment()
+        fun newInstance() =
+            PlayerFragment()
     }
 
     private lateinit var viewModel: PlayerViewModel
@@ -32,10 +33,16 @@ class PlayerFragment : Fragment() {
         )
 
         val playerId: Int = arguments?.let {
-            PlayerFragmentArgs.fromBundle(it).playerId
+            PlayerFragmentArgs.fromBundle(
+                it
+            ).playerId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { PlayerViewModel(repository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
+            PlayerViewModel(
+                repository
+            )
+        })
             .get(PlayerViewModel::class.java)
         viewModel.initializePlayerData(playerId)
 

@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.team.tabs.news
+package com.example.nbawiki.ui.main.features.team.tabs.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.R
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.ui.main.team.TeamViewModel
+import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants
 import com.example.nbawiki.ui.main.util.Constants.repository

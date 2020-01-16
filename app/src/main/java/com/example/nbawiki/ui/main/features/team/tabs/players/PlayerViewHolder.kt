@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.team.tabs.players
+package com.example.nbawiki.ui.main.features.team.tabs.players
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

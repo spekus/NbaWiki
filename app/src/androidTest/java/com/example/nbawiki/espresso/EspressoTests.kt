@@ -10,7 +10,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.example.nbawiki.MainActivity
 import com.example.nbawiki.R
-import com.example.nbawiki.model.TeamRepository
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamViewHolder
 import org.hamcrest.CoreMatchers.*
 import org.junit.Rule

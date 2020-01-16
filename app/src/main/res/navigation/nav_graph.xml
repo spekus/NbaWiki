@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/teamFragment"
-        android:name="com.example.nbawiki.ui.main.team.TeamFragment"
+        android:name="com.example.nbawiki.ui.main.features.team.TeamFragment"
         android:label="team_fragment"
         tools:layout="@layout/team_fragment" >
         <argument
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="com.example.nbawiki.ui.main.team.tabs.news.NewsListFragment"
+        android:name="com.example.nbawiki.ui.main.features.team.tabs.news.NewsListFragment"
         android:label="NewsListFragment" >
         <argument
             android:name="teamName"
@@ -41,13 +41,13 @@
     </fragment>
     <fragment
         android:id="@+id/playerListFragment"
-        android:name="com.example.nbawiki.ui.main.team.tabs.players.PlayerListFragment"
+        android:name="com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListFragment"
         android:label="PlayerListFragment" >
         <argument android:name="teamName" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
-        android:name="com.example.nbawiki.ui.main.player.PlayerFragment"
+        android:name="com.example.nbawiki.ui.main.features.player.PlayerFragment"
         android:label="player_fragment"
         tools:layout="@layout/player_fragment" >
         <argument

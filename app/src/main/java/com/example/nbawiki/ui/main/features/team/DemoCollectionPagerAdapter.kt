@@ -1,11 +1,11 @@
-package com.example.nbawiki.ui.main.team
+package com.example.nbawiki.ui.main.features.team
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.nbawiki.ui.main.team.tabs.news.NewsListFragment
-import com.example.nbawiki.ui.main.team.tabs.players.PlayerListFragment
+import com.example.nbawiki.ui.main.features.team.tabs.news.NewsListFragment
+import com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListFragment
 import com.example.nbawiki.ui.main.util.Constants
 
 class DemoCollectionPagerAdapter(fm: FragmentManager, val teamId: Int) : FragmentStatePagerAdapter(fm) {

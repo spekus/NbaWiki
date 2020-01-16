@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.player
+package com.example.nbawiki.ui.main.features.player
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
@@ -39,7 +39,10 @@ class PlayerViewModelTest {
     @Test
     fun initializePlayerData_validID_liveDataUpdatedWithPlayer() {
 
-        viewModel = PlayerViewModel(mockRepository)
+        viewModel =
+            PlayerViewModel(
+                mockRepository
+            )
         viewModel.initializePlayerData(platerId)
         viewModel.player.observeForever {}
 
@@ -54,7 +57,10 @@ class PlayerViewModelTest {
                 Player(id = platerId)
             ))
 
-        viewModel = PlayerViewModel(mockRepository)
+        viewModel =
+            PlayerViewModel(
+                mockRepository
+            )
         viewModel.initializePlayerData(platerId)
         viewModel.player.observeForever {}
 
@@ -63,7 +69,10 @@ class PlayerViewModelTest {
 
     @Test
     fun initializePlayerData_validId_callRepoOnlyOnce() {
-        viewModel = PlayerViewModel(mockRepository)
+        viewModel =
+            PlayerViewModel(
+                mockRepository
+            )
         viewModel.initializePlayerData(platerId)
 
         Mockito.verify(mockRepository, times(0)).updateTeams()
