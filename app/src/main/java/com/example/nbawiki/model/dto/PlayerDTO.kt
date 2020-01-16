@@ -76,7 +76,7 @@ data class PlayerDTO(
     val strFanart4: String,
     val strCreativeCommons: String,
     val strLocked: String
-) {
+) : Dto {
     constructor(json: JSONObject) : this(
         json.getInt("idPlayer"),
         json.getInt("idTeam"),

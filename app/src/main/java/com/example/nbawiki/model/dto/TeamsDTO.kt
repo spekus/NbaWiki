@@ -66,7 +66,7 @@ data class TeamsDTO (
 	val strTeamBanner : String? = "",
 	val strYoutube : String? = "",
 	val strLocked : String? = ""
-) {
+) : Dto {
 
 	constructor(jsonObject: JSONObject): this(
 			jsonObject.getInt("idTeam"),

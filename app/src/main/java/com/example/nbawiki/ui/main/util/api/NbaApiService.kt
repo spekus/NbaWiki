@@ -1,5 +1,6 @@
 package com.example.nbawiki.ui.main.util.api
 
+import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.dto.NewsDTO
 import com.example.nbawiki.model.dto.PlayerDTO
 import com.example.nbawiki.model.dto.TeamsDTO
@@ -23,8 +24,6 @@ class NbaApiService : ApiService {
         val teams: MutableList<TeamsDTO> = getTeamsFromString(teamsString)
         return teams
     }
-
-
 
     private suspend fun makeAPICallWith(url: String): String {
         return withContext(Dispatchers.Default) {
@@ -84,4 +83,16 @@ class NbaApiService : ApiService {
         }
         return players
     }
+
+//    private fun getDtoFromString(dataString : String, arrayKeyWord : String , ){
+//        var dtoList: MutableList<Dto> = mutableListOf()
+//
+//        val jsonObject = JSONObject(dataString)
+//        val jsonArray = jsonObject.getJSONArray(arrayKeyWord)
+//
+//        for (i in 0 until jsonArray.length()) {
+//            dtoList.add(PlayerDTO(jsonArray.getJSONObject(i)))
+//        }
+//
+//    }
 }

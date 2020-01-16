@@ -75,7 +75,7 @@ data class NewsDTO(
     val strTweet3: String,
     val strVideo: String,
     val strLocked: String
-) {
+) : Dto {
     constructor(eventJson: JSONObject) : this(
      eventJson.getInt("idEvent") ,
      eventJson.getString("idSoccerXML") ,
