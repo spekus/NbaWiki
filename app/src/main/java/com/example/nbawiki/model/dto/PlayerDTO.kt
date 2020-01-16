@@ -1,7 +1,15 @@
 package com.example.nbawiki.model.dto
 
+import android.annotation.TargetApi
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.nbawiki.model.presentation.Player
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -139,15 +147,25 @@ data class PlayerDTO(
     )
 }
 
-fun PlayerDTO.asPresentationModel() : Player {
+fun PlayerDTO.asPresentationModel(): Player {
     return Player(
         id = this.idPlayer,
         name = this.strPlayer.trim(),
         sureName = this.strNationality.trim(),
         height = this.strHeight,
         weight = this.strWeight,
-        age = this.dateBorn,
+        age = getTheAge(this.dateBorn),
         description = this.strDescriptionEN,
         imageUrl = this.strThumb
     )
+}
+
+@TargetApi(Build.VERSION_CODES.O)
+fun getTheAge(dateBorn: String): String {
+    // NEEDS REWORK
+    val DtoPatern = "yyyy-mm-dd"
+    val date: Date? = SimpleDateFormat(DtoPatern).parse(dateBorn)
+    val start = LocalDate.of(date!!.year + 1900, date!!.month +1, date!!.date)
+    val stop = LocalDate.now(ZoneId.of("America/Montreal"))
+    return ChronoUnit.YEARS.between(start, stop).toString()
 }
