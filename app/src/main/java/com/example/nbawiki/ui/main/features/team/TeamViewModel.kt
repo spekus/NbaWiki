@@ -10,6 +10,6 @@ class TeamViewModel(private val teamRepository : Repository) : ViewModel() {
     val team : LiveData<Team> = teamRepository.selectedTeam
 
     fun initializeTeamData(teamId: Int) {
-         teamRepository.updateTheTeam(teamId)
+         teamRepository.refreshTheTeam(teamId)
     }
 }

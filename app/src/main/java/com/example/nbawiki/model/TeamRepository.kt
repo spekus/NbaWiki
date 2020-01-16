@@ -36,12 +36,10 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         return MutableLiveData(selectedTeam?.value?.teamMembers?.firstOrNull() { it.id.toString() == playerId } ?: Player())
     }
 
-
     private val parentJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + parentJob)
 
-
-    override fun updateTeams() {
+    override fun refreshTeams() {
         coroutineScope.launch(Dispatchers.Main) {
             val teamsDTO = nbaApiService.getAllTeams()
             val teams: List<Team> = teamsDTO.map {
@@ -51,7 +49,11 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         }
     }
 
-    override fun updateTheTeam(id: Int) {
+    override fun refreshThePlayer(id: Int){
+        selectedPlayerId.postValue(id.toString())
+    }
+
+    override fun refreshTheTeam(id: Int) {
         coroutineScope.launch(Dispatchers.Main) {
             val news = nbaApiService.getNews(id.toString()).map { it.asPresentationModel() }
             var theTeam: Team? = _teams.value?.first {
@@ -65,9 +67,5 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
             theTeam.teamMembers = player
             _theTeam.postValue(theTeam)
         }
-    }
-
-    override fun updateThePlayer(id: Int){
-        selectedPlayerId.postValue(id.toString())
     }
 }

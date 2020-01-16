@@ -30,7 +30,7 @@ class PlayerViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        Mockito.`when`(mockRepository.updateThePlayer(1))
+        Mockito.`when`(mockRepository.refreshThePlayer(1))
             .thenReturn(MutableLiveData<Player>(
                 Player()
             ))
@@ -52,7 +52,7 @@ class PlayerViewModelTest {
     @Test
     fun initializePlayerData_validID_playerWithSameId() {
 
-        Mockito.`when`(mockRepository.updateThePlayer(platerId))
+        Mockito.`when`(mockRepository.refreshThePlayer(platerId))
             .thenReturn(MutableLiveData<Player>(
                 Player(id = platerId)
             ))
@@ -75,9 +75,9 @@ class PlayerViewModelTest {
             )
         viewModel.initializePlayerData(platerId)
 
-        Mockito.verify(mockRepository, times(0)).updateTeams()
-        Mockito.verify(mockRepository, times(0)).updateTheTeam( ArgumentMatchers.anyInt())
-        Mockito.verify(mockRepository, times(1)).updateThePlayer( ArgumentMatchers.anyInt())
+        Mockito.verify(mockRepository, times(0)).refreshTeams()
+        Mockito.verify(mockRepository, times(0)).refreshTheTeam( ArgumentMatchers.anyInt())
+        Mockito.verify(mockRepository, times(1)).refreshThePlayer( ArgumentMatchers.anyInt())
     }
 }
 
