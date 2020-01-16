@@ -10,7 +10,7 @@ class MainViewModel(teamRepository : Repository) : ViewModel() {
     val teams : LiveData<List<Team>> = teamRepository.nbaTeams
 
     init {
-        teamRepository.getTeams()
+        teamRepository.updateTeams()
     }
 
 }

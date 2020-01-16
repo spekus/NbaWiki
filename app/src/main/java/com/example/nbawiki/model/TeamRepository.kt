@@ -28,7 +28,7 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
 
 
-    override fun getTeams(): LiveData<List<Team>> {
+    override fun updateTeams(){
          coroutineScope.launch(Dispatchers.Main) {
              val teamsDTO =  nbaApiService.getAllTeams()
 //            val teamas = withContext(Dispatchers.Default) {nbaApiService.getAllteams() }
@@ -51,10 +51,10 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
             //here live data should be updated
          }
 //        Log.e("TeamRepository", teamsss.toString())
-        return nbaTeams
+//        return nbaTeams
     }
 
-    override fun getTheTeam(id: Int): LiveData<Team> {
+    override fun updateTheTeam(id: Int) {
         // BAD THIS IS CALLED ALL THE TIME
         coroutineScope.launch(Dispatchers.Main) {
             val news = nbaApiService.getNews(id.toString()).map { it.asPresentationModel() }
@@ -78,10 +78,10 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
             it.id == id
         }
 
-        return MutableLiveData<Team>(theTeam)
+//        return MutableLiveData<Team>(theTeam)
     }
 
-    override fun getThePlayer(id: Int): LiveData<Player> {
+    override fun updateThePlayer(id: Int) : MutableLiveData<Player> {
 //        coroutineScope.launch(Dispatchers.Main) {
 ////            val value = nbaApiService.getPlayers("")
 ////            value.get(0)

@@ -9,8 +9,6 @@ class PlayerViewModel(val repositry : Repository) : ViewModel() {
     lateinit var player : LiveData<Player>
 
     fun initializePlayerData(id: Int) {
-        player  =  repositry.getThePlayer(id)
+        player  =  repositry.updateThePlayer(id)
     }
-
-
 }
