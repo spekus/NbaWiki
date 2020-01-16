@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
 
-data class NewsDto(
+data class NewsDTO(
     val idEvent: Int,
     val idSoccerXML: String,
     val idAPIfootball: String,
@@ -138,7 +138,7 @@ data class NewsDto(
      eventJson.getString("strLocked")
     )
 }
-fun NewsDto.asPresentationModel() : News {
+fun NewsDTO.asPresentationModel() : News {
     return News(
         team = this.strHomeTeam ,
         ennemyTeam = this.strAwayTeam,

@@ -1,4 +1,4 @@
-import com.example.nbawiki.model.dto.TeamsGenerated
+import com.example.nbawiki.model.dto.TeamsDTO
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -13,5 +13,5 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 
 
 data class JsonKB (
-	val teams : MutableList<TeamsGenerated>?
+	val teams : MutableList<TeamsDTO>?
 )
