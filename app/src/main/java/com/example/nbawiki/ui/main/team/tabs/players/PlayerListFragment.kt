@@ -56,13 +56,15 @@ class PlayerListFragment : Fragment(),
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
-//            val players = viewModel.team.value?.teamMembers ?: emptyList()
-            binding.teamRecyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = PlayerListAdapter(it.teamMembers, this@PlayerListFragment)
-            }
 
+        binding.teamRecyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = PlayerListAdapter(viewModel.team.value?.teamMembers ?: emptyList(), this@PlayerListFragment)
+        }
+
+        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+            val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
+            binding.update(it.teamMembers)
         })
 
         super.onViewCreated(view, savedInstanceState)

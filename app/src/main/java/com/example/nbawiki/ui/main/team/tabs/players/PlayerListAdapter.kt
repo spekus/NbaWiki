@@ -4,9 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 
-class PlayerListAdapter (private val list: List<Player>, val itemClickListener : OnItemClickListener) : RecyclerView.Adapter<PlayerViewHolder>() {
+class PlayerListAdapter(
+    private var list: List<Player>,
+    val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<PlayerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -18,8 +22,12 @@ class PlayerListAdapter (private val list: List<Player>, val itemClickListener :
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player: Player = list[position]
-        holder.bind(player,itemClickListener)
+        holder.bind(player, itemClickListener)
     }
 
     override fun getItemCount(): Int = list.size
+    fun update(players: List<Player>?) {
+        list = players ?: emptyList()
+        this.notifyDataSetChanged()
+    }
 }
