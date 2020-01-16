@@ -35,12 +35,7 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
             Timber.e("team count - ${teamsDTO.count()}")
 
             val teams :List<Team> =  teamsDTO.map {
-                Team(
-                    id = it.idTeam,
-                    teamName = it.strTeam ?: "",
-                    teamDescription = it.strDescriptionEN ?: "",
-                    imageUrl = it.strTeamBanner ?: "https://i.picsum.photos/id/1/200/200.jpg"
-                )
+                    it.asPresentationModel()
              }
              _teams.postValue(teams)
 

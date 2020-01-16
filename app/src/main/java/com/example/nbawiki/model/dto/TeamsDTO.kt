@@ -1,5 +1,6 @@
 package com.example.nbawiki.model.dto
 
+import com.example.nbawiki.model.presentation.Team
 import org.json.JSONObject
 
 /*
@@ -67,7 +68,6 @@ data class TeamsDTO (
 	val strYoutube : String? = "",
 	val strLocked : String? = ""
 ) : Dto {
-
 	constructor(jsonObject: JSONObject): this(
 			jsonObject.getInt("idTeam"),
 			jsonObject.getString("idSoccerXML"),
@@ -120,5 +120,15 @@ data class TeamsDTO (
 			jsonObject.getString("strTeamBanner"),
 			jsonObject.getString("strYoutube"),
 			jsonObject.getString("strLocked")
+	)
+}
+
+fun TeamsDTO.asPresentationModel() : Team {
+	return Team(
+		id = this.idTeam,
+		teamName =  this.strTeam ?: "",
+		teamDescription = this.strDescriptionEN ?: "",
+		imageUrl = this.strStadiumThumb ?: "",
+		teamIconUrl = this.strTeamBadge ?: ""
 	)
 }

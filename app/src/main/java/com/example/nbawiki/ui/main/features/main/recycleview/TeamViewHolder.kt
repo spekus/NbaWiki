@@ -20,7 +20,7 @@ class TeamViewHolder(val binding: TeamCardItemBinding)
     }
 
     fun bind(team: Team, itemClickListener: OnItemClickListener) {
-        setUpImage(team.imageUrl)
+        setUpImage(team.teamIconUrl)
         mTitleView?.text = team.teamName
         mDescription?.text = team.teamDescription
         binding.teamCard.setOnClickListener {
