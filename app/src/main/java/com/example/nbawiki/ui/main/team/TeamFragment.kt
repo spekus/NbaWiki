@@ -42,8 +42,9 @@ class TeamFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
 
+        viewModel.initializeTeamData(teamId)
+
         viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
-            viewModel.initializeTeamData(teamId)
             binding.team = it
         })
 

@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.model.presentation.News
+import com.example.nbawiki.model.presentation.Team
 
-class NewsListAdapter(private val list: List<News>) : RecyclerView.Adapter<NewsViewHolder>() {
+class NewsListAdapter(private var list: List<News>) : RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return NewsViewHolder(
@@ -20,5 +21,10 @@ class NewsListAdapter(private val list: List<News>) : RecyclerView.Adapter<NewsV
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun update(newList: List<News>) {
+        list = newList
+        this.notifyDataSetChanged()
+    }
 
 }

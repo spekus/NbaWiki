@@ -48,17 +48,15 @@ class MainFragment : Fragment(), OnItemClickListener {
 //            layoutManager = LinearLayoutManager(activity)
 //            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
 //        }
+        binding.teamRecyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
+        }
         viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
             //HACK, should carry refresh instead
-            binding.teamRecyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = TeamListAdapter(it, this@MainFragment, layoutInflater)
-            }
-
+            val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
+            adapter.update(it)
         })
-
-
-
     }
 
     override fun onItemClicked(teamId: Int){

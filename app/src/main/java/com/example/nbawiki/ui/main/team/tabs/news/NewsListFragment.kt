@@ -39,13 +39,14 @@ class NewsListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        team_recycler_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = NewsListAdapter(viewModel.team.value?.news ?: listOf())
+        }
+
         viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
-
-            team_recycler_view.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = NewsListAdapter(it.news)
-            }
-
+            val adapter = team_recycler_view.adapter as NewsListAdapter
+            adapter.update(it.news)
         })
 
     }

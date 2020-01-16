@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.TeamCardItemBinding
 import com.example.nbawiki.model.presentation.Team
 
-class TeamListAdapter(private val list: List<Team>, val itemClickListener : OnItemClickListener, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<TeamViewHolder>() {
+class TeamListAdapter(private var list: List<Team>, val itemClickListener : OnItemClickListener, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
 //        val inflater = LayoutInflater.from(parent.context)
@@ -22,4 +22,9 @@ class TeamListAdapter(private val list: List<Team>, val itemClickListener : OnIt
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun update(newList : List<Team>){
+        this.list = newList
+        this.notifyDataSetChanged()
+    }
 }
