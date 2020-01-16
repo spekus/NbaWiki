@@ -2,7 +2,6 @@ package com.example.nbawiki.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.model.dto.NewsDto
 import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.ui.main.util.api.ApiService
 import kotlinx.coroutines.*
@@ -29,7 +28,7 @@ class TeamRepository(private val nbaApiService : ApiService) : Repository{
 
     override fun getTeams(): LiveData<List<Team>> {
          coroutineScope.launch(Dispatchers.Main) {
-             val teamsDTO =  nbaApiService.getAllteams()
+             val teamsDTO =  nbaApiService.getAllTeams()
 //            val teamas = withContext(Dispatchers.Default) {nbaApiService.getAllteams() }
             Timber.e("team count - ${teamsDTO.count()}")
 

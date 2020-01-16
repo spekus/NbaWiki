@@ -3,7 +3,6 @@ package com.example.nbawiki.ui.main.util.api
 import com.example.nbawiki.model.dto.NewsDto
 import com.example.nbawiki.model.dto.PlayerDTO
 import com.example.nbawiki.model.dto.TeamsGenerated
-import com.example.nbawiki.model.dto.TeamDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -14,11 +13,11 @@ class NbaApiService : ApiService {
 
     val baseUrl: String = "https://www.thesportsdb.com/api/v1/json/1/"
 
-    override fun getATeams(id: String): TeamDTO {
-        return TeamDTO("")
+    override suspend fun getTheTeam(id: String): TeamsGenerated {
+        return TeamsGenerated()
     }
 
-    override suspend fun getAllteams(): List<TeamsGenerated> {
+    override suspend fun getAllTeams(): List<TeamsGenerated> {
         val lookUpUrl = "lookup_all_teams.php/?id=4387"
         val teamsString = makeAPICallWith(baseUrl + lookUpUrl)
         val teams: MutableList<TeamsGenerated> = getTeamsFromString(teamsString)
