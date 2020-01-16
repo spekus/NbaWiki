@@ -16,7 +16,6 @@ object JsonWizard {
         return jsonObjects.map { NewsDTO(it) }
     }
 
-
     fun mapPlayersFromString(playersString: String): List<PlayerDTO> {
         val jsonObjects: List<JSONObject> = getJson(playersString, "player")
         return jsonObjects.map { PlayerDTO(it) }
