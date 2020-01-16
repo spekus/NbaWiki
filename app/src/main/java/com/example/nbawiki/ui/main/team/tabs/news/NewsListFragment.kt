@@ -31,7 +31,6 @@ class NewsListFragment : Fragment() {
             teamId = getInt(Constants.ID_OBJECT)
         }
 
-
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
@@ -48,6 +47,5 @@ class NewsListFragment : Fragment() {
             val adapter = team_recycler_view.adapter as NewsListAdapter
             adapter.update(it.news)
         })
-
     }
 }

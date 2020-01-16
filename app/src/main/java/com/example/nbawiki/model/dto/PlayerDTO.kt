@@ -142,8 +142,8 @@ data class PlayerDTO(
 fun PlayerDTO.asPresentationModel() : Player {
     return Player(
         id = this.idPlayer,
-        name = this.strPlayer,
-        sureName = this.strNationality,
+        name = this.strPlayer.trim(),
+        sureName = this.strNationality.trim(),
         height = this.strHeight,
         weight = this.strWeight,
         age = this.dateBorn,

@@ -126,7 +126,7 @@ data class TeamsDTO (
 fun TeamsDTO.asPresentationModel() : Team {
 	return Team(
 		id = this.idTeam,
-		teamName =  this.strTeam ?: "",
+		teamName =  this.strTeam?.trim() ?: "",
 		teamDescription = this.strDescriptionEN ?: "",
 		imageUrl = this.strStadiumThumb ?: "",
 		teamIconUrl = this.strTeamBadge ?: ""

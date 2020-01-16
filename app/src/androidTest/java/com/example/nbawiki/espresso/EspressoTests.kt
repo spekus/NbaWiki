@@ -27,9 +27,9 @@ class EspressoTests {
     @Test
     fun onTeamClick__ValidTeamNameDisplayed() {
         onView(withId(R.id.team_recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(1, click()))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(0, click()))
 
-        val teamName = TeamRepository.getTheTeam(2).value!!.teamName
+        val teamName = "Atlanta Hawks"
 
         onView(withId(R.id.teamName))
             .check(matches(isDisplayed()))
@@ -57,8 +57,9 @@ class EspressoTests {
 
     @Test
     fun onTeamClick__validTabNames2() {
-        onView(withId(R.id.team_recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(0, click()))
+        Thread.sleep(2000L)
+        onView(allOf(withId(R.id.team_recycler_view)))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(1, click()))
 
         onView(withText("NEWS"))
             .check(matches(isDisplayed()))
