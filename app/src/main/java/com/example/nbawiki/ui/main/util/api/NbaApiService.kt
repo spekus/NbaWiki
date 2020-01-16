@@ -9,23 +9,23 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class NbaApiService : ApiService {
-    val baseUrl: String = "https://www.thesportsdb.com/api/v1/json/1/"
+    private val BASE_URL: String = "https://www.thesportsdb.com/api/v1/json/1/"
 
     override suspend fun getAllTeams(): List<TeamsDTO> {
         val lookUpUrl = "lookup_all_teams.php/?id=4387"
-        val teamsString = makeAPICallWith(baseUrl + lookUpUrl)
+        val teamsString = makeAPICallWith(BASE_URL + lookUpUrl)
         return JsonWizard.mapTeamsFromString(teamsString)
     }
 
     override suspend fun getNews(teamID : String): List<NewsDTO>  {
         val lookUpUrl = "eventslast.php?id=$teamID"
-        val newsString = makeAPICallWith(baseUrl + lookUpUrl)
+        val newsString = makeAPICallWith(BASE_URL + lookUpUrl)
         return JsonWizard.mapNewsFromString(newsString)
     }
 
     override suspend fun getPlayers(teamName: String) : List<PlayerDTO> {
         val lookUpUrl = "searchplayers.php?t=$teamName"
-        val playersString = makeAPICallWith(baseUrl + lookUpUrl)
+        val playersString = makeAPICallWith(BASE_URL + lookUpUrl)
         return JsonWizard.mapPlayersFromString(playersString)
     }
 
