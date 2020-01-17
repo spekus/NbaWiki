@@ -7,7 +7,12 @@ import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.ApiService
-import kotlinx.coroutines.*
+import com.example.nbawiki.ui.main.util.api.retrofit.WebService
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 class TeamRepository(private val nbaApiService: ApiService) : Repository {
 
@@ -33,28 +38,41 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
     )
 
     private fun getPlayer(playerId: String): LiveData<Player> {
-        return MutableLiveData(selectedTeam?.value?.teamMembers?.firstOrNull() { it.id.toString() == playerId } ?: Player())
+        return MutableLiveData(selectedTeam?.value?.teamMembers?.firstOrNull() { it.id.toString() == playerId }
+            ?: Player())
     }
 
     override suspend fun refreshTeams() {
-            val teamsDTO = nbaApiService.getAllTeams()
-            val teams: List<Team> = teamsDTO.map {
-                it.asPresentationModel()
-            }
-            _teams.postValue(teams)
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://www.thesportsdb.com")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        val api = retrofit.create(WebService::class.java)
+
+        val teamsDTO = api.getAllTeams("4387")
+
+        val teams: List<Team> = teamsDTO.teams.map {
+            it.asPresentationModel()
+        }
+        _teams.postValue(teams)
     }
 
-    override suspend fun refreshThePlayer(id: Int){
+    override suspend fun refreshThePlayer(id: Int) {
         selectedPlayerId.postValue(id.toString())
     }
 
     override suspend fun refreshTheTeam(teamID: Int) {
-            refreshTeamNews(teamID)
-            refreshTeamPlayer(teamID)
+        refreshTeamNews(teamID)
+        refreshTeamPlayer(teamID)
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
-        var theTeam: Team? =  getSelectedTeam(teamID)
+        var theTeam: Team? = getSelectedTeam(teamID)
         val player = nbaApiService.getPlayers(theTeam!!.teamName).map { it.asPresentationModel() }
         theTeam.teamMembers = player
         _theTeam.postValue(theTeam)
@@ -67,7 +85,7 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         _theTeam.postValue(theTeam)
     }
 
-    private fun getSelectedTeam(teamId : Int) : Team? {
+    private fun getSelectedTeam(teamId: Int): Team? {
         return _teams.value?.first {
             it.id == teamId
         }

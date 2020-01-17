@@ -2,13 +2,13 @@ package com.example.nbawiki.ui.main.util.api
 
 import com.example.nbawiki.model.dto.NewsDTO
 import com.example.nbawiki.model.dto.PlayerDTO
-import com.example.nbawiki.model.dto.TeamsDTO
+import com.example.nbawiki.model.dto.TeamDTO
 import org.json.JSONObject
 
 object JsonWizard {
-    fun mapTeamsFromString(teamsString: String): List<TeamsDTO> {
+    fun mapTeamsFromString(teamsString: String): List<TeamDTO> {
         val jsonObjects: List<JSONObject> = getJson(teamsString, "teams")
-        return jsonObjects.map { TeamsDTO(it) }
+        return jsonObjects.map { TeamDTO(it) }
     }
 
     fun mapNewsFromString(newsString: String): List<NewsDTO> {
