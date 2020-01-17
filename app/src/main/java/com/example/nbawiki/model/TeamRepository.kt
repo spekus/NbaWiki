@@ -39,7 +39,7 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
     }
 
     override suspend fun refreshTeams() {
-        val teamsDTO = network.getAllTeams("4387")
+        val teamsDTO = network.getAllTeams(LEAGUE_KEY)
 
         val teams: List<Team> = teamsDTO.teams.map {
             it.asPresentationModel()
@@ -58,13 +58,15 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
         var theTeam: Team? = getSelectedTeam(teamID)
-        val player = nbaApiService.getPlayers(theTeam!!.teamName).map { it.asPresentationModel() }
-        theTeam.teamMembers = player
+        val playersDTO = network.getAllPlayers(theTeam!!.teamName )
+        val players = playersDTO.player.map { it.asPresentationModel() }
+        theTeam.teamMembers = players
         _theTeam.postValue(theTeam)
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {
-        val news = nbaApiService.getNews(teamId.toString()).map { it.asPresentationModel() }
+        val newsDto = network.getAllNews(teamId.toString())
+        val news = newsDto.results.map { it.asPresentationModel() }
         var theTeam: Team? = getSelectedTeam(teamId)
         theTeam!!.news = news
         _theTeam.postValue(theTeam)
@@ -76,3 +78,5 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         }
     }
 }
+
+const val LEAGUE_KEY = "4387"
