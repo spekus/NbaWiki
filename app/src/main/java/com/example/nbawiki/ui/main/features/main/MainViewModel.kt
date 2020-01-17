@@ -2,15 +2,19 @@ package com.example.nbawiki.ui.main.features.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.Repository
 import com.example.nbawiki.model.presentation.Team
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainViewModel(teamRepository : Repository) : ViewModel() {
-
     val teams : LiveData<List<Team>> = teamRepository.nbaTeams
 
     init {
-        teamRepository.refreshTeams()
+        viewModelScope.launch(Dispatchers.IO){
+            teamRepository.refreshTeams()
+        }
     }
 
 }
