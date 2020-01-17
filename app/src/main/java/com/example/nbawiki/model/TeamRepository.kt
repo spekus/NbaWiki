@@ -7,7 +7,6 @@ import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.retrofit.ApiService
-import com.example.nbawiki.ui.main.util.api.retrofit.Network.network
 
 
 class TeamRepository(private val nbaApiService: ApiService) : Repository {
