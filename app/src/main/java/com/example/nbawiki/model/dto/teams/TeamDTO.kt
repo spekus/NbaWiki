@@ -1,5 +1,6 @@
-package com.example.nbawiki.model.dto
+package com.example.nbawiki.model.dto.teams
 
+import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.Team
 
 /*

@@ -1,7 +1,7 @@
-package com.example.nbawiki.model.dto
+package com.example.nbawiki.model.dto.news
 
+import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.News
-import com.example.nbawiki.model.presentation.PresenationModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -81,7 +81,9 @@ data class NewsDTO(
         return News(
             team = data.strHomeTeam ?: "",
             ennemyTeam = data.strAwayTeam ?: "",
-            date = parseDateToString(data.dateEvent ?: "")
+            date = parseDateToString(
+                data.dateEvent ?: ""
+            )
         )
     }
 

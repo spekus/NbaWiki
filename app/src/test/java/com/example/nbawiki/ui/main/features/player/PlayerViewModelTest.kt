@@ -1,19 +1,5 @@
 package com.example.nbawiki.ui.main.features.player
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.model.Repository
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.mockito.Mockito.times
-import org.mockito.MockitoAnnotations
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-
 
 class PlayerViewModelTest {
 

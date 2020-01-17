@@ -1,4 +1,4 @@
-package com.example.nbawiki.model.dto
+package com.example.nbawiki.model.dto.teams
 
 data class TeamsDTO (
 

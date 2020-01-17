@@ -1,6 +1,8 @@
-package com.example.nbawiki.ui.main.util.api.retrofit
+package com.example.nbawiki.network.retrofit
 
-import com.example.nbawiki.model.dto.*
+import com.example.nbawiki.model.dto.news.NewsListDTO
+import com.example.nbawiki.model.dto.players.PlayersListDTO
+import com.example.nbawiki.model.dto.teams.TeamsDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 

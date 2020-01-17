@@ -1,11 +1,9 @@
-package com.example.nbawiki.model.dto
+package com.example.nbawiki.model.dto.players
 
 import android.annotation.TargetApi
 import android.os.Build
-import com.example.nbawiki.model.presentation.News
+import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.model.presentation.PresenationModel
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -90,9 +88,15 @@ data class PlayerDTO(
             id = data.idPlayer,
             name = data.strPlayer?.trim() ?: "",
             sureName = data.strNationality?.trim() ?: "",
-            height = clearString(data?.strHeight ?: "") ,
-            weight = clearString(data?.strWeight ?: ""),
-            age = parseAge(data?.dateBorn ?: ""),
+            height = clearString(
+                data?.strHeight ?: ""
+            ),
+            weight = clearString(
+                data?.strWeight ?: ""
+            ),
+            age = parseAge(
+                data?.dateBorn ?: ""
+            ),
             description = data?.strDescriptionEN ?: "",
             imageUrl = data?.strThumb ?: ""
         )

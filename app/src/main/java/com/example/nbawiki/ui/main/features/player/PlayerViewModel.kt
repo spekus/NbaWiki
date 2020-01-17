@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.model.Repository
-import kotlinx.coroutines.CoroutineScope
+import com.example.nbawiki.network.network.Repository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(val repositry : Repository) : ViewModel() {

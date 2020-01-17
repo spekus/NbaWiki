@@ -1,15 +1,15 @@
-package com.example.nbawiki.model
+package com.example.nbawiki.network.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.nbawiki.model.dto.TeamDTO
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.ui.main.util.api.retrofit.ApiService
+import com.example.nbawiki.network.retrofit.ApiService
 
 
-class TeamRepository(private val nbaApiService: ApiService) : Repository {
+class TeamRepository(private val nbaApiService: ApiService) :
+    Repository {
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 

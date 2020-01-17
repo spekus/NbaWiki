@@ -1,4 +1,4 @@
-package com.example.nbawiki.model
+package com.example.nbawiki.network.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
