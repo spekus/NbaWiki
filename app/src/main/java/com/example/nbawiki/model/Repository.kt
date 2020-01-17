@@ -10,7 +10,7 @@ interface Repository {
     val selectedTeam: LiveData<Team>
     val selectedPlayer: LiveData<Player>
 
-    fun refreshTeams()
-    fun refreshTheTeam(id : Int)
-    fun refreshThePlayer(id : Int)
+    suspend fun refreshTeams()
+    suspend fun refreshTheTeam(id : Int)
+    suspend fun refreshThePlayer(id : Int)
 }
