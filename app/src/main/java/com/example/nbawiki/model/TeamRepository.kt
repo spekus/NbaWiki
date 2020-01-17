@@ -7,11 +7,7 @@ import com.example.nbawiki.model.dto.asPresentationModel
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.ApiService
-import com.example.nbawiki.ui.main.util.api.retrofit.WebService
-import com.google.gson.GsonBuilder
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.nbawiki.ui.main.util.api.retrofit.Network.network
 
 
 class TeamRepository(private val nbaApiService: ApiService) : Repository {
@@ -43,18 +39,7 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
     }
 
     override suspend fun refreshTeams() {
-        val gson = GsonBuilder()
-            .setLenient()
-            .create()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.thesportsdb.com")
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-        val api = retrofit.create(WebService::class.java)
-
-        val teamsDTO = api.getAllTeams("4387")
+        val teamsDTO = network.getAllTeams("4387")
 
         val teams: List<Team> = teamsDTO.teams.map {
             it.asPresentationModel()
