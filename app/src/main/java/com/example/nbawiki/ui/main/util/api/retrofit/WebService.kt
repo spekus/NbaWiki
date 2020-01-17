@@ -14,5 +14,5 @@ interface WebService : ApiService {
 
 
     @GET("/api/v1/json/1/searchplayers.php")
-    override suspend fun getAllPlayers(@Query("t") teamName: String): PlayersDTO
+    override suspend fun getAllPlayers(@Query("t") teamName: String): PlayersListDTO
 }

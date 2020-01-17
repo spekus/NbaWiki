@@ -2,7 +2,9 @@ package com.example.nbawiki.model.dto
 
 import android.annotation.TargetApi
 import android.os.Build
+import com.example.nbawiki.model.presentation.News
 import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.PresenationModel
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -82,20 +84,24 @@ data class PlayerDTO(
     val strCreativeCommons: String?,
     val strLocked: String?
 ) : Dto {
+    override fun <T : Dto> T.asPresentationModel(): Player {
+        val data = this as PlayerDTO
+        return Player(
+            id = data.idPlayer,
+            name = data.strPlayer?.trim() ?: "",
+            sureName = data.strNationality?.trim() ?: "",
+            height = clearString(data?.strHeight ?: "") ,
+            weight = clearString(data?.strWeight ?: ""),
+            age = parseAge(data?.dateBorn ?: ""),
+            description = data?.strDescriptionEN ?: "",
+            imageUrl = data?.strThumb ?: ""
+        )
+    }
 
-}
+    override fun getPresentationModel() : Player {
+        return this.asPresentationModel()
+    }
 
-fun PlayerDTO.asPresentationModel(): Player {
-    return Player(
-        id = this.idPlayer,
-        name = this.strPlayer?.trim() ?: "",
-        sureName = this.strNationality?.trim() ?: "",
-        height = clearString(this?.strHeight ?: "") ,
-        weight = clearString(this?.strWeight ?: ""),
-        age = parseAge(this?.dateBorn ?: ""),
-        description = this?.strDescriptionEN ?: "",
-        imageUrl = this?.strThumb ?: ""
-    )
 }
 
 fun clearString(str: String): String {
@@ -111,3 +117,17 @@ fun parseAge(dateBorn: String): String {
     val stop = LocalDate.now(ZoneId.of("America/Montreal"))
     return ChronoUnit.YEARS.between(start, stop).toString()
 }
+
+//
+//fun PlayerDTO.asPresentationModel(): Player {
+//    return Player(
+//        id = this.idPlayer,
+//        name = this.strPlayer?.trim() ?: "",
+//        sureName = this.strNationality?.trim() ?: "",
+//        height = clearString(this?.strHeight ?: "") ,
+//        weight = clearString(this?.strWeight ?: ""),
+//        age = parseAge(this?.dateBorn ?: ""),
+//        description = this?.strDescriptionEN ?: "",
+//        imageUrl = this?.strThumb ?: ""
+//    )
+//}

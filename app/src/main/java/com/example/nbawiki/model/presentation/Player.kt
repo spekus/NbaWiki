@@ -11,4 +11,4 @@ data class Player (
     val weight : String = (80..150).random().toString(),
     val description : String = UUID.randomUUID().toString(),
     val imageUrl : String = "https://i.picsum.photos/id/$id/300/300.jpg"
-)
+) : PresenationModel

@@ -1,7 +1,6 @@
 package com.example.nbawiki.model.dto
 
 import com.example.nbawiki.model.presentation.Team
-import org.json.JSONObject
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -67,15 +66,29 @@ data class TeamDTO (
 	val strYoutube : String? = "",
 	val strLocked : String? = ""
 ) : Dto {
+	override fun <T : Dto> T.asPresentationModel(): Team {
+		val data = this as TeamDTO
+		return Team(
+			id = data.idTeam ?: 0,
+			teamName =  data.strTeam?.trim() ?: "",
+			teamDescription = data.strDescriptionEN ?: "",
+			imageUrl = data.strStadiumThumb ?: "",
+			teamIconUrl = data.strTeamBadge ?: ""
+		)
+	}
+
+	override fun getPresentationModel(): Team {
+		return this.asPresentationModel()
+	}
 
 }
 
-fun TeamDTO.asPresentationModel() : Team {
-	return Team(
-		id = this.idTeam ?: 0,
-		teamName =  this.strTeam?.trim() ?: "",
-		teamDescription = this.strDescriptionEN ?: "",
-		imageUrl = this.strStadiumThumb ?: "",
-		teamIconUrl = this.strTeamBadge ?: ""
-	)
-}
+//fun TeamDTO.asPresentationModel() : Team {
+//	return Team(
+//		id = this.idTeam ?: 0,
+//		teamName =  this.strTeam?.trim() ?: "",
+//		teamDescription = this.strDescriptionEN ?: "",
+//		imageUrl = this.strStadiumThumb ?: "",
+//		teamIconUrl = this.strTeamBadge ?: ""
+//	)
+//}

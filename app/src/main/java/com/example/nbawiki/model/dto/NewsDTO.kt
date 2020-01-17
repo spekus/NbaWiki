@@ -1,7 +1,7 @@
 package com.example.nbawiki.model.dto
 
 import com.example.nbawiki.model.presentation.News
-import org.json.JSONObject
+import com.example.nbawiki.model.presentation.PresenationModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,15 +76,18 @@ data class NewsDTO(
     val strVideo: String?,
     val strLocked: String?
 ) : Dto {
+    override fun <T : Dto> T.asPresentationModel(): News {
+        val data = this as NewsDTO
+        return News(
+            team = data.strHomeTeam ?: "",
+            ennemyTeam = data.strAwayTeam ?: "",
+            date = parseDateToString(data.dateEvent ?: "")
+        )
+    }
 
-}
-
-fun NewsDTO.asPresentationModel(): News {
-    return News(
-        team = this.strHomeTeam ?: "",
-        ennemyTeam = this.strAwayTeam ?: "",
-        date = parseDateToString(this?.dateEvent ?: "")
-    )
+    override fun getPresentationModel(): News {
+        return this.asPresentationModel()
+    }
 }
 
 private fun parseDateToString(dateAsString: String): String {
@@ -93,3 +96,11 @@ private fun parseDateToString(dateAsString: String): String {
     val date: Date? = SimpleDateFormat(DtoPatern).parse(dateAsString)
     return SimpleDateFormat(paternToDisplay).format(date) ?: ""
 }
+
+//fun NewsDTO.asPresentationModel(): News {
+//    return News(
+//        team = this.strHomeTeam ?: "",
+//        ennemyTeam = this.strAwayTeam ?: "",
+//        date = parseDateToString(this?.dateEvent ?: "")
+//    )
+//}

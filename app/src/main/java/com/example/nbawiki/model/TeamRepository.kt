@@ -3,7 +3,7 @@ package com.example.nbawiki.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.nbawiki.model.dto.asPresentationModel
+import com.example.nbawiki.model.dto.TeamDTO
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.api.retrofit.ApiService
@@ -41,7 +41,8 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
         val teamsDTO = nbaApiService.getAllTeams(LEAGUE_KEY)
 
         val teams: List<Team> = teamsDTO.teams.map {
-            it.asPresentationModel()
+
+            it.getPresentationModel()
         }
         _teams.postValue(teams)
     }
@@ -58,14 +59,14 @@ class TeamRepository(private val nbaApiService: ApiService) : Repository {
     private suspend fun refreshTeamPlayer(teamID: Int) {
         var theTeam: Team? = getSelectedTeam(teamID)
         val playersDTO = nbaApiService.getAllPlayers(theTeam!!.teamName )
-        val players = playersDTO.player.map { it.asPresentationModel() }
+        val players = playersDTO.player.map { it.getPresentationModel() }
         theTeam.teamMembers = players
         _theTeam.postValue(theTeam)
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {
         val newsDto = nbaApiService.getAllNews(teamId.toString())
-        val news = newsDto.results.map { it.asPresentationModel() }
+        val news = newsDto.results.map { it.getPresentationModel() }
         var theTeam: Team? = getSelectedTeam(teamId)
         theTeam!!.news = news
         _theTeam.postValue(theTeam)

@@ -8,4 +8,4 @@ data class Team (
     var teamMembers : List<Player> = emptyList(),
     var news : List<News> = emptyList(),
     val imageUrl : String = "https://i.picsum.photos/id/$id/200/200.jpg"
-)
+) : PresenationModel
