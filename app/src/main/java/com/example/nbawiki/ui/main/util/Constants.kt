@@ -10,8 +10,4 @@ object Constants {
     const val ID_OBJECT = "teamID"
     val repository =
         TeamRepository(Network.network)
-
-    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
-        Timber.e("${t.printStackTrace()}")
-    }
 }
