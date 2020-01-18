@@ -41,8 +41,7 @@ class PlayerFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
             PlayerViewModel(repository)
-        })
-            .get(PlayerViewModel::class.java)
+        }).get(PlayerViewModel::class.java)
 
         viewModel.initializePlayerData(playerId)
 
