@@ -1,22 +1,35 @@
 package com.example.nbawiki.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.Constants.repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.setMain
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 import kotlin.test.assertFailsWith
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import org.junit.Rule
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
+
 
 class TeamRepositoryTest {
 
     private val validTeamId: Int = 1
     private val validTeamId2: Int = 2
     private val inValidId: Int = -1
+
+    @get:Rule
+    var coroutinesTestRule = CoroutineTestRule()
 
     //TEAM TESTS:
 
@@ -25,16 +38,24 @@ class TeamRepositoryTest {
     fun initializeRepo() {
         val mainThreadSurrogate = newSingleThreadContext("UI thread")
         Dispatchers.setMain(mainThreadSurrogate)
+
     }
 
     @Test
-    fun getTeams__returnsNotEmptyList() {
+    fun getTeams__returnsNotEmptyList() =  runBlocking<Unit>{
+        var teamList : List<Team>? = null
 
-            repository.
-            val teamList = repository.nbaTeams.value
-            assertFalse(teamList!!.isEmpty())
+        GlobalScope.launch (Dispatchers.Unconfined) {
+            repository.refreshTeams()
+            repository.nbaTeams.observeForever { }
+            repository.refreshTeams()
+            val smth = repository.nbaTeams.value
+//            teamList = repository.nbaTeams.value
+//            assertTrue(teamList!!.isNotEmpty())
+            assertTrue(repository.nbaTeams.value!!.isNotEmpty())
         }
 
+//        assertTrue(repository.nbaTeams.value!!.isEmpty())
     }
 
 //    @Test
@@ -104,4 +125,44 @@ class TeamRepositoryTest {
 //        assertFailsWith<KotlinNullPointerException> { TeamRepository.getThePlayer(inValidId) }
 //    }
 
-//}
+}
+
+fun <T> LiveData<T>.getOrAwaitValue(
+    time: Long = 2,
+    timeUnit: TimeUnit = TimeUnit.SECONDS
+): T {
+    var data: T? = null
+    val latch = CountDownLatch(1)
+    val observer = object : Observer<T> {
+        override fun onChanged(o: T?) {
+            data = o
+            latch.countDown()
+            this@getOrAwaitValue.removeObserver(this)
+        }
+    }
+
+    this.observeForever(observer)
+
+    // Don't wait indefinitely if the LiveData is not set.
+    if (!latch.await(time, timeUnit)) {
+        throw TimeoutException("LiveData value was never set.")
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    return data as T
+}
+
+
+@ExperimentalCoroutinesApi
+class CoroutineTestRule(val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) : TestWatcher() {
+    override fun starting(description: Description?) {
+        super.starting(description)
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    override fun finished(description: Description?) {
+        super.finished(description)
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
+    }
+}
