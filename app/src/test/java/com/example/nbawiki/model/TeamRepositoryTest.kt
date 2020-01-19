@@ -30,7 +30,7 @@ class TeamRepositoryTest {
     @Test
     fun getTeams__returnsNotEmptyList() {
 
-            repository.refreshTeams()
+            repository.
             val teamList = repository.nbaTeams.value
             assertFalse(teamList!!.isEmpty())
         }

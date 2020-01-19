@@ -6,6 +6,8 @@ import androidx.lifecycle.Transformations
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.ApiService
+import com.example.nbawiki.network.retrofit.WebService
+import com.example.nbawiki.ui.main.util.Constants.repository
 
 
 class TeamRepository(private val nbaApiService: ApiService) :
@@ -38,13 +40,13 @@ class TeamRepository(private val nbaApiService: ApiService) :
     }
 
     override suspend fun refreshTeams() {
-        val teamsDTO = nbaApiService.getAllTeams(LEAGUE_KEY)
-
-        val teams: List<Team> = teamsDTO.teams.map {
-
-            it.getPresentationModel()
+        val apiResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
+        if(apiResponse.isSuccessful){
+            val teams: List<Team> = apiResponse.body()!!.teams.map {
+                it.getPresentationModel()
+            }
+            _teams.postValue(teams)
         }
-        _teams.postValue(teams)
     }
 
     override suspend fun refreshThePlayer(id: Int) {
@@ -57,19 +59,23 @@ class TeamRepository(private val nbaApiService: ApiService) :
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
-        var theTeam: Team? = getSelectedTeam(teamID)
-        val playersDTO = nbaApiService.getAllPlayers(theTeam!!.teamName )
-        val players = playersDTO.player.map { it.getPresentationModel() }
-        theTeam.teamMembers = players
-        _theTeam.postValue(theTeam)
+        val theTeam: Team? = getSelectedTeam(teamID)
+        val apiResponse = nbaApiService.getAllPlayers(theTeam!!.teamName )
+        if(apiResponse.isSuccessful)  {
+            val players = apiResponse.body()!!.player.map { it.getPresentationModel() }
+            theTeam.teamMembers = players
+            _theTeam.postValue(theTeam)
+        }
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {
-        val newsDto = nbaApiService.getAllNews(teamId.toString())
-        val news = newsDto.results.map { it.getPresentationModel() }
-        var theTeam: Team? = getSelectedTeam(teamId)
-        theTeam!!.news = news
-        _theTeam.postValue(theTeam)
+        val apiResponse = nbaApiService.getAllNews(teamId.toString())
+        if(apiResponse.isSuccessful){
+            val news = apiResponse.body()!!.results.map { it.getPresentationModel() }
+            val theTeam: Team? = getSelectedTeam(teamId)
+            theTeam!!.news = news
+            _theTeam.postValue(theTeam)
+        }
     }
 
     private fun getSelectedTeam(teamId: Int): Team? {
