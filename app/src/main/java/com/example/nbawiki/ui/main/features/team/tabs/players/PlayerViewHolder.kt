@@ -30,14 +30,20 @@ class PlayerViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 
     private fun setUpImage(image : String) {
-        Picasso
-            .get()
-            .setLoggingEnabled(true)
+            val formattedString = formatImageUrl(image)
 
-        Picasso
-            .get()
-            .load(image)
-            .into(mImage)
+            Picasso
+                .get()
+                .load(formattedString)
+                .into(mImage)
+    }
+
+    private fun formatImageUrl(image : String?): String? {
+        // Picasso can not handle blank url string, it can handle null
+        if (image?.trim()?.isBlank() != false){
+            return null
+        }
+        return image
     }
 
 }
