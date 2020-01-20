@@ -21,6 +21,7 @@ class TeamFragment : Fragment() {
     private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var viewModel : TeamViewModel
+    private lateinit var binding : TeamFragmentBinding
     private var teamId : Int = 0
 
 
@@ -28,25 +29,12 @@ class TeamFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        teamId = arguments?.let {
-            TeamFragmentArgs.fromBundle(it).teamId
-        } ?: 0
-
-        val binding = DataBindingUtil.inflate<TeamFragmentBinding>(
+        binding = DataBindingUtil.inflate<TeamFragmentBinding>(
             inflater,
             R.layout.team_fragment,
             container,
             false
         )
-
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
-            .get(TeamViewModel::class.java)
-
-        viewModel.initializeTeamData(teamId)
-
-        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
-            binding.team = it
-        })
 
         binding.teamBackArrow.setOnClickListener {
             findNavController().navigateUp()
@@ -57,6 +45,26 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpViewModel()
+        setUpTabLayout(view)
+    }
+
+    private fun setUpViewModel() {
+        teamId = arguments?.let {
+            TeamFragmentArgs.fromBundle(it).teamId
+        } ?: 0
+
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
+            .get(TeamViewModel::class.java)
+
+        viewModel.initializeTeamData(teamId)
+
+        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+            binding.team = it
+        })
+    }
+
+    private fun setUpTabLayout(view: View) {
         demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, teamId )
         viewPager = view.findViewById(R.id.pager)
 
