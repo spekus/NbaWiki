@@ -15,26 +15,35 @@ import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants.repository
 
 class PlayerFragment : Fragment() {
-
     private lateinit var viewModel: PlayerViewModel
+    private lateinit var binding: PlayerFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<PlayerFragmentBinding>(
+
+        val playerId: Int = arguments?.let {
+            PlayerFragmentArgs.fromBundle(it).playerId
+        } ?: 0
+
+        binding = DataBindingUtil.inflate<PlayerFragmentBinding>(
             inflater,
             R.layout.player_fragment,
             container,
             false
         )
 
-        val playerId: Int = arguments?.let {
-            PlayerFragmentArgs.fromBundle(
-                it
-            ).playerId
-        } ?: 0
+        binding.playerBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
+        setUpViewModel(playerId)
+
+        return binding.root
+    }
+
+    private fun setUpViewModel(playerId: Int) {
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
             PlayerViewModel(repository)
         })
@@ -45,10 +54,5 @@ class PlayerFragment : Fragment() {
         viewModel.player.observe(viewLifecycleOwner, Observer {
             binding.player = viewModel.player.value
         })
-
-        binding.playerBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        return binding.root
     }
 }
