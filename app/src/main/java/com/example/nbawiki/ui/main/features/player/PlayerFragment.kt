@@ -15,10 +15,6 @@ import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants.repository
 
 class PlayerFragment : Fragment() {
-    companion object {
-        fun newInstance() =
-            PlayerFragment()
-    }
 
     private lateinit var viewModel: PlayerViewModel
 
