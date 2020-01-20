@@ -57,7 +57,7 @@ class NewsListFragment : Fragment() {
     private fun setUpRecyclerViewAdapter() {
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = NewsListAdapter(viewModel.team.value?.news ?: listOf())
+            adapter = NewsListAdapter(viewModel.team.value?.news ?: listOf(), layoutInflater)
         }
 
         viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
