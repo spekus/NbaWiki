@@ -20,54 +20,53 @@ import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.example.nbawiki.ui.main.util.Constants
 import com.example.nbawiki.ui.main.util.Constants.ID_OBJECT
 
-class PlayerListFragment : Fragment(),
-    OnItemClickListener {
-
+class PlayerListFragment : Fragment(), OnItemClickListener {
     lateinit var viewModel : TeamViewModel
     lateinit var binding : MainFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var teamId = 0
-        arguments?.takeIf { it.containsKey(ID_OBJECT) }?.apply {
-            teamId = getInt(ID_OBJECT)
-        }
-
-
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(Constants.repository) })
-            .get(TeamViewModel::class.java)
-        viewModel.initializeTeamData(teamId)
-        binding = DataBindingUtil.inflate<MainFragmentBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.main_fragment,
             container,
             false
         )
 
-        val players = viewModel.team.value?.teamMembers ?: emptyList()
-        binding.teamRecyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = PlayerListAdapter(players, this@PlayerListFragment)
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewModel()
+        setUpRecyclerView()
+    }
+    private fun setUpViewModel(){
+        var teamId = 0
+        arguments?.takeIf { it.containsKey(ID_OBJECT) }?.apply {
+            teamId = getInt(ID_OBJECT)
+        }
+
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(Constants.repository) })
+            .get(TeamViewModel::class.java)
+        viewModel.initializeTeamData(teamId)
+    }
+
+    private fun setUpRecyclerView() {
+        val players = viewModel.team.value?.teamMembers ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = PlayerListAdapter(viewModel.team.value?.teamMembers ?: emptyList(), this@PlayerListFragment)
+            adapter = PlayerListAdapter(players, this@PlayerListFragment)
         }
 
         viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
             val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
             binding.update(it.teamMembers)
         })
-
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onItemClicked(id: Int) {
