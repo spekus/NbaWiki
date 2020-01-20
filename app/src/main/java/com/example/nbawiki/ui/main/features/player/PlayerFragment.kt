@@ -23,27 +23,26 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val playerId: Int = arguments?.let {
-            PlayerFragmentArgs.fromBundle(it).playerId
-        } ?: 0
-
-        binding = DataBindingUtil.inflate<PlayerFragmentBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.player_fragment,
             container,
             false
         )
-
         binding.playerBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        setUpViewModel(playerId)
+        setUpViewModel()
 
         return binding.root
     }
 
-    private fun setUpViewModel(playerId: Int) {
+    private fun setUpViewModel() {
+        val playerId: Int = arguments?.let {
+            PlayerFragmentArgs.fromBundle(it).playerId
+        } ?: 0
+
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
             PlayerViewModel(repository)
         })

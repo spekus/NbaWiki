@@ -42,11 +42,6 @@ class MainFragment : Fragment(), OnItemClickListener {
             .get(MainViewModel::class.java)
 
         setUpRecyclerViewAdaper()
-
-        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
-            val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
-            adapter.update(it)
-        })
     }
 
     private fun setUpRecyclerViewAdaper(){
@@ -56,6 +51,11 @@ class MainFragment : Fragment(), OnItemClickListener {
             layoutManager = LinearLayoutManager(activity)
             adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
         }
+
+        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
+            val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
+            adapter.update(it)
+        })
     }
 
     override fun onItemClicked(teamId: Int){

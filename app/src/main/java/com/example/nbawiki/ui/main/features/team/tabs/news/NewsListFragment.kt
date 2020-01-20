@@ -33,7 +33,6 @@ class NewsListFragment : Fragment() {
             container,
             false
         )
-
         return binding.root
     }
 
