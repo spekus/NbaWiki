@@ -1,5 +1,6 @@
 package com.example.nbawiki.network.network
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -8,7 +9,7 @@ import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.WebService
 
 
-class TeamRepository(private val nbaApiService: WebService) :
+class TeamRepository(private val nbaApiService: WebService, context: Context) :
     Repository {
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()

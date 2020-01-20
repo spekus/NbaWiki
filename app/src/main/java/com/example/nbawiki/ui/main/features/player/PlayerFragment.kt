@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.nbawiki.MyApplication.Companion.repository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerFragmentBinding
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
-import com.example.nbawiki.ui.main.util.Constants.repository
 
 class PlayerFragment : Fragment() {
     private lateinit var viewModel: PlayerViewModel

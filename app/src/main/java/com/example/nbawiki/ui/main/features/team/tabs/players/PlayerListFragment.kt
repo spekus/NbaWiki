@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nbawiki.MyApplication.Companion.repository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.MainFragmentBinding
 import com.example.nbawiki.model.presentation.Team
@@ -17,7 +18,6 @@ import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
-import com.example.nbawiki.ui.main.util.Constants
 import com.example.nbawiki.ui.main.util.Constants.ID_OBJECT
 
 class PlayerListFragment : Fragment(), OnItemClickListener {
@@ -50,7 +50,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
             teamId = getInt(ID_OBJECT)
         }
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(Constants.repository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
         viewModel.initializeTeamData(teamId)
     }
