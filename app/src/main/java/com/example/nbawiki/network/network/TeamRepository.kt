@@ -68,7 +68,9 @@ class TeamRepository(private val nbaApiService: WebService,private val context: 
             theTeam.teamMembers = players
             _theTeam.postValue(theTeam)
 
-//            putIntoDatabse(player, teamID)
+            players.forEach {
+                dataBase.putPlayer(it, teamID)
+            }
         }
     }
 
@@ -79,6 +81,11 @@ class TeamRepository(private val nbaApiService: WebService,private val context: 
             val theTeam: Team? = getSelectedTeam(teamId)
             theTeam!!.news = news
             _theTeam.postValue(theTeam)
+
+            news.forEach{
+                dataBase.putNews(it, teamId)
+            }
+
         }
     }
 

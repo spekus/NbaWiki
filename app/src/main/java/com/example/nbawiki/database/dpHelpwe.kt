@@ -10,6 +10,8 @@ import com.example.nbawiki.database.commands.SQL_CREATE_TEAMS
 
 object commands {
     const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${Contract.TeamEntry.TABLE_NAME}"
+    const val SQL_DELETE_ENTRIES2 = "DROP TABLE IF EXISTS ${Contract.NewsEntry.TABLE_NAME}"
+    const val SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS ${Contract.PlayerEntry.TABLE_NAME}"
 
     const val SQL_CREATE_ENTRIES =
         "CREATE TABLE ${Contract.TeamEntry.TABLE_NAME} (" +
@@ -32,9 +34,9 @@ object commands {
                 "${Contract.PlayerEntry.COLUMN_NAME_DESCRIPTION} TEXT," +
                 "${Contract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID} INTEGER PRIMARY KEY," +
                 "${Contract.PlayerEntry.COLUMN_NAME_HEIGHT} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_ICON_URL} TEXT," +
                 "${Contract.PlayerEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
                 "${Contract.PlayerEntry.COLUMN_NAME_SURENAME} TEXT," +
+                "${Contract.PlayerEntry.COLUMN_NAME_NAME} TEXT," +
                 "${Contract.PlayerEntry.COLUMN_NAME_WEIGHT} TEXT," +
                 "${Contract.PlayerEntry.COLUMN_NAME_TEAM_ID} INTEGER)"
 }
@@ -50,13 +52,15 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(commands.SQL_DELETE_ENTRIES)
+        db.execSQL(commands.SQL_DELETE_ENTRIES2)
+        db.execSQL(commands.SQL_DELETE_ENTRIES3)
         onCreate(db)
     }
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onUpgrade(db, oldVersion, newVersion)
     }
     companion object {
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 9
         const val DATABASE_NAME = "FeedReader.db"
     }
 
