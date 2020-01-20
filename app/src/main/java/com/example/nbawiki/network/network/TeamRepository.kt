@@ -1,15 +1,18 @@
 package com.example.nbawiki.network.network
 
+import android.content.ContentValues
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.example.nbawiki.database.Contract
+import com.example.nbawiki.database.FeedReaderDbHelper
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.WebService
 
 
-class TeamRepository(private val nbaApiService: WebService, context: Context) :
+class TeamRepository(private val nbaApiService: WebService,private val context: Context) :
     Repository {
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
@@ -39,12 +42,16 @@ class TeamRepository(private val nbaApiService: WebService, context: Context) :
     }
 
     override suspend fun refreshTeams() {
+        val database = LocalDataSource(context)
         val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
         if(teamsResponse.isSuccessful){
             val teams: List<Team> = teamsResponse.body()!!.teams.map {
                 it.getPresentationModel()
             }
             _teams.postValue(teams)
+            teams.forEach{
+                database.putTeam(it)
+            }
         }
     }
 
@@ -64,6 +71,8 @@ class TeamRepository(private val nbaApiService: WebService, context: Context) :
             val players = playersResponse.body()!!.player.map { it.getPresentationModel() }
             theTeam.teamMembers = players
             _theTeam.postValue(theTeam)
+
+            putIntoDatabse(player, teamID)
         }
     }
 

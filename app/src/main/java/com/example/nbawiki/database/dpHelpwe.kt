@@ -11,9 +11,11 @@ object commands {
 
     const val SQL_CREATE_ENTRIES =
         "CREATE TABLE ${Contract.TeamEntry.TABLE_NAME} (" +
-                "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "${Contract.TeamEntry.COLUMN_NAME_TITLE} TEXT," +
-                "${Contract.TeamEntry.COLUMN_NAME_SUBTITLE} TEXT)"
+                "${Contract.TeamEntry.COLUMN_NAME_ICON_URL} TEXT," +
+                "${Contract.TeamEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
+                "${Contract.TeamEntry.COLUMN_NAME_EXTERNAL_ID} INTEGER PRIMARY KEY," +
+                "${Contract.TeamEntry.COLUMN_NAME_DESCRIPTION} TEXT)"
 }
 
 
@@ -31,7 +33,7 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         onUpgrade(db, oldVersion, newVersion)
     }
     companion object {
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
         const val DATABASE_NAME = "FeedReader.db"
     }
 
