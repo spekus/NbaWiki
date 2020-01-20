@@ -26,7 +26,7 @@ class MainFragment : Fragment(), OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate<MainFragmentBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.main_fragment,
             container,
@@ -37,26 +37,25 @@ class MainFragment : Fragment(), OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(repository) })
             .get(MainViewModel::class.java)
 
-//        viewModel.teams.observe{
+        setUpRecyclerViewAdaper()
 
+        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
+            val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
+            adapter.update(it)
+        })
+    }
+
+    private fun setUpRecyclerViewAdaper(){
         val nbaTeams = viewModel.teams.value ?: emptyList()
 
-//        binding.teamRecyclerView.apply {
-//            layoutManager = LinearLayoutManager(activity)
-//            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
-//        }
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
         }
-        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
-            //HACK, should carry refresh instead
-            val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
-            adapter.update(it)
-        })
     }
 
     override fun onItemClicked(teamId: Int){
