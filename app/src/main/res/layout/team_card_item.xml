@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="team"
+            type="com.example.nbawiki.model.presentation.Team" />
+
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/team_card"
         style="@style/Widget.MaterialComponents.CardView"
@@ -30,7 +38,7 @@
                     android:id="@+id/CIV_icon"
                     android:layout_width="76dp"
                     android:layout_height="76dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@{team.teamIconUrl}"
                     app:civ_border_color="#AA424242"
                     app:civ_border_width="2dp" />
 
@@ -39,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:text="@{team.teamName}"
                     tools:text="Title Team Name" />
             </LinearLayout>
             <View
@@ -58,6 +67,7 @@
                     android:id="@+id/TV_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{team.teamDescription}"
                     tools:text="Lorem ipsum" />
             </LinearLayout>
         </LinearLayout>
