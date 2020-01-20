@@ -37,14 +37,11 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
         )
 
         setUpViewModel()
+        setUpRecyclerView()
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpRecyclerView()
-    }
     private fun setUpViewModel(){
         var teamId = 0
         arguments?.takeIf { it.containsKey(ID_OBJECT) }?.apply {
@@ -61,7 +58,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = PlayerListAdapter(players, this@PlayerListFragment)
+            adapter = PlayerListAdapter(players, this@PlayerListFragment, layoutInflater)
         }
 
         viewModel.team.observe(viewLifecycleOwner, Observer<Team> {

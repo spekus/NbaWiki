@@ -52,8 +52,6 @@ class MainFragment : Fragment(), OnItemClickListener {
     private fun setUpRecyclerViewAdaper(){
         val nbaTeams = viewModel.teams.value ?: emptyList()
 
-        
-
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)

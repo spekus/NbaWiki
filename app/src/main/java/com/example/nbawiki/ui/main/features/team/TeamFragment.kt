@@ -65,7 +65,7 @@ class TeamFragment : Fragment() {
     }
 
     private fun setUpTabLayout(view: View) {
-        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, teamId )
+        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager, teamId)
         viewPager = view.findViewById(R.id.pager)
 
         viewPager.adapter = demoCollectionPagerAdapter

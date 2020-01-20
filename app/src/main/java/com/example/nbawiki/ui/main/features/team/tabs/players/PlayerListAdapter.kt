@@ -3,19 +3,20 @@ package com.example.nbawiki.ui.main.features.team.tabs.players
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nbawiki.databinding.PlayerLineItemBinding
+import com.example.nbawiki.databinding.TeamCardItemBinding
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 
 class PlayerListAdapter(
     private var list: List<Player>,
-    val itemClickListener: OnItemClickListener
+    val itemClickListener: OnItemClickListener,
+    private val layoutInflater: LayoutInflater
 ) : RecyclerView.Adapter<PlayerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
         return PlayerViewHolder(
-            inflater,
-            parent
+            PlayerLineItemBinding.inflate(layoutInflater)
         )
     }
 
