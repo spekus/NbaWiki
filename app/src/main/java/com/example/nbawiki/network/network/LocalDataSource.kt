@@ -109,6 +109,57 @@ class LocalDataSource(val context: Context) {
         return team
     }
 
+    fun getTheTeam(teamID: Int) : Team?{
+        val projection = arrayOf(
+            DataBaseContract.TeamEntry.COLUMN_NAME_TITLE,
+            DataBaseContract.TeamEntry.COLUMN_NAME_DESCRIPTION,
+            DataBaseContract.TeamEntry.COLUMN_NAME_EXTERNAL_ID,
+            DataBaseContract.TeamEntry.COLUMN_NAME_ICON_URL,
+            DataBaseContract.TeamEntry.COLUMN_NAME_IMAGE_URL
+        )
+
+        val selection = "${DataBaseContract.TeamEntry.COLUMN_NAME_EXTERNAL_ID} = ?"
+        val selectionArgs = arrayOf("$teamID")
+
+        val cursor = db.query(
+            DataBaseContract.TeamEntry.TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        lateinit var theTeam : Team
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val title = cursor.getString(0)
+                val description = cursor.getString(1)
+                val externalId = cursor.getInt(2)
+                val iconUrl = cursor.getString(3)
+                val imageUrl = cursor.getString(4)
+
+                val news: List<News> = getNews(externalId)
+                val players : List<Player> = getPlayers(externalId)
+
+                theTeam = Team(
+                        id = externalId,
+                        teamIconUrl = iconUrl,
+                        teamDescription = description,
+                        teamName = title,
+                        imageUrl = imageUrl,
+                        news = news,
+                        teamMembers = players
+                    )
+
+                cursor.moveToNext()
+            }
+        }
+        return theTeam
+
+    }
+
     private fun getPlayers(teamID: Int): List<Player> {
         val projection = arrayOf(
             DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION,

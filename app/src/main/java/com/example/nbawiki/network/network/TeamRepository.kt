@@ -54,12 +54,12 @@ class TeamRepository(
             var teams: List<Team> = teamsResponse.body()!!.teams.map {
                 it.getPresentationModel()
             }
-            _teams.postValue(teams)
+//            _teams.postValue(teams)
             teams.forEach {
                 dataBase.putTeam(it)
             }
 
-            teams = dataBase.getAllTeams()
+            _teams.postValue(dataBase.getAllTeams())
         }else{
             _didApiCallFail.postValue(Event(true))
         }
@@ -70,8 +70,13 @@ class TeamRepository(
     }
 
     override suspend fun refreshTheTeam(teamID: Int) {
+        //load old data
+        _theTeam.postValue(dataBase.getTheTeam(teamID))
+        //refresh
         refreshTeamNews(teamID)
         refreshTeamPlayer(teamID)
+        //update with new data
+        _theTeam.postValue(dataBase.getTheTeam(teamID))
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
@@ -79,8 +84,8 @@ class TeamRepository(
         val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
         if (playersResponse.isSuccessful) {
             val players = playersResponse.body()!!.player.map { it.getPresentationModel() }
-            theTeam.teamMembers = players
-            _theTeam.postValue(theTeam)
+//            theTeam.teamMembers = players
+//            _theTeam.postValue(theTeam)
 
             players.forEach {
                 dataBase.putPlayer(it, teamID)
@@ -94,9 +99,9 @@ class TeamRepository(
         val newsResponse = nbaApiService.getAllNews(teamId.toString())
         if (newsResponse.isSuccessful) {
             val news = newsResponse.body()!!.results.map { it.getPresentationModel() }
-            val theTeam: Team? = getSelectedTeam(teamId)
-            theTeam!!.news = news
-            _theTeam.postValue(theTeam)
+//            val theTeam: Team? = getSelectedTeam(teamId)
+//            theTeam!!.news = news
+//            _theTeam.postValue(theTeam)
 
             news.forEach {
                 dataBase.putNews(it, teamId)
