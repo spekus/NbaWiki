@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -40,6 +41,12 @@ class MainFragment : Fragment(), OnItemClickListener {
 
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.repository) })
             .get(MainViewModel::class.java)
+
+        viewModel.didApicallFail.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+            }
+        })
 
         setUpRecyclerViewAdaper()
     }

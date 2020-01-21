@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(teamRepository : Repository) : ViewModel() {
     val teams : LiveData<List<Team>> = teamRepository.nbaTeams
+    val didApicallFail = teamRepository.didApiCallFail
 
     init {
         viewModelScope.launch(Dispatchers.IO){

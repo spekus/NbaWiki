@@ -7,10 +7,20 @@ import androidx.lifecycle.Transformations
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.WebService
+import com.example.nbawiki.ui.main.util.Event
 
 
-class TeamRepository(private val nbaApiService: WebService,private val context: Context, private val dataBase : LocalDataSource) :
+class TeamRepository(
+    private val nbaApiService: WebService,
+    private val context: Context,
+    private val dataBase: LocalDataSource
+) :
     Repository {
+
+    private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
+
+    override val didApiCallFail: LiveData<Event<Boolean>>
+        get() = _didApiCallFail
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
@@ -40,14 +50,16 @@ class TeamRepository(private val nbaApiService: WebService,private val context: 
 
     override suspend fun refreshTeams() {
         val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-        if(teamsResponse.isSuccessful){
+        if (teamsResponse.isSuccessful) {
             val teams: List<Team> = teamsResponse.body()!!.teams.map {
                 it.getPresentationModel()
             }
             _teams.postValue(teams)
-            teams.forEach{
+            teams.forEach {
                 dataBase.putTeam(it)
             }
+        }else{
+            _didApiCallFail.postValue(Event(true))
         }
     }
 
@@ -62,8 +74,8 @@ class TeamRepository(private val nbaApiService: WebService,private val context: 
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
         var theTeam: Team? = getSelectedTeam(teamID)
-        val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName )
-        if(playersResponse.isSuccessful){
+        val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
+        if (playersResponse.isSuccessful) {
             val players = playersResponse.body()!!.player.map { it.getPresentationModel() }
             theTeam.teamMembers = players
             _theTeam.postValue(theTeam)
@@ -71,21 +83,24 @@ class TeamRepository(private val nbaApiService: WebService,private val context: 
             players.forEach {
                 dataBase.putPlayer(it, teamID)
             }
+        }else{
+            _didApiCallFail.postValue(Event(true))
         }
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {
         val newsResponse = nbaApiService.getAllNews(teamId.toString())
-        if(newsResponse.isSuccessful){
+        if (newsResponse.isSuccessful) {
             val news = newsResponse.body()!!.results.map { it.getPresentationModel() }
             val theTeam: Team? = getSelectedTeam(teamId)
             theTeam!!.news = news
             _theTeam.postValue(theTeam)
 
-            news.forEach{
+            news.forEach {
                 dataBase.putNews(it, teamId)
             }
-
+        }else{
+            _didApiCallFail.postValue(Event(true))
         }
     }
 

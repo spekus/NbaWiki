@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(val repositry : Repository) : ViewModel() {
     var player : LiveData<Player> = repositry.selectedPlayer
+    val didApicallFail = repositry.didApiCallFail
 
     fun initializePlayerData(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
