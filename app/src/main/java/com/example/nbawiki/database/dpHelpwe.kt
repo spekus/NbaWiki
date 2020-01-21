@@ -60,7 +60,7 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         onUpgrade(db, oldVersion, newVersion)
     }
     companion object {
-        const val DATABASE_VERSION = 9
+        const val DATABASE_VERSION = 10
         const val DATABASE_NAME = "FeedReader.db"
     }
 

@@ -56,6 +56,10 @@ class LocalDataSource(val context: Context) {
         val newRowId = db?.insert(DataBaseContract.NewsEntry.TABLE_NAME, null, values)
     }
 
+
+
+    //GETTERS
+
     fun getAllTeams(): List<Team> {
         val projection = arrayOf(
             DataBaseContract.TeamEntry.COLUMN_NAME_TITLE,
@@ -89,6 +93,7 @@ class LocalDataSource(val context: Context) {
                 val imageUrl = cursor.getString(4)
 
                 val news: List<News> = getNews(externalId)
+                val players : List<Player> = getPlayers(externalId)
 
                 team.add(
                     Team(
@@ -97,7 +102,8 @@ class LocalDataSource(val context: Context) {
                         teamDescription = description,
                         teamName = title,
                         imageUrl = imageUrl,
-                        news = news
+                        news = news,
+                        teamMembers = players
                     )
                 )
                 cursor.moveToNext()
@@ -108,6 +114,91 @@ class LocalDataSource(val context: Context) {
 
 
         return team
+    }
+
+    private fun getPlayers(teamID: Int): List<Player> {
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION, player.description)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME, player.sureName)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID, player.id)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_HEIGHT, player.height)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_NAME, player.name)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL, player.imageUrl)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID, teamID)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT, player.weight)
+
+
+        val projection = arrayOf(
+            DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_HEIGHT,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_NAME,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT
+            )
+
+        val selection = "${DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID} = ?"
+        val selectionArgs = arrayOf("$teamID")
+
+        val cursor = db.query(
+            DataBaseContract.PlayerEntry.TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        val players = mutableListOf<Player>()
+
+        //        put(DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION, player.description)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME, player.sureName)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID, player.id)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_HEIGHT, player.height)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_NAME, player.name)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL, player.imageUrl)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID, teamID)
+//        put(DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT, player.weight)
+
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val description = cursor.getString(0)
+                val sureName = cursor.getString(1)
+                val playerID = cursor.getInt(2)
+                val height = cursor.getString(3)
+                val name = cursor.getString(4)
+                val imageUrl = cursor.getString(5)
+                val teamID = cursor.getString(6)
+                val weight = cursor.getString(7)
+
+//                val id : Int = 0,
+//                val name : String = "defaulName",
+//                val sureName : String = "defaulSureName",
+//                val age : String = (20..50).random().toString(),
+//                val height : String = (160..250).random().toString(),
+//                val weight : String = (80..150).random().toString(),
+//                val description : String = UUID.randomUUID().toString(),
+//                val imageUrl : String = "https://i.picsum.photos/id/$id/300/300.jpg"
+
+                players.add(
+                    Player(
+                        id = playerID,
+                        name = name,
+                        sureName = sureName,
+//                        age = age,
+                        height = height,
+                        weight = weight,
+                        description = description,
+                        imageUrl = imageUrl
+                    )
+                )
+                cursor.moveToNext()
+            }
+        }
+        return players
     }
 
     private fun getNews(teamID: Int): List<News> {
