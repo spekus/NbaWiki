@@ -24,10 +24,10 @@ class TeamRepository(
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
-    private var _theTeam: MutableLiveData<Team> = MutableLiveData()
-
     override val nbaTeams: LiveData<List<Team>>
         get() = _teams
+
+    private var _theTeam: MutableLiveData<Team> = MutableLiveData()
 
     override val selectedTeam: LiveData<Team>
         get() = _theTeam
@@ -51,13 +51,15 @@ class TeamRepository(
     override suspend fun refreshTeams() {
         val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
         if (teamsResponse.isSuccessful) {
-            val teams: List<Team> = teamsResponse.body()!!.teams.map {
+            var teams: List<Team> = teamsResponse.body()!!.teams.map {
                 it.getPresentationModel()
             }
             _teams.postValue(teams)
             teams.forEach {
                 dataBase.putTeam(it)
             }
+
+            teams = dataBase.getAllTeams()
         }else{
             _didApiCallFail.postValue(Event(true))
         }

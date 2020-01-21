@@ -4,41 +4,41 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import com.example.nbawiki.database.commands.SQL_CREATE_ENTRIES
-import com.example.nbawiki.database.commands.SQL_CREATE_PLAYERS
-import com.example.nbawiki.database.commands.SQL_CREATE_TEAMS
+import com.example.nbawiki.database.DataBaseCommands.SQL_CREATE_ENTRIES
+import com.example.nbawiki.database.DataBaseCommands.SQL_CREATE_PLAYERS
+import com.example.nbawiki.database.DataBaseCommands.SQL_CREATE_TEAMS
 
-object commands {
-    const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${Contract.TeamEntry.TABLE_NAME}"
-    const val SQL_DELETE_ENTRIES2 = "DROP TABLE IF EXISTS ${Contract.NewsEntry.TABLE_NAME}"
-    const val SQL_DELETE_ENTRIES3 = "DROP TABLE IF EXISTS ${Contract.PlayerEntry.TABLE_NAME}"
+object DataBaseCommands {
+    const val SQL_DELETE_TEAM_TABLE = "DROP TABLE IF EXISTS ${DataBaseContract.TeamEntry.TABLE_NAME}"
+    const val SQL_DELETE_NEWS_TABLE = "DROP TABLE IF EXISTS ${DataBaseContract.NewsEntry.TABLE_NAME}"
+    const val SQL_DELETE_PLAYERS_TABLE = "DROP TABLE IF EXISTS ${DataBaseContract.PlayerEntry.TABLE_NAME}"
 
     const val SQL_CREATE_ENTRIES =
-        "CREATE TABLE ${Contract.TeamEntry.TABLE_NAME} (" +
-                "${Contract.TeamEntry.COLUMN_NAME_TITLE} TEXT," +
-                "${Contract.TeamEntry.COLUMN_NAME_ICON_URL} TEXT," +
-                "${Contract.TeamEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
-                "${Contract.TeamEntry.COLUMN_NAME_EXTERNAL_ID} INTEGER PRIMARY KEY," +
-                "${Contract.TeamEntry.COLUMN_NAME_DESCRIPTION} TEXT)"
+        "CREATE TABLE ${DataBaseContract.TeamEntry.TABLE_NAME} (" +
+                "${DataBaseContract.TeamEntry.COLUMN_NAME_TITLE} TEXT," +
+                "${DataBaseContract.TeamEntry.COLUMN_NAME_ICON_URL} TEXT," +
+                "${DataBaseContract.TeamEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
+                "${DataBaseContract.TeamEntry.COLUMN_NAME_EXTERNAL_ID} INTEGER PRIMARY KEY," +
+                "${DataBaseContract.TeamEntry.COLUMN_NAME_DESCRIPTION} TEXT)"
 
     const val SQL_CREATE_TEAMS =
-        "CREATE TABLE ${Contract.NewsEntry.TABLE_NAME} (" +
-                "${Contract.NewsEntry.COLUMN_NAME_DATE} TEXT," +
-                "${Contract.NewsEntry.COLUMN_NAME_ENEMY_TEAM} TEXT," +
-                "${Contract.NewsEntry.COLUMN_NAME_HOME_TEAM} TEXT," +
-                "${Contract.NewsEntry.COLUMN_NAME_TEAM_ID} INTEGER," +
+        "CREATE TABLE ${DataBaseContract.NewsEntry.TABLE_NAME} (" +
+                "${DataBaseContract.NewsEntry.COLUMN_NAME_DATE} TEXT," +
+                "${DataBaseContract.NewsEntry.COLUMN_NAME_ENEMY_TEAM} TEXT," +
+                "${DataBaseContract.NewsEntry.COLUMN_NAME_HOME_TEAM} TEXT," +
+                "${DataBaseContract.NewsEntry.COLUMN_NAME_TEAM_ID} INTEGER," +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY)"
 
     const val SQL_CREATE_PLAYERS  =
-        "CREATE TABLE ${Contract.PlayerEntry.TABLE_NAME} (" +
-                "${Contract.PlayerEntry.COLUMN_NAME_DESCRIPTION} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID} INTEGER PRIMARY KEY," +
-                "${Contract.PlayerEntry.COLUMN_NAME_HEIGHT} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_SURENAME} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_NAME} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_WEIGHT} TEXT," +
-                "${Contract.PlayerEntry.COLUMN_NAME_TEAM_ID} INTEGER)"
+        "CREATE TABLE ${DataBaseContract.PlayerEntry.TABLE_NAME} (" +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID} INTEGER PRIMARY KEY," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_HEIGHT} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_NAME} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID} INTEGER)"
 }
 
 
@@ -51,9 +51,9 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(commands.SQL_DELETE_ENTRIES)
-        db.execSQL(commands.SQL_DELETE_ENTRIES2)
-        db.execSQL(commands.SQL_DELETE_ENTRIES3)
+        db.execSQL(DataBaseCommands.SQL_DELETE_TEAM_TABLE)
+        db.execSQL(DataBaseCommands.SQL_DELETE_NEWS_TABLE)
+        db.execSQL(DataBaseCommands.SQL_DELETE_PLAYERS_TABLE)
         onCreate(db)
     }
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
