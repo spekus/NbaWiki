@@ -17,5 +17,4 @@ class MainViewModel(teamRepository : Repository) : ViewModel() {
             teamRepository.refreshTeams()
         }
     }
-
 }

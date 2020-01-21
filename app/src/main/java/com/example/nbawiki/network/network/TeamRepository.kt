@@ -1,6 +1,7 @@
 package com.example.nbawiki.network.network
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -8,6 +9,8 @@ import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.Event
+import com.example.nbawiki.ui.main.util.UpdateTime
+import java.util.*
 
 
 class TeamRepository(
@@ -16,6 +19,8 @@ class TeamRepository(
     private val dataBase: LocalDataSource
 ) :
     Repository {
+    private val sharedPref: SharedPreferences =
+        context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
 
     private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
 
@@ -49,21 +54,16 @@ class TeamRepository(
     }
 
     override suspend fun refreshTeams() {
-        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-        if (teamsResponse.isSuccessful) {
-            var teams: List<Team> = teamsResponse.body()!!.teams.map {
-                it.getPresentationModel()
+        when (isItTimeToUpdateTeams()) {
+            true -> {
+                updateTeamsViaApi()
             }
-//            _teams.postValue(teams)
-            teams.forEach {
-                dataBase.putTeam(it)
+            false -> {
+                _teams.postValue(dataBase.getAllTeams())
             }
-
-            _teams.postValue(dataBase.getAllTeams())
-        }else{
-            _didApiCallFail.postValue(Event(true))
         }
     }
+
 
     override suspend fun refreshThePlayer(id: Int) {
         selectedPlayerId.postValue(id.toString())
@@ -90,7 +90,9 @@ class TeamRepository(
             players.forEach {
                 dataBase.putPlayer(it, teamID)
             }
-        }else{
+            val currentTime = Date(System.currentTimeMillis()).time
+            sharedPref.edit().putLong(PLAYER_TIME, currentTime).apply()
+        } else {
             _didApiCallFail.postValue(Event(true))
         }
     }
@@ -106,7 +108,9 @@ class TeamRepository(
             news.forEach {
                 dataBase.putNews(it, teamId)
             }
-        }else{
+            val currentTime = Date(System.currentTimeMillis()).time
+            sharedPref.edit().putLong(NEWS_TIME, currentTime).apply()
+        } else {
             _didApiCallFail.postValue(Event(true))
         }
     }
@@ -116,6 +120,42 @@ class TeamRepository(
             it.id == teamId
         }
     }
+
+
+    private suspend fun updateTeamsViaApi() {
+        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
+        if (teamsResponse.isSuccessful) {
+            var teams: List<Team> = teamsResponse.body()!!.teams.map {
+                it.getPresentationModel()
+            }
+//            _teams.postValue(teams)
+            teams.forEach {
+                dataBase.putTeam(it)
+            }
+
+            _teams.postValue(dataBase.getAllTeams())
+
+            val currentTime = Date(System.currentTimeMillis()).time
+            sharedPref.edit().putLong(TEAM_TIME, currentTime).apply()
+
+        } else {
+            _didApiCallFail.postValue(Event(true))
+        }
+    }
+
+
+    private fun isItTimeToUpdateTeams(): Boolean {
+        val lastUpdate = sharedPref.getLong(TEAM_TIME, 0L)
+        val timePassed = System.currentTimeMillis() - lastUpdate
+        return timePassed > UpdateTime.TEAM.timeBeforeUpdate
+    }
+
 }
 
+
 const val LEAGUE_KEY = "4387"
+const val PRIVATE_MODE = 0
+const val PREF_NAME = "mindorks-welcome"
+const val TEAM_TIME = "team_update_time"
+const val PLAYER_TIME = "player_update_time"
+const val NEWS_TIME = "news_update_time"
