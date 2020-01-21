@@ -87,23 +87,72 @@ class LocalDataSource(val context: Context) {
                 val externalId = cursor.getInt(2)
                 val iconUrl = cursor.getString(3)
                 val imageUrl = cursor.getString(4)
+
+                val news: List<News> = getNews(externalId)
+
                 team.add(
                     Team(
                         id = externalId,
                         teamIconUrl = iconUrl,
                         teamDescription = description,
                         teamName = title,
-                        imageUrl = imageUrl
-
+                        imageUrl = imageUrl,
+                        news = news
                     )
                 )
                 cursor.moveToNext()
             }
+
+
         }
 
 
         return team
     }
+
+    private fun getNews(teamID: Int): List<News> {
+        val projection = arrayOf(
+            DataBaseContract.NewsEntry.COLUMN_NAME_TEAM_ID,
+            DataBaseContract.NewsEntry.COLUMN_NAME_HOME_TEAM,
+            DataBaseContract.NewsEntry.COLUMN_NAME_ENEMY_TEAM,
+            DataBaseContract.NewsEntry.COLUMN_NAME_DATE
+        )
+
+        val selection = "${DataBaseContract.NewsEntry.COLUMN_NAME_TEAM_ID} = ?"
+        val selectionArgs = arrayOf("$teamID")
+
+        val cursor = db.query(
+            DataBaseContract.NewsEntry.TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        val news = mutableListOf<News>()
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val teamID = cursor.getString(0)
+                val team = cursor.getString(1)
+                val ennemyTeam = cursor.getString(2)
+                val date = cursor.getString(3)
+                news.add(
+                    News(
+                        team = team,
+                        ennemyTeam = ennemyTeam,
+                        date = date
+                    )
+                )
+                cursor.moveToNext()
+            }
+        }
+        return news
+    }
+
+
 
 
 }
