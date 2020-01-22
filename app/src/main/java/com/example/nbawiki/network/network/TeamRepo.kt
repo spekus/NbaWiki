@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
 import com.example.nbawiki.model.presentation.Team
+import com.example.nbawiki.network.network.repointerfaces.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.Event
 import com.example.nbawiki.ui.main.util.UpdateTime
@@ -15,11 +16,11 @@ import timber.log.Timber
 import java.util.*
 
 
-class TeamRepository(
+class TeamRepo(
     private val nbaApiService: WebService,
     private val context: Context,
     private val dataBase: LocalDataSource
-) : TeamsRepository {
+) : TeamRepository {
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
 
@@ -49,18 +50,18 @@ class TeamRepository(
         }
     }
 
-    override suspend fun refreshTheTeam(teamID: Int) {
+    override suspend fun getTheTeam(teamID: Int) {
         //load old data
         _selectedTeam.postValue(dataBase.getTheTeam(teamID))
         //refresh
-        if (isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)) {
-            refreshTeamNews(teamID)
+        val shouldUpdateNews = isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+        val shouldUpdatePlayer = isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)
+        if (shouldUpdateNews) { refreshTeamNews(teamID) }
+        if (shouldUpdatePlayer) { refreshTeamPlayer(teamID) }
+        //update with new data if there was an api call
+        if(shouldUpdateNews || shouldUpdateNews){
+            _selectedTeam.postValue(dataBase.getTheTeam(teamID))
         }
-        if (isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)) {
-            refreshTeamPlayer(teamID)
-        }
-        //update with new data
-        _selectedTeam.postValue(dataBase.getTheTeam(teamID))
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
@@ -114,7 +115,6 @@ class TeamRepository(
             _didApiCallFail.postValue(Event(true))
         }
     }
-
 
     private fun isItTimeToUpdate(sharePrefId: String, timeBeforeUpdate: Long): Boolean {
         val lastUpdate = sharedPref.get(sharePrefId, Long::class.java, 1)

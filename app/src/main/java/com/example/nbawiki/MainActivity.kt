@@ -1,10 +1,7 @@
 package com.example.nbawiki
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.nbawiki.network.network.TeamRepository
-import com.example.nbawiki.network.retrofit.Network
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {

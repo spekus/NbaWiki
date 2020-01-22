@@ -1,4 +1,4 @@
-package com.example.nbawiki.network.network
+package com.example.nbawiki.network.network.repointerfaces
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
