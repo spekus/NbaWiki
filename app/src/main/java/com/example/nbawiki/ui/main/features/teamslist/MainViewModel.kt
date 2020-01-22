@@ -4,17 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.network.network.repointerfaces.TeamRepository
+import com.example.nbawiki.network.network.TeamsRepo
+import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(teamRepository : TeamRepository) : ViewModel() {
-    val teams : LiveData<List<Team>> = teamRepository.allTeams
-    val didApicallFail = teamRepository.didApiCallFail
+class MainViewModel(teamsRepository : TeamsRepo) : ViewModel() {
+    val teams : LiveData<List<Team>> = teamsRepository.allTeams
+    val didApiCallFail = teamsRepository.didApiCallFail
 
     init {
         viewModelScope.launch(Dispatchers.IO){
-            teamRepository.getTeams()
+            teamsRepository.getTeams()
         }
     }
 }

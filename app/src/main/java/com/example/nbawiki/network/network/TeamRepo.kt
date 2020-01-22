@@ -1,67 +1,35 @@
 package com.example.nbawiki.network.network
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
 import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.dto.news.NewsDTO
 import com.example.nbawiki.model.dto.players.PlayerDTO
-import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.presentation.News
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.network.network.repointerfaces.TeamRepository
+import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
-import com.example.nbawiki.ui.main.util.Event
-import com.example.nbawiki.ui.main.util.TimePreferenceWizard
-import com.example.nbawiki.ui.main.util.UpdateTime
-import com.github.guilhe.sharedprefsutils.ktx.get
-import com.github.guilhe.sharedprefsutils.ktx.put
-import timber.log.Timber
-import java.util.*
+import com.example.nbawiki.ui.main.util.*
 
 class TeamRepo(
     private val nbaApiService: WebService,
     private val context: Context,
     private val dataBase: LocalDataSource
 ) : TeamRepository {
-    val wizard = TimePreferenceWizard(context)
+    private val wizard = TimePreferenceWizard(context)
 
     private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
 
     override val didApiCallFail: LiveData<Event<Boolean>>
         get() = _didApiCallFail
 
-    private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
-
-    override val allTeams: LiveData<List<Team>>
-        get() = _teams
-
     private var _selectedTeam: MutableLiveData<Team> = MutableLiveData()
 
     override val selectedTeam: LiveData<Team>
         get() = _selectedTeam
-
-    override suspend fun getTeams() {
-        if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
-            refreshTeams()
-        }
-        _teams.postValue(dataBase.getAllTeams())
-    }
-
-    private suspend fun refreshTeams() {
-        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-        when (teamsResponse.isSuccessful) {
-            true -> {
-                updateDatabase(teamsResponse.body()!!.teams)
-                wizard.updateTimePreferences(TEAM_PREF_KEY)
-            }
-
-            else -> _didApiCallFail.postValue(Event(true))
-        }
-    }
 
     override suspend fun getTheTeam(teamID: Int) {
         //load old data
@@ -123,15 +91,8 @@ class TeamRepo(
                     teamID
                 )
             }
-            is TeamDTO -> body.map { it.getPresentationModel() }.forEach { dataBase.putTeam(it as Team) }
         }
     }
-
 }
 
 const val LEAGUE_KEY = "4387"
-const val PRIVATE_MODE = 0
-const val PREF_NAME = "pref_data"
-const val TEAM_PREF_KEY = "team_update_"
-const val PLAYER_PREF_KEY = "player_update_"
-const val NEWS_PREF_KEY = "news_update_"

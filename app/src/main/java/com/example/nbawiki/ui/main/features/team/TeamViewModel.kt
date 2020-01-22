@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.network.network.repointerfaces.TeamRepository
+import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

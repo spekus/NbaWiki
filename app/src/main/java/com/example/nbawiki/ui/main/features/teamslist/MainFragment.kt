@@ -39,10 +39,10 @@ class MainFragment : Fragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.teamRepository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
             .get(MainViewModel::class.java)
 
-        viewModel.didApicallFail.observe(this, Observer {
+        viewModel.didApiCallFail.observe(this, Observer {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
