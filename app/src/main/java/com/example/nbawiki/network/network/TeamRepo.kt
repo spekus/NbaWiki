@@ -71,7 +71,7 @@ class TeamRepo(
         val shouldNewsBeUpdated =
             isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
         val shouldPlayersBeUpdated =
-            isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)
+            isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
         if (shouldNewsBeUpdated) {
             refreshTeamNews(teamID)
         }
@@ -84,7 +84,6 @@ class TeamRepo(
             _selectedTeam.postValue(dataBase.getTheTeam(teamID))
         }
     }
-
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
         var theTeam: Team? = dataBase.getTheTeam(teamID)
@@ -127,7 +126,6 @@ class TeamRepo(
             is TeamDTO -> body.map { it.getPresentationModel() }.forEach { dataBase.putTeam(it as Team) }
         }
     }
-
 
     private fun isItTimeToUpdate(sharePrefId: String, timeBeforeUpdate: Long): Boolean {
         val lastUpdate = sharedPref.get(sharePrefId, Long::class.java, 1)

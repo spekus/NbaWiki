@@ -8,12 +8,12 @@ import com.example.nbawiki.network.network.repointerfaces.PlayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(val repositry : PlayerRepository) : ViewModel() {
-    var player : LiveData<Player> = repositry.selectedPlayer
+class PlayerViewModel(private val repository : PlayerRepository) : ViewModel() {
+    var player : LiveData<Player> = repository.selectedPlayer
 
     fun initializePlayerData(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositry.refreshThePlayer(id)
+            repository.refreshThePlayer(id)
         }
     }
 }
