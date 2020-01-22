@@ -14,7 +14,7 @@ class MainViewModel(teamRepository : TeamRepository) : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO){
-            teamRepository.refreshTeams()
+            teamRepository.getTeams()
         }
     }
 }

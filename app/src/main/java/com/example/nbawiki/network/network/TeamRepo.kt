@@ -5,6 +5,12 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
+import com.example.nbawiki.model.dto.Dto
+import com.example.nbawiki.model.dto.news.NewsDTO
+import com.example.nbawiki.model.dto.players.PlayerDTO
+import com.example.nbawiki.model.dto.teams.TeamDTO
+import com.example.nbawiki.model.presentation.News
+import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
@@ -14,7 +20,6 @@ import com.github.guilhe.sharedprefsutils.ktx.get
 import com.github.guilhe.sharedprefsutils.ktx.put
 import timber.log.Timber
 import java.util.*
-
 
 class TeamRepo(
     private val nbaApiService: WebService,
@@ -39,82 +44,90 @@ class TeamRepo(
     override val selectedTeam: LiveData<Team>
         get() = _selectedTeam
 
-    override suspend fun refreshTeams() {
-        when (isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
+    override suspend fun getTeams() {
+        if (isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
+            refreshTeams()
+        }
+        _teams.postValue(dataBase.getAllTeams())
+    }
+
+    private suspend fun refreshTeams() {
+        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
+        when (teamsResponse.isSuccessful) {
             true -> {
-                updateTeamsViaApi()
+                updateDatabase(teamsResponse.body()!!.teams)
+                updateTimePreferences(TEAM_PREF_KEY)
             }
-            false -> {
-                _teams.postValue(dataBase.getAllTeams())
-            }
+
+            else -> _didApiCallFail.postValue(Event(true))
         }
     }
 
     override suspend fun getTheTeam(teamID: Int) {
         //load old data
         _selectedTeam.postValue(dataBase.getTheTeam(teamID))
+
         //refresh
-        val shouldUpdateNews = isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
-        val shouldUpdatePlayer = isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)
-        if (shouldUpdateNews) { refreshTeamNews(teamID) }
-        if (shouldUpdatePlayer) { refreshTeamPlayer(teamID) }
+        val shouldNewsBeUpdated =
+            isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+        val shouldPlayersBeUpdated =
+            isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)
+        if (shouldNewsBeUpdated) {
+            refreshTeamNews(teamID)
+        }
+        if (shouldPlayersBeUpdated) {
+            refreshTeamPlayer(teamID)
+        }
+
         //update with new data if there was an api call
-        if(shouldUpdateNews || shouldUpdateNews){
+        if (shouldNewsBeUpdated || shouldNewsBeUpdated) {
             _selectedTeam.postValue(dataBase.getTheTeam(teamID))
         }
     }
 
+
     private suspend fun refreshTeamPlayer(teamID: Int) {
-        Timber.e("teamIDy $teamID")
         var theTeam: Team? = dataBase.getTheTeam(teamID)
         val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
-        if (playersResponse.isSuccessful) {
-            val players = playersResponse.body()!!.player.map { it.getPresentationModel() }
-
-            players.forEach {
-                dataBase.putPlayer(it, teamID)
+        when (playersResponse.isSuccessful) {
+            true -> {
+                updateDatabase(playersResponse.body()!!.player, teamID)
+                updateTimePreferences(PLAYER_PREF_KEY, teamID)
             }
-            updateTimePreferences(PLAYER_PREF_KEY, teamID)
-        } else {
-            _didApiCallFail.postValue(Event(true))
+            else -> _didApiCallFail.postValue(Event(true))
         }
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {
         val newsResponse = nbaApiService.getAllNews(teamId.toString())
-        if (newsResponse.isSuccessful) {
-            val news = newsResponse.body()!!.results.map { it.getPresentationModel() }
-
-            news.forEach {
-                dataBase.putNews(it, teamId)
+        when (newsResponse.isSuccessful) {
+            true -> {
+                updateDatabase(newsResponse.body()!!.results, teamId)
+                updateTimePreferences(NEWS_PREF_KEY, teamId)
             }
 
-            updateTimePreferences(NEWS_PREF_KEY, teamId)
-
-        } else {
-            _didApiCallFail.postValue(Event(true))
+            else -> _didApiCallFail.postValue(Event(true))
         }
     }
 
-
-    private suspend fun updateTeamsViaApi() {
-        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-        if (teamsResponse.isSuccessful) {
-            var teams: List<Team> = teamsResponse.body()!!.teams.map {
-                it.getPresentationModel()
+    private fun updateDatabase(body: List<Dto>, teamID: Int = 0) {
+        when (body.first()) {
+            is PlayerDTO -> body.map { it.getPresentationModel() }.forEach {
+                dataBase.putPlayer(
+                    it as Player,
+                    teamID
+                )
             }
-            teams.forEach {
-                dataBase.putTeam(it)
+            is NewsDTO -> body.map { it.getPresentationModel() }.forEach {
+                dataBase.putNews(
+                    it as News,
+                    teamID
+                )
             }
-            _teams.postValue(dataBase.getAllTeams())
-
-            val currentTime = Date(System.currentTimeMillis()).time
-            sharedPref.put(TEAM_PREF_KEY, currentTime)
-
-        } else {
-            _didApiCallFail.postValue(Event(true))
+            is TeamDTO -> body.map { it.getPresentationModel() }.forEach { dataBase.putTeam(it as Team) }
         }
     }
+
 
     private fun isItTimeToUpdate(sharePrefId: String, timeBeforeUpdate: Long): Boolean {
         val lastUpdate = sharedPref.get(sharePrefId, Long::class.java, 1)
@@ -126,11 +139,13 @@ class TeamRepo(
     }
 
 
-    private fun updateTimePreferences(key: String, teamId: Int) {
+    private fun updateTimePreferences(key: String, teamId: Int? = null) {
         val currentTime = Date(System.currentTimeMillis()).time
-        sharedPref.put(key + teamId, currentTime)
+        when (teamId) {
+            null -> sharedPref.put(key, currentTime)
+            else -> sharedPref.put(key + teamId, currentTime)
+        }
     }
-
 }
 
 const val LEAGUE_KEY = "4387"

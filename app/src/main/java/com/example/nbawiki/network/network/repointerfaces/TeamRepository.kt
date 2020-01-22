@@ -11,7 +11,7 @@ interface TeamRepository :
     val selectedTeam: LiveData<Team>
     val didApiCallFail: LiveData<Event<Boolean>>
 
-    suspend fun refreshTeams()
+    suspend fun getTeams()
     suspend fun getTheTeam(id : Int)
 
 }
