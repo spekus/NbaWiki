@@ -3,13 +3,13 @@ package com.example.nbawiki.ui.main.features.teamslist.recycleview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nbawiki.databinding.TeamCardItemBinding
+import com.example.nbawiki.databinding.ItemTeamCardBinding
 import com.example.nbawiki.model.presentation.Team
 
 class TeamListAdapter(private var list: List<Team>, val itemClickListener : OnItemClickListener, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
-        val cardItemView = TeamCardItemBinding.inflate(layoutInflater)
+        val cardItemView = ItemTeamCardBinding.inflate(layoutInflater)
         return TeamViewHolder(
             cardItemView
         )

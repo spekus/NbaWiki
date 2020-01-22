@@ -3,7 +3,7 @@ package com.example.nbawiki.ui.main.features.team.tabs.players
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nbawiki.databinding.PlayerLineItemBinding
+import com.example.nbawiki.databinding.ItemPlayerLineBinding
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 
@@ -15,7 +15,7 @@ class PlayerListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
         return PlayerViewHolder(
-            PlayerLineItemBinding.inflate(layoutInflater)
+            ItemPlayerLineBinding.inflate(layoutInflater)
         )
     }
 
