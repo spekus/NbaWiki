@@ -15,6 +15,7 @@ import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.Event
+import com.example.nbawiki.ui.main.util.TimePreferenceWizard
 import com.example.nbawiki.ui.main.util.UpdateTime
 import com.github.guilhe.sharedprefsutils.ktx.get
 import com.github.guilhe.sharedprefsutils.ktx.put
@@ -26,8 +27,7 @@ class TeamRepo(
     private val context: Context,
     private val dataBase: LocalDataSource
 ) : TeamRepository {
-    private val sharedPref: SharedPreferences =
-        context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+    val wizard = TimePreferenceWizard(context)
 
     private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
 
@@ -45,7 +45,7 @@ class TeamRepo(
         get() = _selectedTeam
 
     override suspend fun getTeams() {
-        if (isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
+        if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
             refreshTeams()
         }
         _teams.postValue(dataBase.getAllTeams())
@@ -56,7 +56,7 @@ class TeamRepo(
         when (teamsResponse.isSuccessful) {
             true -> {
                 updateDatabase(teamsResponse.body()!!.teams)
-                updateTimePreferences(TEAM_PREF_KEY)
+                wizard.updateTimePreferences(TEAM_PREF_KEY)
             }
 
             else -> _didApiCallFail.postValue(Event(true))
@@ -69,9 +69,9 @@ class TeamRepo(
 
         //refresh
         val shouldNewsBeUpdated =
-            isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
         val shouldPlayersBeUpdated =
-            isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
+            wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
         if (shouldNewsBeUpdated) {
             refreshTeamNews(teamID)
         }
@@ -91,7 +91,7 @@ class TeamRepo(
         when (playersResponse.isSuccessful) {
             true -> {
                 updateDatabase(playersResponse.body()!!.player, teamID)
-                updateTimePreferences(PLAYER_PREF_KEY, teamID)
+                wizard.updateTimePreferences(PLAYER_PREF_KEY, teamID)
             }
             else -> _didApiCallFail.postValue(Event(true))
         }
@@ -102,7 +102,7 @@ class TeamRepo(
         when (newsResponse.isSuccessful) {
             true -> {
                 updateDatabase(newsResponse.body()!!.results, teamId)
-                updateTimePreferences(NEWS_PREF_KEY, teamId)
+                wizard.updateTimePreferences(NEWS_PREF_KEY, teamId)
             }
 
             else -> _didApiCallFail.postValue(Event(true))
@@ -127,23 +127,6 @@ class TeamRepo(
         }
     }
 
-    private fun isItTimeToUpdate(sharePrefId: String, timeBeforeUpdate: Long): Boolean {
-        val lastUpdate = sharedPref.get(sharePrefId, Long::class.java, 1)
-        if (lastUpdate == 1L) {
-            Timber.e("could not get shared pref for key $sharePrefId")
-        }
-        val timePassed = System.currentTimeMillis() - lastUpdate
-        return timePassed > timeBeforeUpdate
-    }
-
-
-    private fun updateTimePreferences(key: String, teamId: Int? = null) {
-        val currentTime = Date(System.currentTimeMillis()).time
-        when (teamId) {
-            null -> sharedPref.put(key, currentTime)
-            else -> sharedPref.put(key + teamId, currentTime)
-        }
-    }
 }
 
 const val LEAGUE_KEY = "4387"
