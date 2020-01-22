@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.features.main.recycleview
+package com.example.nbawiki.ui.main.features.teamslist.recycleview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

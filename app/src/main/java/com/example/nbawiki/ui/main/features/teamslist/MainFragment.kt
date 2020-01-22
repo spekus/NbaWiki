@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.features.main
+package com.example.nbawiki.ui.main.features.teamslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
-import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 
 class MainFragment : Fragment(), OnItemClickListener {

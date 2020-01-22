@@ -14,7 +14,7 @@ import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory

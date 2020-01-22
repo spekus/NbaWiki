@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.features.main
+package com.example.nbawiki.ui.main.features.teamslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

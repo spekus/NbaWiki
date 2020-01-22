@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.PlayerLineItemBinding
-import com.example.nbawiki.databinding.TeamCardItemBinding
 import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 
 class PlayerListAdapter(
     private var list: List<Player>,

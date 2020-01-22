@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerLineItemBinding
 import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 
 class PlayerViewHolder(val binding : PlayerLineItemBinding) :
     RecyclerView.ViewHolder(binding.root){
