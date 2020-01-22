@@ -38,6 +38,7 @@ object DataBaseCommands {
                 "${DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME} TEXT," +
                 "${DataBaseContract.PlayerEntry.COLUMN_NAME_NAME} TEXT," +
                 "${DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT} TEXT," +
+                "${DataBaseContract.PlayerEntry.COLUMN_NAME_AGE} TEXT," +
                 "${DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID} INTEGER)"
 }
 
@@ -60,8 +61,7 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         onUpgrade(db, oldVersion, newVersion)
     }
     companion object {
-        const val DATABASE_VERSION = 11
+        const val DATABASE_VERSION = 13
         const val DATABASE_NAME = "FeedReader.db"
     }
-
 }

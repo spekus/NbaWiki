@@ -30,5 +30,6 @@ object DataBaseContract {
         const val COLUMN_NAME_WEIGHT = "weight"
         const val COLUMN_NAME_HEIGHT = "height"
         const val COLUMN_NAME_DESCRIPTION = "description"
+        const val COLUMN_NAME_AGE= "age"
     }
 }

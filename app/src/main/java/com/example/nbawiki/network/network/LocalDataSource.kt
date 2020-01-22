@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.DataBaseContract
 import com.example.nbawiki.database.FeedReaderDbHelper
 import com.example.nbawiki.model.presentation.News
@@ -43,6 +45,7 @@ class LocalDataSource(val context: Context) {
             put(DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL, player.imageUrl)
             put(DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID, teamID)
             put(DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT, player.weight)
+            put(DataBaseContract.PlayerEntry.COLUMN_NAME_AGE, player.age)
         }
         val newRowId = db?.insertWithOnConflict(DataBaseContract.PlayerEntry.TABLE_NAME, null, values, CONFLICT_REPLACE)
     }
@@ -169,7 +172,8 @@ class LocalDataSource(val context: Context) {
             DataBaseContract.PlayerEntry.COLUMN_NAME_NAME,
             DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL,
             DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID,
-            DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT
+            DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_AGE
             )
 
         val selection = "${DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID} = ?"
@@ -197,13 +201,14 @@ class LocalDataSource(val context: Context) {
                 val imageUrl = cursor.getString(5)
                 val teamID = cursor.getString(6)
                 val weight = cursor.getString(7)
+                val age = cursor.getString(8)
 
                 players.add(
                     Player(
                         id = playerID,
                         name = name,
                         sureName = sureName,
-//                        age = age,
+                        age = age,
                         height = height,
                         weight = weight,
                         description = description,
@@ -256,6 +261,65 @@ class LocalDataSource(val context: Context) {
             }
         }
         return news
+    }
+
+    fun getThePlayer(playerId : Int) : LiveData<Player> {
+        val projection = arrayOf(
+            DataBaseContract.PlayerEntry.COLUMN_NAME_DESCRIPTION,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_SURENAME,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_HEIGHT,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_NAME,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_IMAGE_URL,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_TEAM_ID,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_WEIGHT,
+            DataBaseContract.PlayerEntry.COLUMN_NAME_AGE
+        )
+
+        val selection = "${DataBaseContract.PlayerEntry.COLUMN_NAME_EXTERNAL_PLAYER_ID} = ?"
+        val selectionArgs = arrayOf("$playerId")
+
+        val cursor = db.query(
+            DataBaseContract.PlayerEntry.TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        val players = mutableListOf<Player>()
+
+        var player : Player? = Player()
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val description = cursor.getString(0)
+                val sureName = cursor.getString(1)
+                val playerID = cursor.getInt(2)
+                val height = cursor.getString(3)
+                val name = cursor.getString(4)
+                val imageUrl = cursor.getString(5)
+                val teamID = cursor.getString(6)
+                val weight = cursor.getString(7)
+                val age = cursor.getString(8)
+
+                player = Player(
+                        id = playerID,
+                        name = name,
+                        sureName = sureName,
+                        age = age,
+                        height = height,
+                        weight = weight,
+                        description = description,
+                        imageUrl = imageUrl
+                    )
+                return MutableLiveData(player)
+            }
+        }
+        return MutableLiveData(player)
+
     }
 
 

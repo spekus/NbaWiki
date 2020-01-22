@@ -44,16 +44,15 @@ class TeamRepository(
     private var selectedPlayerId: MutableLiveData<String> = MutableLiveData()
 
     override val selectedPlayer: LiveData<Player>
-        get() = _player
+        get() = _selectedPlayer
 
-    private var _player: LiveData<Player> = Transformations.switchMap(
+    private var _selectedPlayer: LiveData<Player> = Transformations.switchMap(
         selectedPlayerId,
-        ::getPlayer
+        ::getThePlayer
     )
 
-    private fun getPlayer(playerId: String): LiveData<Player> {
-        return MutableLiveData(selectedTeam?.value?.teamMembers?.firstOrNull() { it.id.toString() == playerId }
-            ?: Player())
+    private fun getThePlayer(playerId: String): LiveData<Player> {
+        return dataBase.getThePlayer(playerId.toInt())
     }
 
     override suspend fun refreshTeams() {
@@ -74,7 +73,7 @@ class TeamRepository(
 
     override suspend fun refreshTheTeam(teamID: Int) {
         //load old data
-        _theTeam.postValue(dataBase.getTheTeam(teamID))
+//        _theTeam.postValue(dataBase.getTheTeam(teamID))
         //refresh
         if (isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)){
             refreshTeamNews(teamID)
