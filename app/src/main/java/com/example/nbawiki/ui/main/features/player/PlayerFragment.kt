@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.MyApplication.Companion.playerRepository
-import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
-import com.example.nbawiki.databinding.PlayerFragmentBinding
+import com.example.nbawiki.databinding.FragmentPlayerBinding
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 
 class PlayerFragment : Fragment() {
     private lateinit var viewModel: PlayerViewModel
-    private lateinit var binding: PlayerFragmentBinding
+    private lateinit var binding: FragmentPlayerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +25,7 @@ class PlayerFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.player_fragment,
+            R.layout.fragment_player,
             container,
             false
         )

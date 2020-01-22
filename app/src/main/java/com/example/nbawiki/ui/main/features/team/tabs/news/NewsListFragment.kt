@@ -11,15 +11,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
-import com.example.nbawiki.databinding.MainFragmentBinding
+import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
-import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.fragment_list.*
 
 class NewsListFragment : Fragment() {
     lateinit var viewModel: TeamViewModel
-    lateinit var binding: MainFragmentBinding
+    lateinit var binding: FragmentListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class NewsListFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.main_fragment,
+            R.layout.fragment_list,
             container,
             false
         )

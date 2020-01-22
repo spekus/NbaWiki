@@ -17,7 +17,7 @@
         android:id="@+id/teamFragment"
         android:name="com.example.nbawiki.ui.main.features.team.TeamFragment"
         android:label="team_fragment"
-        tools:layout="@layout/team_fragment" >
+        tools:layout="@layout/fragment_team" >
         <argument
             android:name="teamId"
             app:argType="integer" />
@@ -49,7 +49,7 @@
         android:id="@+id/playerFragment"
         android:name="com.example.nbawiki.ui.main.features.player.PlayerFragment"
         android:label="player_fragment"
-        tools:layout="@layout/player_fragment" >
+        tools:layout="@layout/fragment_player" >
         <argument
             android:name="playerId"
             app:argType="integer" />

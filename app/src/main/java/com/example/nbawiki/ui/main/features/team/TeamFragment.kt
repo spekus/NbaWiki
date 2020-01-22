@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
-import com.example.nbawiki.databinding.TeamFragmentBinding
+import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 import com.google.android.material.tabs.TabLayout
@@ -22,7 +22,7 @@ class TeamFragment : Fragment() {
     private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var viewModel : TeamViewModel
-    private lateinit var binding : TeamFragmentBinding
+    private lateinit var binding : FragmentTeamBinding
     private var teamId : Int = 0
 
 
@@ -30,9 +30,9 @@ class TeamFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<TeamFragmentBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.team_fragment,
+            R.layout.fragment_team,
             container,
             false
         )

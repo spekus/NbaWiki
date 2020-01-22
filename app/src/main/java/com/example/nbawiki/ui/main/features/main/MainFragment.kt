@@ -13,7 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
-import com.example.nbawiki.databinding.MainFragmentBinding
+import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.main.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.main.recycleview.TeamListAdapter
@@ -21,7 +21,7 @@ import com.example.nbawiki.ui.main.util.BaseViewModelFactory
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel
-    private lateinit var binding : MainFragmentBinding
+    private lateinit var binding : FragmentListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +29,7 @@ class MainFragment : Fragment(), OnItemClickListener {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.main_fragment,
+            R.layout.fragment_list,
             container,
             false
         )
