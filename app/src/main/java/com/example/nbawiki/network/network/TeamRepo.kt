@@ -4,8 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.database.LocalDataSource
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.Event
@@ -20,8 +19,7 @@ class TeamRepository(
     private val nbaApiService: WebService,
     private val context: Context,
     private val dataBase: LocalDataSource
-) :
-    Repository {
+) : TeamsRepository {
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
 
@@ -32,28 +30,13 @@ class TeamRepository(
 
     private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
 
-    override val nbaTeams: LiveData<List<Team>>
+    override val allTeams: LiveData<List<Team>>
         get() = _teams
 
-    private var _theTeam: MutableLiveData<Team> = MutableLiveData()
+    private var _selectedTeam: MutableLiveData<Team> = MutableLiveData()
 
     override val selectedTeam: LiveData<Team>
-        get() = _theTeam
-
-
-    private var selectedPlayerId: MutableLiveData<String> = MutableLiveData()
-
-    override val selectedPlayer: LiveData<Player>
-        get() = _selectedPlayer
-
-    private var _selectedPlayer: LiveData<Player> = Transformations.switchMap(
-        selectedPlayerId,
-        ::getThePlayer
-    )
-
-    private fun getThePlayer(playerId: String): LiveData<Player> {
-        return dataBase.getThePlayer(playerId.toInt())
-    }
+        get() = _selectedTeam
 
     override suspend fun refreshTeams() {
         when (isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
@@ -66,15 +49,10 @@ class TeamRepository(
         }
     }
 
-
-    override suspend fun refreshThePlayer(id: Int) {
-        selectedPlayerId.postValue(id.toString())
-    }
-
     override suspend fun refreshTheTeam(teamID: Int) {
         //load old data
-        ////        _theTeam.postValue(dataBase.getTheTeam(teamID))
-        //        //refresh
+        _selectedTeam.postValue(dataBase.getTheTeam(teamID))
+        //refresh
         if (isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)) {
             refreshTeamNews(teamID)
         }
@@ -82,7 +60,7 @@ class TeamRepository(
             refreshTeamPlayer(teamID)
         }
         //update with new data
-        _theTeam.postValue(dataBase.getTheTeam(teamID))
+        _selectedTeam.postValue(dataBase.getTheTeam(teamID))
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
@@ -112,7 +90,6 @@ class TeamRepository(
 
             updateTimePreferences(NEWS_PREF_KEY, teamId)
 
-
         } else {
             _didApiCallFail.postValue(Event(true))
         }
@@ -125,11 +102,9 @@ class TeamRepository(
             var teams: List<Team> = teamsResponse.body()!!.teams.map {
                 it.getPresentationModel()
             }
-//            _teams.postValue(teams)
             teams.forEach {
                 dataBase.putTeam(it)
             }
-
             _teams.postValue(dataBase.getAllTeams())
 
             val currentTime = Date(System.currentTimeMillis()).time
@@ -158,10 +133,9 @@ class TeamRepository(
 
 }
 
-
 const val LEAGUE_KEY = "4387"
 const val PRIVATE_MODE = 0
-const val PREF_NAME = "mindorks-welcome"
-const val TEAM_PREF_KEY = "team_update_time"
-const val PLAYER_PREF_KEY = "player_update_time"
-const val NEWS_PREF_KEY = "news_update_time"
+const val PREF_NAME = "pref_data"
+const val TEAM_PREF_KEY = "team_update_"
+const val PLAYER_PREF_KEY = "player_update_"
+const val NEWS_PREF_KEY = "news_update_"

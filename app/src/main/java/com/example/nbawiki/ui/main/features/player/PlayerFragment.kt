@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.nbawiki.MyApplication.Companion.repository
+import com.example.nbawiki.MyApplication.Companion.playerRepository
+import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.PlayerFragmentBinding
 import com.example.nbawiki.ui.main.util.BaseViewModelFactory
@@ -30,11 +31,9 @@ class PlayerFragment : Fragment() {
             container,
             false
         )
-        binding.playerBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         setUpViewModel()
+        setUpBinding()
 
         return binding.root
     }
@@ -45,20 +44,20 @@ class PlayerFragment : Fragment() {
         } ?: 0
 
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
-            PlayerViewModel(repository)
-        })
-            .get(PlayerViewModel::class.java)
+            PlayerViewModel(playerRepository)
+        }).get(PlayerViewModel::class.java)
 
         viewModel.initializePlayerData(playerId)
 
+    }
+
+    private fun setUpBinding() {
         viewModel.player.observe(viewLifecycleOwner, Observer {
-            binding.player = viewModel.player.value
+            binding.player = it
         })
 
-        viewModel.didApicallFail.observe(this, Observer {
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
-            }
-        })
+        binding.playerBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 }

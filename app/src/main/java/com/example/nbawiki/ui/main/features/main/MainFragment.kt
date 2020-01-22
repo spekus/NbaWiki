@@ -39,7 +39,7 @@ class MainFragment : Fragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.repository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.teamRepository) })
             .get(MainViewModel::class.java)
 
         viewModel.didApicallFail.observe(this, Observer {

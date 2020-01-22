@@ -1,4 +1,4 @@
-package com.example.nbawiki.network.network
+package com.example.nbawiki.database
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.database.DataBaseContract
-import com.example.nbawiki.database.FeedReaderDbHelper
 import com.example.nbawiki.model.presentation.News
 import com.example.nbawiki.model.presentation.Player
 import com.example.nbawiki.model.presentation.Team

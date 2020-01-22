@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.example.nbawiki.MyApplication.Companion.repository
+import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.TeamFragmentBinding
 import com.example.nbawiki.model.presentation.Team
@@ -37,6 +37,8 @@ class TeamFragment : Fragment() {
             false
         )
 
+        setUpViewModel()
+
         binding.teamBackArrow.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -46,7 +48,6 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpViewModel()
         setUpTabLayout(view)
     }
 
@@ -55,7 +56,7 @@ class TeamFragment : Fragment() {
             TeamFragmentArgs.fromBundle(it).teamId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
+        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(teamRepository) })
             .get(TeamViewModel::class.java)
 
         viewModel.initializeTeamData(teamId)
@@ -64,7 +65,7 @@ class TeamFragment : Fragment() {
             binding.team = it
         })
 
-        viewModel.didApicallFail.observe(this, Observer {
+        viewModel.didApiCallFail.observe(this, Observer {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
