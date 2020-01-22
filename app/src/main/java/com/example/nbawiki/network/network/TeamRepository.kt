@@ -73,9 +73,9 @@ class TeamRepository(
 
     override suspend fun refreshTheTeam(teamID: Int) {
         //load old data
-//        _theTeam.postValue(dataBase.getTheTeam(teamID))
-        //refresh
-        if (isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)){
+        ////        _theTeam.postValue(dataBase.getTheTeam(teamID))
+        //        //refresh
+        if (isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)) {
             refreshTeamNews(teamID)
         }
         if (isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLATER.timeBeforeUpdate)) {
@@ -86,12 +86,10 @@ class TeamRepository(
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
-        var theTeam: Team? = getSelectedTeam(teamID)
+        var theTeam: Team? = dataBase.getTheTeam(teamID)
         val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
         if (playersResponse.isSuccessful) {
             val players = playersResponse.body()!!.player.map { it.getPresentationModel() }
-//            theTeam.teamMembers = players
-//            _theTeam.postValue(theTeam)
 
             players.forEach {
                 dataBase.putPlayer(it, teamID)
@@ -106,9 +104,6 @@ class TeamRepository(
         val newsResponse = nbaApiService.getAllNews(teamId.toString())
         if (newsResponse.isSuccessful) {
             val news = newsResponse.body()!!.results.map { it.getPresentationModel() }
-//            val theTeam: Team? = getSelectedTeam(teamId)
-//            theTeam!!.news = news
-//            _theTeam.postValue(theTeam)
 
             news.forEach {
                 dataBase.putNews(it, teamId)
@@ -119,13 +114,6 @@ class TeamRepository(
 
         } else {
             _didApiCallFail.postValue(Event(true))
-        }
-    }
-
-
-    private fun getSelectedTeam(teamId: Int): Team? {
-        return _teams.value?.first {
-            it.id == teamId
         }
     }
 
@@ -152,9 +140,9 @@ class TeamRepository(
     }
 
 
-    private fun isItTimeToUpdate(sharePrefId : String, timeBeforeUpdate : Long ): Boolean {
+    private fun isItTimeToUpdate(sharePrefId: String, timeBeforeUpdate: Long): Boolean {
         val lastUpdate = sharedPref.get(sharePrefId, Long::class.java, 1)
-        if(lastUpdate == 1L){
+        if (lastUpdate == 1L) {
             Timber.e("could not get shared pref for key $sharePrefId")
         }
         val timePassed = System.currentTimeMillis() - lastUpdate
