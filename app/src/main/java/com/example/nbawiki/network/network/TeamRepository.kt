@@ -86,6 +86,7 @@ class TeamRepository(
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
+        Timber.e("teamIDy $teamID")
         var theTeam: Team? = dataBase.getTheTeam(teamID)
         val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
         if (playersResponse.isSuccessful) {

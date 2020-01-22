@@ -43,15 +43,8 @@ class NewsListFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        var teamId: Int = 0
-        arguments?.takeIf { it.containsKey(Constants.ID_OBJECT) }?.apply {
-            teamId = getInt(Constants.ID_OBJECT)
-        }
-
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
-
-        viewModel.initializeTeamData(teamId)
     }
 
     private fun setUpRecyclerViewAdapter() {

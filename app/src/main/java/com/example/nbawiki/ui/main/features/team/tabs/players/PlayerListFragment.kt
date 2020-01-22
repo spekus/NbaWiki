@@ -45,14 +45,8 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
     }
 
     private fun setUpViewModel(){
-        var teamId = 0
-        arguments?.takeIf { it.containsKey(ID_OBJECT) }?.apply {
-            teamId = getInt(ID_OBJECT)
-        }
-
         viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(repository) })
             .get(TeamViewModel::class.java)
-        viewModel.initializeTeamData(teamId)
     }
 
     private fun setUpRecyclerView() {
