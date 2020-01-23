@@ -1,6 +1,5 @@
 package com.example.nbawiki.model
 
-import com.example.nbawiki.ui.main.util.Constants.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -10,6 +9,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.mockito.MockitoAnnotations
 import kotlin.test.assertFailsWith
 
 class TeamRepositoryTest {
@@ -23,19 +23,21 @@ class TeamRepositoryTest {
 
     @Before
     fun initializeRepo() {
+
         val mainThreadSurrogate = newSingleThreadContext("UI thread")
         Dispatchers.setMain(mainThreadSurrogate)
     }
-
-    @Test
-    fun getTeams__returnsNotEmptyList() {
-
-            repository.refreshTeams()
-            val teamList = repository.nbaTeams.value
-            assertFalse(teamList!!.isEmpty())
-        }
-
-    }
+}
+//
+//    @Test
+//    fun getTeams__returnsNotEmptyList() {
+//
+//            repository.refreshTeams()
+//            val teamList = repository.nbaTeams.value
+//            assertFalse(teamList!!.isEmpty())
+//        }
+//
+//    }
 
 //    @Test
 //    fun getTheTeam_validId_ReturnsNotNull() {

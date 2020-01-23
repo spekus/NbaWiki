@@ -67,7 +67,7 @@ data class TeamDTO (
 	val strYoutube : String? = "",
 	val strLocked : String? = ""
 ) : Dto {
-	override fun <T : Dto> T.asPresentationModel(): Team {
+	fun <T : Dto> T.asPresentationModel(): Team {
 		val data = this as TeamDTO
 		return Team(
 			id = data.idTeam ?: 0,

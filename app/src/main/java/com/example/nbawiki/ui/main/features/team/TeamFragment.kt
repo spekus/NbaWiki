@@ -15,7 +15,7 @@ import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.model.presentation.Team
-import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 
 class TeamFragment : Fragment() {
@@ -56,7 +56,7 @@ class TeamFragment : Fragment() {
             TeamFragmentArgs.fromBundle(it).teamId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(teamRepository) })
+        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
             .get(TeamViewModel::class.java)
 
         viewModel.initializeTeamData(teamId)

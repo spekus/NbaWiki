@@ -17,7 +17,7 @@ import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
-import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.ViewModelFactory
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel
@@ -39,7 +39,7 @@ class MainFragment : Fragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
+        viewModel = ViewModelProviders.of(this, ViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
             .get(MainViewModel::class.java)
 
         viewModel.didApiCallFail.observe(this, Observer {

@@ -17,7 +17,7 @@ import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
-import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.ViewModelFactory
 
 class PlayerListFragment : Fragment(), OnItemClickListener {
     lateinit var viewModel : TeamViewModel
@@ -34,6 +34,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
             container,
             false
         )
+
         return binding.root
     }
 
@@ -44,7 +45,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
     }
 
     private fun setUpViewModel(){
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(teamRepository) })
+        viewModel = ViewModelProviders.of(this , ViewModelFactory { TeamViewModel(teamRepository) })
             .get(TeamViewModel::class.java)
     }
 

@@ -76,7 +76,7 @@ data class NewsDTO(
     val strVideo: String?,
     val strLocked: String?
 ) : Dto {
-    override fun <T : Dto> T.asPresentationModel(): News {
+    fun <T : Dto> T.asPresentationModel(): News {
         val data = this as NewsDTO
         return News(
             team = data.strHomeTeam ?: "",

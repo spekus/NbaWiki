@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.MyApplication.Companion.playerRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentPlayerBinding
-import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.ViewModelFactory
 
 class PlayerFragment : Fragment() {
     private lateinit var viewModel: PlayerViewModel
@@ -41,7 +41,7 @@ class PlayerFragment : Fragment() {
             PlayerFragmentArgs.fromBundle(it).playerId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory {
+        viewModel = ViewModelProviders.of(this, ViewModelFactory {
             PlayerViewModel(playerRepository)
         }).get(PlayerViewModel::class.java)
 

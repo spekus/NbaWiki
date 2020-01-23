@@ -1,6 +1,8 @@
 package com.example.nbawiki.model.presentation
 
-data class Team (
+import androidx.lifecycle.ViewModel
+
+class Team (
     val id : Int,
     val teamName : String = "DefaultName",
     val teamDescription : String = "DefaultDescription",

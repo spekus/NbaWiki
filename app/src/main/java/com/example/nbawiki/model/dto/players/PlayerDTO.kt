@@ -82,7 +82,7 @@ data class PlayerDTO(
     val strCreativeCommons: String?,
     val strLocked: String?
 ) : Dto {
-    override fun <T : Dto> T.asPresentationModel(): Player {
+    fun <T : Dto> T.asPresentationModel(): Player {
         val data = this as PlayerDTO
         return Player(
             id = data.idPlayer,

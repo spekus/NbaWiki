@@ -14,7 +14,7 @@ import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
-import com.example.nbawiki.ui.main.util.BaseViewModelFactory
+import com.example.nbawiki.ui.main.util.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class NewsListFragment : Fragment() {
@@ -42,7 +42,7 @@ class NewsListFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProviders.of(this, BaseViewModelFactory { TeamViewModel(teamRepository) })
+        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
             .get(TeamViewModel::class.java)
     }
 
