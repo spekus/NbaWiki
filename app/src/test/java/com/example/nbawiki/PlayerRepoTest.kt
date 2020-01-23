@@ -2,9 +2,13 @@ package com.example.nbawiki
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.nbawiki.database.LocalDataSource
 import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.PlayerRepo
+import com.nhaarman.mockitokotlin2.mock
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
@@ -17,7 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mockito
-import org.mockito.Mockito.times
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import kotlin.test.assertEquals
@@ -61,7 +65,7 @@ class PlayerRepoTest {
 
 
     @Test
-    fun getSelectedPlayer__liveDataUpdatedWithExpectedPlayer() = runBlockingTest {
+    fun refreshThePlayer__liveDataUpdatedWithExpectedPlayer() = runBlockingTest {
         repo.selectedPlayer.observeForever {  }
         repo.refreshThePlayer(1)
         assertEquals(repo.selectedPlayer.value , mockPlayer)
@@ -75,5 +79,15 @@ class PlayerRepoTest {
         Mockito.verify(mockDatabase, times(0)).getAllTeams()
         Mockito.verify(mockDatabase, times(0)).getTheTeam(1)
         Mockito.verify(mockDatabase, times(1)).getThePlayer(1)
+    }
+
+    @Test
+    fun refreshThePlayer__liveDataUpdatedOnlyOnece() = runBlockingTest {
+        val mockObserver  = mock<Observer<Player>>()
+
+        repo.selectedPlayer.observeForever(mockObserver)
+        repo.refreshThePlayer(1)
+
+        verify(mockObserver , times(2)).onChanged(any())
     }
 }
