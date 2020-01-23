@@ -20,6 +20,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.times
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
+import kotlin.test.assertEquals
 
 @RunWith(JUnit4::class)
 class PlayerRepoTest {
@@ -43,7 +44,14 @@ class PlayerRepoTest {
         MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(mainThreadSurrogate)
 
+        Mockito.`when`(mockDatabase.getThePlayer(1))
+            .thenReturn(
+                MutableLiveData<Player>(mockPlayer)
+            )
+
     }
+
+    val mockPlayer = Player(12)
 
     @After
     fun tearDown() {
@@ -53,16 +61,14 @@ class PlayerRepoTest {
 
 
     @Test
-    fun getSelectedPlayer() {
+    fun getSelectedPlayer__liveDataUpdatedWithExpectedPlayer() = runBlockingTest {
+        repo.selectedPlayer.observeForever {  }
+        repo.refreshThePlayer(1)
+        assertEquals(repo.selectedPlayer.value , mockPlayer)
     }
 
     @Test
     fun refreshThePlayer__onlyInvokedOnce() = runBlockingTest {
-
-        Mockito.`when`(mockDatabase.getThePlayer(1))
-            .thenReturn(
-                MutableLiveData<Player>(Player(12))
-            )
 
         repo.refreshThePlayer(1)
 
