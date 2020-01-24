@@ -3,6 +3,8 @@ package com.example.nbawiki.model.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.nbawiki.model.dto.players.asDataBaseObject
+import com.example.nbawiki.model.presentation.Player
 
 @Entity(tableName = "player")
 data class PlayerDb (
@@ -14,7 +16,31 @@ data class PlayerDb (
     @ColumnInfo(name = "WEIGHT") val weight: String?,
     @ColumnInfo(name = "AGE") val age: String?,
     @ColumnInfo(name = "TEAM_ID") val teamId: Int?
-)
+) {
+
+}
+
+fun PlayerDb.asRepresentationModel(): Player {
+    return Player(
+        id = playerId,
+        height = height ?:"",
+        imageUrl = imageUrl ?:"",
+        name = name ?:"",
+        weight = weight ?: "",
+        description = description ?: "",
+        age = age ?: ""
+    )
+//        return PlayerDb(
+//            playerId = this.idPlayer,
+//            height = this.strHeight,
+//            imageUrl = this.strThumb,
+//            name = this.strPlayer,
+//            weight = this.strWeight,
+//            age = this.dateBorn, // this needs adjustment
+//            description = this.strDescriptionEN,
+//            teamId = teamId
+//        )
+}
 
 
 //const val SQL_CREATE_PLAYERS  =

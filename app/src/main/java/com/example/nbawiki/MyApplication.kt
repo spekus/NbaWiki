@@ -15,7 +15,7 @@ class MyApplication : Application() {
         super.onCreate()
         teamRepository = TeamRepo(Network.network, this, LocalDataSource(this))
         teamsRepository = TeamsRepo(Network.network, this, LocalDataSource(this).getDatabase(this).teamDao())
-        playerRepository = PlayerRepo(LocalDataSource(this))
+        playerRepository = PlayerRepo(LocalDataSource(this).getDatabase(this).playerDao())
     }
 
     companion object {

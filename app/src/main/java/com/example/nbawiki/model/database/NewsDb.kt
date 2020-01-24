@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.nbawiki.model.presentation.News
-import com.example.nbawiki.ui.main.features.team.tabs.news.NewsLineElement
 
 @Entity(tableName = "news")
 data class NewsDb(

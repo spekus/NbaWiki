@@ -4,12 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nbawiki.model.database.PlayerDb
 import com.example.nbawiki.model.database.asPresentationModels
 import com.example.nbawiki.model.presentation.News
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
-import com.example.nbawiki.ui.main.features.team.tabs.news.NewsLineElement
 import com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListElement
 import com.example.nbawiki.ui.main.features.team.tabs.players.asPlayerList
 import kotlinx.coroutines.Dispatchers
