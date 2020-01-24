@@ -14,7 +14,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         teamRepository = TeamRepo(Network.network, this, LocalDataSource(this))
-        teamsRepository = TeamsRepo(Network.network, this, LocalDataSource(this))
+        teamsRepository = TeamsRepo(Network.network, this, LocalDataSource(this).getDatabase(this).teamDao())
         playerRepository = PlayerRepo(LocalDataSource(this))
     }
 

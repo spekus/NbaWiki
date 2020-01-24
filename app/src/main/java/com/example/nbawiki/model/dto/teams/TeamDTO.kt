@@ -1,5 +1,8 @@
 package com.example.nbawiki.model.dto.teams
 
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
+import com.example.nbawiki.model.database.TeamDb
 import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.Team
 
@@ -14,74 +17,86 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-data class TeamDTO (
-	var idTeam : Int? = 0,
-	val idSoccerXML : String? = "",
-	val idAPIfootball : Int? = 0,
-	val intLoved : String? = "",
-	val strTeam : String? = "",
-	val strTeamShort : String? = "",
-	val strAlternate : String? = "",
-	val intFormedYear : Int? = 0,
-	val strSport : String? = "",
-	val strLeague : String? = "",
-	val idLeague : Int? = 0,
-	val strDivision : String? = "",
-	val strManager : String? = "",
-	val strStadium : String? = "",
-	val strKeywords : String? = "",
-	val strRSS : String? = "",
-	val strStadiumThumb : String? = "",
-	val strStadiumDescription : String? = "",
-	val strStadiumLocation : String? = "",
-	val intStadiumCapacity : Int? = 0,
-	val strWebsite : String? = "",
-	val strFacebook : String? = "",
-	val strTwitter : String? = "",
-	val strInstagram : String? = "",
-	val strDescriptionEN : String? = "",
-	val strDescriptionDE : String? = "",
-	val strDescriptionFR : String? = "",
-	val strDescriptionCN : String? = "",
-	val strDescriptionIT : String? = "",
-	val strDescriptionJP : String? = "",
-	val strDescriptionRU : String? = "",
-	val strDescriptionES : String? = "",
-	val strDescriptionPT : String? = "",
-	val strDescriptionSE : String? = "",
-	val strDescriptionNL : String? = "",
-	val strDescriptionHU : String? = "",
-	val strDescriptionNO : String? = "",
-	val strDescriptionIL : String? = "",
-	val strDescriptionPL : String? = "",
-	val strGender : String? = "",
-	val strCountry : String? = "",
-	val strTeamBadge : String? = "",
-	val strTeamJersey : String? = "",
-	val strTeamLogo : String? = "",
-	val strTeamFanart1 : String? = "",
-	val strTeamFanart2 : String? = "",
-	val strTeamFanart3 : String? = "",
-	val strTeamFanart4 : String? = "",
-	val strTeamBanner : String? = "",
-	val strYoutube : String? = "",
-	val strLocked : String? = ""
+data class TeamDTO(
+    var idTeam: Int? = 0,
+    val idSoccerXML: String? = "",
+    val idAPIfootball: Int? = 0,
+    val intLoved: String? = "",
+    val strTeam: String? = "",
+    val strTeamShort: String? = "",
+    val strAlternate: String? = "",
+    val intFormedYear: Int? = 0,
+    val strSport: String? = "",
+    val strLeague: String? = "",
+    val idLeague: Int? = 0,
+    val strDivision: String? = "",
+    val strManager: String? = "",
+    val strStadium: String? = "",
+    val strKeywords: String? = "",
+    val strRSS: String? = "",
+    val strStadiumThumb: String? = "",
+    val strStadiumDescription: String? = "",
+    val strStadiumLocation: String? = "",
+    val intStadiumCapacity: Int? = 0,
+    val strWebsite: String? = "",
+    val strFacebook: String? = "",
+    val strTwitter: String? = "",
+    val strInstagram: String? = "",
+    val strDescriptionEN: String? = "",
+    val strDescriptionDE: String? = "",
+    val strDescriptionFR: String? = "",
+    val strDescriptionCN: String? = "",
+    val strDescriptionIT: String? = "",
+    val strDescriptionJP: String? = "",
+    val strDescriptionRU: String? = "",
+    val strDescriptionES: String? = "",
+    val strDescriptionPT: String? = "",
+    val strDescriptionSE: String? = "",
+    val strDescriptionNL: String? = "",
+    val strDescriptionHU: String? = "",
+    val strDescriptionNO: String? = "",
+    val strDescriptionIL: String? = "",
+    val strDescriptionPL: String? = "",
+    val strGender: String? = "",
+    val strCountry: String? = "",
+    val strTeamBadge: String? = "",
+    val strTeamJersey: String? = "",
+    val strTeamLogo: String? = "",
+    val strTeamFanart1: String? = "",
+    val strTeamFanart2: String? = "",
+    val strTeamFanart3: String? = "",
+    val strTeamFanart4: String? = "",
+    val strTeamBanner: String? = "",
+    val strYoutube: String? = "",
+    val strLocked: String? = ""
 ) : Dto {
-	fun <T : Dto> T.asPresentationModel(): Team {
-		val data = this as TeamDTO
-		return Team(
-			id = data.idTeam ?: 0,
-			teamName =  data.strTeam?.trim() ?: "",
-			teamDescription = data.strDescriptionEN ?: "",
-			imageUrl = data.strStadiumThumb ?: "",
-			teamIconUrl = data.strTeamBadge ?: ""
-		)
-	}
+    fun <T : Dto> T.asPresentationModel(): Team {
+        val data = this as TeamDTO
+        return Team(
+            id = data.idTeam ?: 0,
+            teamName = data.strTeam?.trim() ?: "",
+            teamDescription = data.strDescriptionEN ?: "",
+            imageUrl = data.strStadiumThumb ?: "",
+            teamIconUrl = data.strTeamBadge ?: ""
+        )
+    }
 
-	override fun getPresentationModel(): Team {
-		return this.asPresentationModel()
-	}
+    override fun getPresentationModel(): Team {
+        return this.asPresentationModel()
+    }
 
+
+}
+
+
+fun TeamDTO.asDBModel(): TeamDb {
+    return TeamDb(
+        id = this.idTeam ?: 0,
+        teamName = this.strTeam?.trim() ?: "",
+        iconUrl = this.strTeamBadge ?: "",
+        imageUrl = this.strStadiumThumb ?: "",
+        descriptor = this.strDescriptionEN ?: ""
+    )
 }
 
 //fun TeamDTO.asPresentationModel() : Team {

@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
+import com.example.nbawiki.model.database.TeamsDao
+import com.example.nbawiki.model.database.asPresentationModel
 import com.example.nbawiki.model.dto.teams.TeamDTO
+import com.example.nbawiki.model.dto.teams.asDBModel
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamListRepository
 import com.example.nbawiki.network.retrofit.WebService
@@ -16,8 +19,9 @@ import com.example.nbawiki.ui.main.util.UpdateTime
 class TeamsRepo(
     private val nbaApiService: WebService,
     private val context: Context,
-    private val dataBase: LocalDataSource
+    private val dataBase: TeamsDao
 ) : TeamListRepository {
+
 
     private val wizard = TimePreferenceWizard(context)
 
@@ -36,7 +40,7 @@ class TeamsRepo(
         if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
             refreshTeams()
         }
-        _teams.postValue(dataBase.getAllTeams())
+        _teams.postValue(dataBase.getAllTeams().map { it.asPresentationModel() })
     }
 
     private suspend fun refreshTeams() {
@@ -52,7 +56,9 @@ class TeamsRepo(
     }
 
     private fun updateDatabase(teams: List<TeamDTO>) {
-        teams.map { it.getPresentationModel() }
-            .forEach { dataBase.putTeam(it) }
+        teams.map {
+            it.asDBModel()
+        }
+            .forEach { dataBase.insertAll(it) }
     }
 }

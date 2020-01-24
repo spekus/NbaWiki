@@ -14,6 +14,6 @@ class PlayerRepo(private val dataBase: LocalDataSource) : PlayerRepository {
     private var _selectedPlayer: MutableLiveData<Player> = MutableLiveData(Player())
 
     override suspend fun refreshThePlayer(id: Int) {
-        _selectedPlayer.postValue(dataBase.getThePlayer(id).value)
+//        _selectedPlayer.postValue(dataBase.getThePlayer(id).value)
     }
 }
