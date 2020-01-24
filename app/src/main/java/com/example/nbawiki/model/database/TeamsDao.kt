@@ -14,6 +14,9 @@ interface TeamsDao {
     @Query("SELECT * FROM TeamDb WHERE id =:teamId")
     fun getByID(teamId : Int) : TeamDb
 
+    @Query("SELECT TEAM_NAME FROM TeamDb WHERE id =:teamId")
+    fun getNameByID(teamId : Int) : String
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: TeamDb)
 }

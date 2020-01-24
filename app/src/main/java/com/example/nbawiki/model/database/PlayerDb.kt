@@ -13,8 +13,9 @@ data class PlayerDb (
     @ColumnInfo(name = "NAME") val name: String?,
     @ColumnInfo(name = "WEIGHT") val weight: String?,
     @ColumnInfo(name = "AGE") val age: String?,
-    @ColumnInfo(name = "TEAM_ID") val teamId: String?
+    @ColumnInfo(name = "TEAM_ID") val teamId: Int?
 )
+
 
 //const val SQL_CREATE_PLAYERS  =
 //    "CREATE TABLE ${DataBaseContract.PlayerEntry.TABLE_NAME} (" +

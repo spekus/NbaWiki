@@ -19,7 +19,7 @@ import com.example.nbawiki.model.presentation.Team
 
 class LocalDataSource(val context: Context) {
 
-    @Database(entities = arrayOf(TeamDb::class, PlayerDb::class), version = 4)
+    @Database(entities = arrayOf(TeamDb::class, PlayerDb::class), version = 6)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun playerDao(): PlayerDao
         abstract fun teamDao(): TeamsDao

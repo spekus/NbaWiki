@@ -4,17 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
+import com.example.nbawiki.model.database.PlayerDb
 import com.example.nbawiki.model.database.asPresentationModel
 import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.dto.news.NewsDTO
 import com.example.nbawiki.model.dto.players.PlayerDTO
-import com.example.nbawiki.model.presentation.News
-import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.dto.players.asDataBaseObject
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.*
-import java.util.*
 
 class TeamRepo(
     private val nbaApiService: WebService,
@@ -22,6 +21,7 @@ class TeamRepo(
     private val dataBase: LocalDataSource
 ) : TeamRepository {
     private val teamDao = dataBase.getDatabase(context).teamDao()
+    private val playerDao = dataBase.getDatabase(context).playerDao()
 
     private val wizard = TimePreferenceWizard(context)
 
@@ -35,6 +35,12 @@ class TeamRepo(
     override val selectedTeam: LiveData<Team>
         get() = _selectedTeam
 
+    private var _players: MutableLiveData<List<PlayerDb>> = MutableLiveData()
+
+    override val players: LiveData<List<PlayerDb>>
+        get() = _players
+
+
     override suspend fun getTheTeam(teamID: Int) {
         //load old data
 //        _selectedTeam.postValue(dataBase.getTheTeam(teamID))
@@ -42,13 +48,13 @@ class TeamRepo(
         //refresh
 //        val shouldNewsBeUpdated =
 //            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
-//        val shouldPlayersBeUpdated =
-//            wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
+        val shouldPlayersBeUpdated =
+            wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
 //        if (shouldNewsBeUpdated) {
 //            refreshTeamNews(teamID)
 //        }
 //        if (shouldPlayersBeUpdated) {
-//            refreshTeamPlayer(teamID)
+            refreshTeamPlayer(teamID)
 //        }
 
         //update with new data if there was an api call
@@ -58,16 +64,30 @@ class TeamRepo(
     }
 
     private suspend fun refreshTeamPlayer(teamID: Int) {
+
 //        val deamDao  = dataBase.getDatabase(context).teamDao()
-//        var theTeam: Team? = dataBase.getTheTeam(teamID)
-//        val playersResponse = nbaApiService.getAllPlayers(theTeam!!.teamName)
-//        when (playersResponse.isSuccessful) {
-//            true -> {
+        var teamName: String = teamDao.getNameByID(teamID)
+        val playersResponse = nbaApiService.getAllPlayers(teamName)
+        when (playersResponse.isSuccessful) {
+            true -> {
 //                updateDatabase(playersResponse.body()!!.player, teamID)
-//                wizard.updateTimePreferences(PLAYER_PREF_KEY, teamID)
-//            }
-//            else -> _didApiCallFail.postValue(Event(true))
-//        }
+
+                playersResponse.body()!!.player.map {
+                    it.asDataBaseObject(teamID) }.forEach {
+                    playerDao.insertAll(it)
+                }
+
+                val allTeamPlayers =    playerDao.getPlayersByTeam(teamID)
+
+                _players.postValue(
+                    allTeamPlayers
+                )
+
+
+                wizard.updateTimePreferences(PLAYER_PREF_KEY, teamID)
+            }
+            else -> _didApiCallFail.postValue(Event(true))
+        }
     }
 
     private suspend fun refreshTeamNews(teamId: Int) {

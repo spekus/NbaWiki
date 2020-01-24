@@ -50,16 +50,16 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
     }
 
     private fun setUpRecyclerView() {
-        val players = viewModel.team.value?.teamMembers ?: emptyList()
+        val players = viewModel.players.value ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = PlayerListAdapter(players, this@PlayerListFragment, layoutInflater)
         }
 
-        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+        viewModel.players.observe(viewLifecycleOwner, Observer<List<PlayerListElement>> {
             val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
-            binding.update(it.teamMembers)
+            binding.update(it)
         })
     }
 

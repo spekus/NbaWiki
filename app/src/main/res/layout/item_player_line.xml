@@ -6,7 +6,7 @@
     <data>
         <variable
             name="player"
-            type="com.example.nbawiki.model.presentation.Player" />
+            type="com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListElement" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:layout_height="56dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:src="@{player.imageUrl}"
+            android:src="@{player.icon}"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"

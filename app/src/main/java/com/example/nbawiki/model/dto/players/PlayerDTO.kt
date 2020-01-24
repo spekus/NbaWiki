@@ -2,6 +2,7 @@ package com.example.nbawiki.model.dto.players
 
 import android.annotation.TargetApi
 import android.os.Build
+import com.example.nbawiki.model.database.PlayerDb
 import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.Player
 import java.text.SimpleDateFormat
@@ -107,6 +108,33 @@ data class PlayerDTO(
     }
 
 }
+
+fun PlayerDTO.asDataBaseObject(teamId : Int ) : PlayerDb {
+    return PlayerDb(
+        playerId = this.idPlayer,
+        height = this.strHeight,
+        imageUrl = this.strThumb,
+        name = this.strPlayer,
+        weight = this.strWeight,
+        age = this.dateBorn, // this needs adjustment
+        description = this.strDescriptionEN,
+        teamId = teamId
+    )
+}
+
+fun List<PlayerDTO>.asDataBaseObject(teamId : Int) : List<PlayerDb>{
+    return  this.asDataBaseObject(teamId)
+}
+//    @PrimaryKey val playerId : Int,
+//    @ColumnInfo(name = "NAME_DESCRIPTION") val description: String?,
+//    @ColumnInfo(name = "HEIGHT") val height: String?,
+//    @ColumnInfo(name = "IMAGE_URL") val imageUrl: String?,
+//    @ColumnInfo(name = "NAME") val name: String?,
+//    @ColumnInfo(name = "WEIGHT") val weight: String?,
+//    @ColumnInfo(name = "AGE") val age: String?,
+//    @ColumnInfo(name = "TEAM_ID") val teamId: String?
+
+
 
 fun clearString(str: String): String {
     return str.substringAfter("(").substringBefore(')')
