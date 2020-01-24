@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
+import com.example.nbawiki.model.presentation.News
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.util.ViewModelFactory
@@ -49,12 +50,12 @@ class NewsListFragment : Fragment() {
     private fun setUpRecyclerViewAdapter() {
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = NewsListAdapter(viewModel.team.value?.news ?: listOf(), layoutInflater)
+            adapter = NewsListAdapter(viewModel.news.value ?: listOf(), layoutInflater)
         }
 
-        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
+        viewModel.news.observe(viewLifecycleOwner, Observer<List<News>> {
             val adapter = team_recycler_view.adapter as NewsListAdapter
-            adapter.update(it.news)
+            adapter.update(it)
         })
     }
 }

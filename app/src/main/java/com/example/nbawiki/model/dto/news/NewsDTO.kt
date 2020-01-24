@@ -1,5 +1,7 @@
 package com.example.nbawiki.model.dto.news
 
+import androidx.room.ColumnInfo
+import com.example.nbawiki.model.database.NewsDb
 import com.example.nbawiki.model.dto.Dto
 import com.example.nbawiki.model.presentation.News
 import java.text.SimpleDateFormat
@@ -91,6 +93,22 @@ data class NewsDTO(
         return this.asPresentationModel()
     }
 }
+
+fun NewsDTO.asDatabaseObject(teamId : Int) : NewsDb{
+    return NewsDb(
+        newsId = this.idEvent,
+        homeTeam = this.strHomeTeam ?: "",
+        enemyTeam = this.strAwayTeam ?: "",
+        date = this.dateEvent ?: "",
+        teamId = teamId
+    )
+
+}
+
+//@ColumnInfo(name = "DATE") val date : String,
+//@ColumnInfo(name = "HOME_TEAM") val homeTeam : String,
+//@ColumnInfo(name = "ENEMY_TEAM") val enemyTeam : String,
+//@ColumnInfo(name = "TEAM_ID") val teamId : String
 
 private fun parseDateToString(dateAsString: String): String {
     val paternToDisplay = "MMMM d"
