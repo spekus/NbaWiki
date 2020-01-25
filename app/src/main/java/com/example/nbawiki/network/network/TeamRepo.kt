@@ -46,97 +46,77 @@ class TeamRepo(
 
 
     override suspend fun getTheTeam(teamID: Int) {
-        //load old data
-//        _selectedTeam.postValue(dataBase.getTheTeam(teamID))
+        //pre-load old data from db
+        getCachedData(teamID)
 
-        //refresh
-//        val shouldNewsBeUpdated =
-//            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+
+        val shouldNewsBeUpdated =
+            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+        if (shouldNewsBeUpdated) {
+            refreshTeamNewsInDataBase(teamID)
+            refreshNewsLiveData(teamID)
+        }
+
+
         val shouldPlayersBeUpdated =
             wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
-//        if (shouldNewsBeUpdated) {
-        refreshTeamNews(teamID)
-//        }
-//        if (shouldPlayersBeUpdated) {
-        refreshTeamPlayer(teamID)
-//        }
-
-        //update with new data if there was an api call
-//        if (shouldNewsBeUpdated || shouldNewsBeUpdated) {
-        _selectedTeam.postValue(teamDao.getByID(teamID))
-//        }
+        if (shouldPlayersBeUpdated) {
+            refreshTeamPlayerInDataBase(teamID)
+            refreshPlayersLiveData(teamID)
+        }
     }
 
-    private suspend fun refreshTeamPlayer(teamID: Int) {
+    private fun getCachedData(teamId: Int) {
+        // refreshes live data with data from database
+        refreshNewsLiveData(teamId)
+        refreshPlayersLiveData(teamId)
+        refreshTeamLiveData(teamId)
+    }
 
-//        val deamDao  = dataBase.getDatabase(context).teamDao()
+    private fun refreshNewsLiveData(teamId: Int) {
+        val news = newsDao.getNewsByTeam(teamId)
+        _news.postValue(news)
+    }
+
+    private fun refreshPlayersLiveData(teamId: Int) {
+        val allTeamPlayers = playerDao.getPlayersByTeam(teamId)
+        _players.postValue(allTeamPlayers)
+    }
+
+    private fun refreshTeamLiveData(teamId: Int) {
+        _selectedTeam.postValue(teamDao.getByID(teamId))
+    }
+
+    private suspend fun refreshTeamPlayerInDataBase(teamID: Int) {
         var teamName: String = teamDao.getNameByID(teamID)
-        val playersResponse = nbaApiService.getAllPlayers(teamName)
-        when (playersResponse.isSuccessful) {
+        val playersAPIResponse = nbaApiService.getAllPlayers(teamName)
+        when (playersAPIResponse.isSuccessful) {
             true -> {
-//                updateDatabase(playersResponse.body()!!.player, teamID)
-
-                playersResponse.body()!!.player.map {
+                playersAPIResponse.body()!!.player.map {
                     it.asDataBaseObject(teamID)
                 }.forEach {
                     playerDao.insertAll(it)
                 }
-
-                val allTeamPlayers = playerDao.getPlayersByTeam(teamID)
-
-                _players.postValue(
-                    allTeamPlayers
-                )
-
-
                 wizard.updateTimePreferences(PLAYER_PREF_KEY, teamID)
             }
             else -> _didApiCallFail.postValue(Event(true))
         }
     }
 
-    private suspend fun refreshTeamNews(teamId: Int) {
-        val newsResponse = nbaApiService.getAllNews(teamId.toString())
-        when (newsResponse.isSuccessful) {
+    private suspend fun refreshTeamNewsInDataBase(teamId: Int) {
+        val newsAPIResponse = nbaApiService.getAllNews(teamId.toString())
+        when (newsAPIResponse.isSuccessful) {
             true -> {
-//                updateDatabase(newsResponse.body()!!.results, teamId)
-                newsResponse.body()!!.results.map {
+                newsAPIResponse.body()!!.results.map {
                     it.asDatabaseObject(teamId)
                 }.forEach {
                     newsDao.insertAll(it)
                 }
-
-//                    player.map {
-//                    it.asDataBaseObject(teamID) }.forEach {
-//                    playerDao.insertAll(it)
-
-//                }
-                val news = newsDao.getPlayersByTeam(teamId)
-                _news.postValue(news)
-
-
                 wizard.updateTimePreferences(NEWS_PREF_KEY, teamId)
             }
             else -> _didApiCallFail.postValue(Event(true))
         }
     }
-
-//    private fun updateDatabase(body: List<Dto>, teamID: Int = 0) {
-//        when (body.first()) {
-//            is PlayerDTO -> body.map { it.getPresentationModel() }.forEach {
-////                dataBase.putPlayer(
-////                    it as Player,
-////                    teamID
-////                )
-//            }
-//            is NewsDTO -> body.map { it.getPresentationModel() }.forEach {
-////                dataBase.putNews(
-////                    it as News,
-////                    teamID
-////                )
-//            }
-//        }
-//    }
 }
 
 const val LEAGUE_KEY = "4387"

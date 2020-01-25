@@ -12,7 +12,7 @@ interface NewDao {
     fun getAll(): List<NewsDb>
 
     @Query("SELECT * FROM news WHERE TEAM_ID=:teamId")
-    fun getPlayersByTeam(teamId : Int): List<NewsDb>
+    fun getNewsByTeam(teamId : Int): List<NewsDb>
 
     @Insert(onConflict =  OnConflictStrategy.REPLACE)
     fun insertAll(vararg news: NewsDb)
