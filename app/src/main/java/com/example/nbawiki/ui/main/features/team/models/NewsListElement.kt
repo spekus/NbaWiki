@@ -1,6 +1,6 @@
-package com.example.nbawiki.model.presentation
+package com.example.nbawiki.ui.main.features.team.models
 
-class News(
+class NewsListElement(
     val team: String = "NAN",
     val ennemyTeam: String = "NAN",
     val date: String

@@ -1,7 +1,6 @@
 package com.example.nbawiki.model.dto.teams
 
 import com.example.nbawiki.model.database.db.TeamDb
-import com.example.nbawiki.model.presentation.Team
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com

@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="team"
-            type="com.example.nbawiki.model.presentation.Team" />
+            name="teamDetails"
+            type="com.example.nbawiki.ui.main.features.team.models.TeamDetails" />
 
     </data>
 
@@ -50,7 +50,7 @@
                             android:layout_height="250dp"
                             android:adjustViewBounds="true"
                             android:scaleType="centerCrop"
-                            android:src="@{team.imageUrl}"
+                            android:src="@{teamDetails.imageUrl}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
                             android:layout_height="50dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="16dp"
-                            android:text="@{team.teamName}"
+                            android:text="@{teamDetails.name}"
                             android:textColor="#ffffff"
 
                             app:autoSizeMaxTextSize="60dp"

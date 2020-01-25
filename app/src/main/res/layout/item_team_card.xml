@@ -7,7 +7,7 @@
 
         <variable
             name="team"
-            type="com.example.nbawiki.model.presentation.Team" />
+            type="com.example.nbawiki.ui.main.features.teamslist.TeamCard" />
 
     </data>
 

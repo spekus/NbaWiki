@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.database.dao.TeamsDao
-import com.example.nbawiki.model.database.db.asPresentationModel
+import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.dto.teams.asDBModel
-import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamListRepository
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.Event
@@ -29,9 +28,9 @@ class TeamsRepo(
     override val didApiCallFail: LiveData<Event<Boolean>>
         get() = _didApiCallFail
 
-    private var _teams: MutableLiveData<List<Team>> = MutableLiveData()
+    private var _teams: MutableLiveData<List<TeamDb>> = MutableLiveData()
 
-    override val allTeams: LiveData<List<Team>>
+    override val allTeams: LiveData<List<TeamDb>>
         get() = _teams
 
 
@@ -39,7 +38,7 @@ class TeamsRepo(
         if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
             refreshTeams()
         }
-        _teams.postValue(dataBase.getAllTeams().map { it.asPresentationModel() })
+        _teams.postValue(dataBase.getAllTeams() )
     }
 
     private suspend fun refreshTeams() {

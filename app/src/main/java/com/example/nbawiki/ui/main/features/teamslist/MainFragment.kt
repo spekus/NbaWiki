@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
-import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
 import com.example.nbawiki.ui.main.util.ViewModelFactory
@@ -59,7 +58,7 @@ class MainFragment : Fragment(), OnItemClickListener {
             adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
         }
 
-        viewModel.teams.observe(viewLifecycleOwner, Observer<List<Team>> {
+        viewModel.teams.observe(viewLifecycleOwner, Observer<List<TeamCard>> {
             val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
             adapter.update(it)
         })

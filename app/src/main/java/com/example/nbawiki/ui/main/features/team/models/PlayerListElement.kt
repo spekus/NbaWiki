@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.features.team.tabs.players
+package com.example.nbawiki.ui.main.features.team.models
 
 import com.example.nbawiki.model.database.db.PlayerDb
 
@@ -12,7 +12,7 @@ data class PlayerListElement (
 
 
 
-fun  List<PlayerDb>.asPlayerList(): List<PlayerListElement> {
+fun  List<PlayerDb>.asPlayerListItem(): List<PlayerListElement> {
     return this.map {
         PlayerListElement(
             id = it.playerId,

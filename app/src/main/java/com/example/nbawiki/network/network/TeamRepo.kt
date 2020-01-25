@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
 import com.example.nbawiki.model.database.db.NewsDb
 import com.example.nbawiki.model.database.db.PlayerDb
-import com.example.nbawiki.model.database.db.asPresentationModel
+import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.news.asDatabaseObject
 import com.example.nbawiki.model.dto.players.asDataBaseObject
-import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
 import com.example.nbawiki.network.retrofit.WebService
 import com.example.nbawiki.ui.main.util.*
@@ -30,9 +29,9 @@ class TeamRepo(
     override val didApiCallFail: LiveData<Event<Boolean>>
         get() = _didApiCallFail
 
-    private var _selectedTeam: MutableLiveData<Team> = MutableLiveData()
+    private var _selectedTeam: MutableLiveData<TeamDb> = MutableLiveData()
 
-    override val selectedTeam: LiveData<Team>
+    override val selectedTeam: LiveData<TeamDb>
         get() = _selectedTeam
 
     private var _players: MutableLiveData<List<PlayerDb>> = MutableLiveData()
@@ -64,7 +63,7 @@ class TeamRepo(
 
         //update with new data if there was an api call
 //        if (shouldNewsBeUpdated || shouldNewsBeUpdated) {
-        _selectedTeam.postValue(teamDao.getByID(teamID).asPresentationModel())
+        _selectedTeam.postValue(teamDao.getByID(teamID))
 //        }
     }
 

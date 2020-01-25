@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentTeamBinding
-import com.example.nbawiki.model.presentation.Team
+import com.example.nbawiki.ui.main.features.team.models.TeamDetails
 import com.example.nbawiki.ui.main.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 
@@ -61,8 +61,8 @@ class TeamFragment : Fragment() {
 
         viewModel.initializeTeamData(teamId)
 
-        viewModel.team.observe(viewLifecycleOwner, Observer<Team> {
-            binding.team = it
+        viewModel.team.observe(viewLifecycleOwner, Observer<TeamDetails> {
+            binding.teamDetails = it
         })
 
         viewModel.didApiCallFail.observe(this, Observer {

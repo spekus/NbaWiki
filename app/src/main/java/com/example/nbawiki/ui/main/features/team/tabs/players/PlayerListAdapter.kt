@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nbawiki.databinding.ItemPlayerLineBinding
+import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 
 class PlayerListAdapter(

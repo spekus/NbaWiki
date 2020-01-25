@@ -1,9 +1,6 @@
 package com.example.nbawiki.model.dto.news
 
 import com.example.nbawiki.model.database.db.NewsDb
-import com.example.nbawiki.model.presentation.News
-import java.text.SimpleDateFormat
-import java.util.*
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
