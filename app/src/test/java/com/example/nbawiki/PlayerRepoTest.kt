@@ -4,11 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.nbawiki.database.LocalDataSource
-import com.example.nbawiki.model.presentation.Player
-import com.example.nbawiki.model.presentation.Team
+import com.example.nbawiki.ui.main.features.player.Player
 import com.example.nbawiki.network.network.PlayerRepo
 import com.nhaarman.mockitokotlin2.mock
-import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain

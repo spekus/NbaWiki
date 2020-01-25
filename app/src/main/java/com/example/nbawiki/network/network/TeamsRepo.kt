@@ -3,9 +3,8 @@ package com.example.nbawiki.network.network
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.database.LocalDataSource
-import com.example.nbawiki.model.database.TeamsDao
-import com.example.nbawiki.model.database.asPresentationModel
+import com.example.nbawiki.model.database.dao.TeamsDao
+import com.example.nbawiki.model.database.db.asPresentationModel
 import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.dto.teams.asDBModel
 import com.example.nbawiki.model.presentation.Team

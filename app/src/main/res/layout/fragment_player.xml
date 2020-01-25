@@ -7,7 +7,7 @@
     <data>
         <variable
             name="player"
-            type="com.example.nbawiki.model.presentation.Player" />
+            type="com.example.nbawiki.ui.main.features.player.Player" />
 
     </data>
 

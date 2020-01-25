@@ -1,8 +1,6 @@
 package com.example.nbawiki.model.dto.news
 
-import androidx.room.ColumnInfo
-import com.example.nbawiki.model.database.NewsDb
-import com.example.nbawiki.model.dto.Dto
+import com.example.nbawiki.model.database.db.NewsDb
 import com.example.nbawiki.model.presentation.News
 import java.text.SimpleDateFormat
 import java.util.*
@@ -77,24 +75,10 @@ data class NewsDTO(
     val strTweet3: String?,
     val strVideo: String?,
     val strLocked: String?
-) : Dto {
-    fun <T : Dto> T.asPresentationModel(): News {
-        val data = this as NewsDTO
-        return News(
-            team = data.strHomeTeam ?: "",
-            ennemyTeam = data.strAwayTeam ?: "",
-            date = parseDateToString(
-                data.dateEvent ?: ""
-            )
-        )
-    }
-
-    override fun getPresentationModel(): News {
-        return this.asPresentationModel()
-    }
+)  {
 }
 
-fun NewsDTO.asDatabaseObject(teamId : Int) : NewsDb{
+fun NewsDTO.asDatabaseObject(teamId : Int) : NewsDb {
     return NewsDb(
         newsId = this.idEvent,
         homeTeam = this.strHomeTeam ?: "",
@@ -104,23 +88,3 @@ fun NewsDTO.asDatabaseObject(teamId : Int) : NewsDb{
     )
 
 }
-
-//@ColumnInfo(name = "DATE") val date : String,
-//@ColumnInfo(name = "HOME_TEAM") val homeTeam : String,
-//@ColumnInfo(name = "ENEMY_TEAM") val enemyTeam : String,
-//@ColumnInfo(name = "TEAM_ID") val teamId : String
-
-private fun parseDateToString(dateAsString: String): String {
-    val paternToDisplay = "MMMM d"
-    val DtoPatern = "yyyy-MM-dd"
-    val date: Date? = SimpleDateFormat(DtoPatern).parse(dateAsString)
-    return SimpleDateFormat(paternToDisplay).format(date) ?: ""
-}
-
-//fun NewsDTO.asPresentationModel(): News {
-//    return News(
-//        team = this.strHomeTeam ?: "",
-//        ennemyTeam = this.strAwayTeam ?: "",
-//        date = parseDateToString(this?.dateEvent ?: "")
-//    )
-//}

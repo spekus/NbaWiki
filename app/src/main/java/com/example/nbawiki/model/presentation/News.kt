@@ -4,4 +4,4 @@ class News(
     val team: String = "NAN",
     val ennemyTeam: String = "NAN",
     val date: String
-) : PresenationModel
+)

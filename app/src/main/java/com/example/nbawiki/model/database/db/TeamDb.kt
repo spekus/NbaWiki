@@ -1,4 +1,4 @@
-package com.example.nbawiki.model.database
+package com.example.nbawiki.model.database.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -25,12 +25,3 @@ fun TeamDb.asPresentationModel(): Team {
         imageUrl = this.imageUrl ?: ""
     )
 }
-
-
-//
-//"CREATE TABLE ${DataBaseContract.TeamEntry.TABLE_NAME} (" +
-//"${DataBaseContract.TeamEntry.COLUMN_NAME_TITLE} TEXT," +
-//"${DataBaseContract.TeamEntry.COLUMN_NAME_ICON_URL} TEXT," +
-//"${DataBaseContract.TeamEntry.COLUMN_NAME_IMAGE_URL} TEXT," +
-//"${DataBaseContract.TeamEntry.COLUMN_NAME_EXTERNAL_ID} INTEGER PRIMARY KEY," +
-//"${DataBaseContract.TeamEntry.COLUMN_NAME_DESCRIPTION} TEXT)"

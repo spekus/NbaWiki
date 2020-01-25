@@ -4,13 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.database.LocalDataSource
-import com.example.nbawiki.model.database.NewsDb
-import com.example.nbawiki.model.database.PlayerDb
-import com.example.nbawiki.model.database.asPresentationModel
-import com.example.nbawiki.model.dto.Dto
-import com.example.nbawiki.model.dto.news.NewsDTO
+import com.example.nbawiki.model.database.db.NewsDb
+import com.example.nbawiki.model.database.db.PlayerDb
+import com.example.nbawiki.model.database.db.asPresentationModel
 import com.example.nbawiki.model.dto.news.asDatabaseObject
-import com.example.nbawiki.model.dto.players.PlayerDTO
 import com.example.nbawiki.model.dto.players.asDataBaseObject
 import com.example.nbawiki.model.presentation.Team
 import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository

@@ -4,7 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.nbawiki.model.database.*
+import com.example.nbawiki.model.database.dao.NewDao
+import com.example.nbawiki.model.database.dao.PlayerDao
+import com.example.nbawiki.model.database.dao.TeamsDao
+import com.example.nbawiki.model.database.db.NewsDb
+import com.example.nbawiki.model.database.db.PlayerDb
+import com.example.nbawiki.model.database.db.TeamDb
 
 class LocalDataSource(val context: Context) {
 

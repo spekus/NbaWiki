@@ -2,9 +2,8 @@ package com.example.nbawiki.model.dto.players
 
 import android.annotation.TargetApi
 import android.os.Build
-import com.example.nbawiki.model.database.PlayerDb
-import com.example.nbawiki.model.dto.Dto
-import com.example.nbawiki.model.presentation.Player
+import com.example.nbawiki.model.database.db.PlayerDb
+import com.example.nbawiki.ui.main.features.player.Player
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -82,32 +81,9 @@ data class PlayerDTO(
     val strFanart4: String?,
     val strCreativeCommons: String?,
     val strLocked: String?
-) : Dto {
-    fun <T : Dto> T.asPresentationModel(): Player {
-        val data = this as PlayerDTO
-        return Player(
-            id = data.idPlayer,
-            name = data.strPlayer?.trim() ?: "",
-            sureName = data.strNationality?.trim() ?: "",
-            height = clearString(
-                data?.strHeight ?: ""
-            ),
-            weight = clearString(
-                data?.strWeight ?: ""
-            ),
-            age = parseAge(
-                data?.dateBorn ?: ""
-            ),
-            description = data?.strDescriptionEN ?: "",
-            imageUrl = data?.strThumb ?: ""
-        )
-    }
-
-    override fun getPresentationModel() : Player {
-        return this.asPresentationModel()
-    }
-
+)  {
 }
+
 
 fun PlayerDTO.asDataBaseObject(teamId : Int ) : PlayerDb {
     return PlayerDb(
@@ -121,45 +97,3 @@ fun PlayerDTO.asDataBaseObject(teamId : Int ) : PlayerDb {
         teamId = teamId
     )
 }
-
-fun List<PlayerDTO>.asDataBaseObject(teamId : Int) : List<PlayerDb>{
-    return  this.asDataBaseObject(teamId)
-}
-//    @PrimaryKey val playerId : Int,
-//    @ColumnInfo(name = "NAME_DESCRIPTION") val description: String?,
-//    @ColumnInfo(name = "HEIGHT") val height: String?,
-//    @ColumnInfo(name = "IMAGE_URL") val imageUrl: String?,
-//    @ColumnInfo(name = "NAME") val name: String?,
-//    @ColumnInfo(name = "WEIGHT") val weight: String?,
-//    @ColumnInfo(name = "AGE") val age: String?,
-//    @ColumnInfo(name = "TEAM_ID") val teamId: String?
-
-
-
-fun clearString(str: String): String {
-    return str.substringAfter("(").substringBefore(')')
-}
-
-@TargetApi(Build.VERSION_CODES.O)
-fun parseAge(dateBorn: String): String {
-    // NEEDS REWORK - hacky
-    val DtoPatern = "yyyy-mm-dd"
-    val date: Date? = SimpleDateFormat(DtoPatern).parse(dateBorn)
-    val start = LocalDate.of(date!!.year + 1900, date!!.month +1, date!!.date)
-    val stop = LocalDate.now(ZoneId.of("America/Montreal"))
-    return ChronoUnit.YEARS.between(start, stop).toString()
-}
-
-//
-//fun PlayerDTO.asPresentationModel(): Player {
-//    return Player(
-//        id = this.idPlayer,
-//        name = this.strPlayer?.trim() ?: "",
-//        sureName = this.strNationality?.trim() ?: "",
-//        height = clearString(this?.strHeight ?: "") ,
-//        weight = clearString(this?.strWeight ?: ""),
-//        age = parseAge(this?.dateBorn ?: ""),
-//        description = this?.strDescriptionEN ?: "",
-//        imageUrl = this?.strThumb ?: ""
-//    )
-//}

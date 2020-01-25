@@ -1,4 +1,4 @@
-package com.example.nbawiki.model.database
+package com.example.nbawiki.model.database.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

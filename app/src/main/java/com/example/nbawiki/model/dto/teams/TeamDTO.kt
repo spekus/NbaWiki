@@ -1,9 +1,6 @@
 package com.example.nbawiki.model.dto.teams
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-import com.example.nbawiki.model.database.TeamDb
-import com.example.nbawiki.model.dto.Dto
+import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.presentation.Team
 
 /*
@@ -69,25 +66,8 @@ data class TeamDTO(
     val strTeamBanner: String? = "",
     val strYoutube: String? = "",
     val strLocked: String? = ""
-) : Dto {
-    fun <T : Dto> T.asPresentationModel(): Team {
-        val data = this as TeamDTO
-        return Team(
-            id = data.idTeam ?: 0,
-            teamName = data.strTeam?.trim() ?: "",
-            teamDescription = data.strDescriptionEN ?: "",
-            imageUrl = data.strStadiumThumb ?: "",
-            teamIconUrl = data.strTeamBadge ?: ""
-        )
-    }
-
-    override fun getPresentationModel(): Team {
-        return this.asPresentationModel()
-    }
-
-
+) {
 }
-
 
 fun TeamDTO.asDBModel(): TeamDb {
     return TeamDb(
@@ -98,13 +78,3 @@ fun TeamDTO.asDBModel(): TeamDb {
         descriptor = this.strDescriptionEN ?: ""
     )
 }
-
-//fun TeamDTO.asPresentationModel() : Team {
-//	return Team(
-//		id = this.idTeam ?: 0,
-//		teamName =  this.strTeam?.trim() ?: "",
-//		teamDescription = this.strDescriptionEN ?: "",
-//		imageUrl = this.strStadiumThumb ?: "",
-//		teamIconUrl = this.strTeamBadge ?: ""
-//	)
-//}
