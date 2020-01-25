@@ -15,7 +15,7 @@ import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.ui.main.features.team.models.TeamDetails
-import com.example.nbawiki.ui.main.util.ViewModelFactory
+import com.example.nbawiki.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 
 class TeamFragment : Fragment() {

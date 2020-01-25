@@ -1,28 +1,26 @@
-package com.example.nbawiki.network.network
+package com.example.nbawiki.datasource.repositories
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.nbawiki.database.LocalDataSource
+import com.example.nbawiki.model.database.dao.NewDao
+import com.example.nbawiki.model.database.dao.PlayerDao
+import com.example.nbawiki.model.database.dao.TeamsDao
 import com.example.nbawiki.model.database.db.NewsDb
 import com.example.nbawiki.model.database.db.PlayerDb
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.news.asDatabaseObject
 import com.example.nbawiki.model.dto.players.asDataBaseObject
-import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
-import com.example.nbawiki.network.retrofit.WebService
-import com.example.nbawiki.ui.main.util.*
+import com.example.nbawiki.datasource.repositories.interfaces.api.TeamRepository
+import com.example.nbawiki.datasource.retrofit.WebService
+import com.example.nbawiki.util.*
 
 class TeamRepo(
     private val nbaApiService: WebService,
-    private val context: Context,
-    private val dataBase: LocalDataSource
+    private val wizard: TimePreferenceWizard,
+    private val teamDao: TeamsDao,
+    private val playerDao: PlayerDao,
+    private val newsDao: NewDao
 ) : TeamRepository {
-    private val teamDao = dataBase.getDatabase(context).teamDao()
-    private val playerDao = dataBase.getDatabase(context).playerDao()
-    private val newsDao = dataBase.getDatabase(context).newsDao()
-
-    private val wizard = TimePreferenceWizard(context)
 
     private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
 

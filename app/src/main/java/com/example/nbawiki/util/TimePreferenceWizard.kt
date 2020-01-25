@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.util
+package com.example.nbawiki.util
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.util
+package com.example.nbawiki.util
 
 enum class UpdateTime(val timeBeforeUpdate :Long) {
     TEAM(3_600_000L),

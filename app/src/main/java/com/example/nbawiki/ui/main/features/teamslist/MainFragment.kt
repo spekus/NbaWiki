@@ -16,7 +16,7 @@ import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
-import com.example.nbawiki.ui.main.util.ViewModelFactory
+import com.example.nbawiki.util.ViewModelFactory
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel

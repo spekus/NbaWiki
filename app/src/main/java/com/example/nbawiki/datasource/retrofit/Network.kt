@@ -1,4 +1,4 @@
-package com.example.nbawiki.network.retrofit
+package com.example.nbawiki.datasource.retrofit
 
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.MyApplication.Companion.playerRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentPlayerBinding
-import com.example.nbawiki.ui.main.util.ViewModelFactory
+import com.example.nbawiki.util.ViewModelFactory
 
 class PlayerFragment : Fragment() {
     private lateinit var viewModel: PlayerViewModel

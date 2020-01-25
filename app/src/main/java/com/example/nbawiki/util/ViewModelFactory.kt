@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.util
+package com.example.nbawiki.util
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

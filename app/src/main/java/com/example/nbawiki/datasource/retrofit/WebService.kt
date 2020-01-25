@@ -1,4 +1,4 @@
-package com.example.nbawiki.network.retrofit
+package com.example.nbawiki.datasource.retrofit
 
 import com.example.nbawiki.model.dto.news.NewsListDTO
 import com.example.nbawiki.model.dto.players.PlayersListDTO

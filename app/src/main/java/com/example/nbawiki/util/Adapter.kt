@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.util
+package com.example.nbawiki.util
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

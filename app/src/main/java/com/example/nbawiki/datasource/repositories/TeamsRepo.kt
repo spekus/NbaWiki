@@ -1,27 +1,23 @@
-package com.example.nbawiki.network.network
+package com.example.nbawiki.datasource.repositories
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.database.dao.TeamsDao
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.dto.teams.asDBModel
-import com.example.nbawiki.network.network.repointerfaces.api.TeamListRepository
-import com.example.nbawiki.network.retrofit.WebService
-import com.example.nbawiki.ui.main.util.Event
-import com.example.nbawiki.ui.main.util.TEAM_PREF_KEY
-import com.example.nbawiki.ui.main.util.TimePreferenceWizard
-import com.example.nbawiki.ui.main.util.UpdateTime
+import com.example.nbawiki.datasource.repositories.interfaces.api.TeamListRepository
+import com.example.nbawiki.datasource.retrofit.WebService
+import com.example.nbawiki.util.Event
+import com.example.nbawiki.util.TEAM_PREF_KEY
+import com.example.nbawiki.util.TimePreferenceWizard
+import com.example.nbawiki.util.UpdateTime
 
 class TeamsRepo(
     private val nbaApiService: WebService,
-    private val context: Context,
+    private val wizard: TimePreferenceWizard,
     private val dataBase: TeamsDao
 ) : TeamListRepository {
-
-
-    private val wizard = TimePreferenceWizard(context)
 
     private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
 

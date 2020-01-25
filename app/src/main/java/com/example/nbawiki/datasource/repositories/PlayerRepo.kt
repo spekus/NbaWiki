@@ -1,21 +1,20 @@
-package com.example.nbawiki.network.network
+package com.example.nbawiki.datasource.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.model.database.db.PlayerDb
-import com.example.nbawiki.network.network.repointerfaces.PlayerRepository
+import com.example.nbawiki.datasource.repositories.interfaces.PlayerRepository
 
-class PlayerRepo(private val playerDao: PlayerDao) : PlayerRepository {
+class PlayerRepo(private val database: PlayerDao) :
+    PlayerRepository {
 
     override val selectedPlayer: LiveData<PlayerDb>
         get() = _selectedPlayer
 
     private var _selectedPlayer: MutableLiveData<PlayerDb> = MutableLiveData()
-//            =
-//        MutableLiveData(PlayerDb(1))
 
     override suspend fun refreshThePlayer(id: Int) {
-        _selectedPlayer.postValue(playerDao.getThePlayer(id))
+        _selectedPlayer.postValue(database.getThePlayer(id))
     }
 }

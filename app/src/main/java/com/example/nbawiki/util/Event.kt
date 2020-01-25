@@ -1,4 +1,4 @@
-package com.example.nbawiki.ui.main.util
+package com.example.nbawiki.util
 
 open class Event<out T>(private val content: T) {
 

@@ -14,7 +14,7 @@ import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.models.NewsListElement
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
-import com.example.nbawiki.ui.main.util.ViewModelFactory
+import com.example.nbawiki.util.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class NewsListFragment : Fragment() {

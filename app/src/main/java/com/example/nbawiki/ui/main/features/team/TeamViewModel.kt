@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.database.db.asNewsListItem
 import com.example.nbawiki.ui.main.features.team.models.NewsListElement
-import com.example.nbawiki.network.network.repointerfaces.api.TeamRepository
+import com.example.nbawiki.datasource.repositories.interfaces.api.TeamRepository
 import com.example.nbawiki.ui.main.features.team.models.TeamDetails
 import com.example.nbawiki.ui.main.features.team.models.asTeamDetailsModel
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
