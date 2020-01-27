@@ -12,6 +12,8 @@ import com.example.nbawiki.util.Event
 import com.example.nbawiki.util.TEAM_PREF_KEY
 import com.example.nbawiki.util.TimePreferenceWizard
 import com.example.nbawiki.util.UpdateTime
+import timber.log.Timber
+import java.lang.Exception
 
 class TeamsRepo(
     private val nbaApiService: WebService,
@@ -24,35 +26,42 @@ class TeamsRepo(
     override val didApiCallFail: LiveData<Event<Boolean>>
         get() = _didApiCallFail
 
-    private var _teams: MutableLiveData<List<TeamDb>> = MutableLiveData()
+    private var _teams: MutableLiveData<List<TeamDb?>> = MutableLiveData()
 
-    override val allTeams: LiveData<List<TeamDb>>
+    override val allTeams: LiveData<List<TeamDb?>>
         get() = _teams
 
 
     override suspend fun getTeams() {
+        // pre load data
+        _teams.postValue(dataBase.getAllTeams())
+
         if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
             refreshTeams()
         }
-        _teams.postValue(dataBase.getAllTeams() )
     }
 
     private suspend fun refreshTeams() {
-        val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-        when (teamsResponse.isSuccessful) {
-            true -> {
-                updateDatabase(teamsResponse.body()!!.teams)
-                wizard.updateTimePreferences(TEAM_PREF_KEY)
-            }
+        try {
+            val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
+            when (teamsResponse.isSuccessful) {
+                true -> {
+                    updateDatabase(teamsResponse.body()!!.teams)
+                    wizard.updateTimePreferences(TEAM_PREF_KEY)
+                    _teams.postValue(dataBase.getAllTeams())
+                }
 
-            else -> _didApiCallFail.postValue(Event(true))
+                else -> _didApiCallFail.postValue(Event(true))
+            }
+        } catch (exception: Exception) {
+            Timber.e(exception)
+            _didApiCallFail.postValue(Event(true))
         }
     }
 
     private fun updateDatabase(teams: List<TeamDTO>) {
         teams.map {
             it.asDBModel()
-        }
-            .forEach { dataBase.insertAll(it) }
+        }.forEach { dataBase.insertAll(it) }
     }
 }

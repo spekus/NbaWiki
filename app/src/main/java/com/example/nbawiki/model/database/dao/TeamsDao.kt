@@ -10,7 +10,7 @@ import com.example.nbawiki.model.database.db.TeamDb
 interface TeamsDao {
 
     @Query("SELECT * FROM TeamDb")
-    fun getAllTeams() : List<TeamDb>
+    fun getAllTeams() : List<TeamDb?>
 
     @Query("SELECT * FROM TeamDb WHERE id =:teamId")
     fun getByID(teamId : Int) : TeamDb

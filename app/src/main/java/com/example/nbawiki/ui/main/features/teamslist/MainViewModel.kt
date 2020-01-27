@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(teamsRepository : TeamsRepo) : ViewModel() {
     val teams : LiveData<List<TeamCard>> = Transformations.map(teamsRepository.allTeams) {
-        it.asPresentationModel()
+        it?.asPresentationModel()
     }
 
     val didApiCallFail = teamsRepository.didApiCallFail
