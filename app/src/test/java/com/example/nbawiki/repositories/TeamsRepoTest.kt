@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import retrofit2.Response
 import java.lang.RuntimeException
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class TeamsRepoTest {
@@ -122,5 +123,20 @@ class TeamsRepoTest {
         repo.getTeams()
 
         assertTrue { repo.didApiCallFail.value!!.peekContent() }
+    }
+
+    @Test
+    fun getAllTeams_aliCallSucceeded_updateAliCallResultWithSuccess() = runBlockingTest {
+        Mockito.`when`(ApiResponse.isSuccessful).thenReturn(true)
+        Mockito.`when`(ApiResponse.body()).thenReturn(teamsDto)
+        Mockito.`when`(mockApi.getAllTeams(anyString())).thenReturn(ApiResponse)
+        Mockito.`when`(mockDatabase.getAllTeams()).thenReturn(emptyList())
+        Mockito.`when`(mockWizard.isItTimeToUpdate(anyString(), anyLong())).thenReturn(true)
+
+        repo.didApiCallFail.observeForever {}
+
+        repo.getTeams()
+
+        assertFalse { repo.didApiCallFail.value!!.peekContent() }
     }
 }

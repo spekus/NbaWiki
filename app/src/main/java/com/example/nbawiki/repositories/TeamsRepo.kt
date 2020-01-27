@@ -49,6 +49,7 @@ class TeamsRepo(
                     updateDatabase(teamsResponse.body()!!.teams)
                     wizard.updateTimePreferences(TEAM_PREF_KEY)
                     _teams.postValue(dataBase.getAllTeams())
+                    _didApiCallFail.postValue(Event(false))
                 }
 
                 else -> _didApiCallFail.postValue(Event(true))
