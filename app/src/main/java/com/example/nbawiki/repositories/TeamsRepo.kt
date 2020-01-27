@@ -14,8 +14,9 @@ import com.example.nbawiki.util.TimePreferenceWizard
 import com.example.nbawiki.util.UpdateTime
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class TeamsRepo(
+class TeamsRepo @Inject constructor (
     private val nbaApiService: WebService,
     private val wizard: TimePreferenceWizard,
     private val dataBase: TeamsDao

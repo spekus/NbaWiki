@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.model.database.db.PlayerDb
 import com.example.nbawiki.repositories.interfaces.PlayerRepository
+import javax.inject.Inject
 
-class PlayerRepo(private val database: PlayerDao) :
+class PlayerRepo @Inject constructor (private val database: PlayerDao) :
     PlayerRepository {
 
     override val selectedPlayer: LiveData<PlayerDb>

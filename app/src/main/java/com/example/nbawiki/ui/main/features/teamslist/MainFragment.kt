@@ -14,13 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.databinding.FragmentListBinding
+import com.example.nbawiki.ui.main.features.player.PlayerViewModel
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
 import com.example.nbawiki.util.ViewModelFactory
+import javax.inject.Inject
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding : FragmentListBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,8 @@ class MainFragment : Fragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+//        viewModel = ViewModelProviders.of(this, ViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
+//            .get(MainViewModel::class.java)
         viewModel = ViewModelProviders.of(this, ViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
             .get(MainViewModel::class.java)
 
