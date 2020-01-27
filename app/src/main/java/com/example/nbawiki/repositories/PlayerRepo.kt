@@ -1,10 +1,10 @@
-package com.example.nbawiki.datasource.repositories
+package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.model.database.db.PlayerDb
-import com.example.nbawiki.datasource.repositories.interfaces.PlayerRepository
+import com.example.nbawiki.repositories.interfaces.PlayerRepository
 
 class PlayerRepo(private val database: PlayerDao) :
     PlayerRepository {

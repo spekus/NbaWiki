@@ -16,13 +16,13 @@ import java.util.*
 @Entity(tableName = "player")
 data class PlayerDb (
     @PrimaryKey val playerId : Int,
-    @ColumnInfo(name = "NAME_DESCRIPTION") val description: String?,
-    @ColumnInfo(name = "HEIGHT") val height: String?,
-    @ColumnInfo(name = "IMAGE_URL") val imageUrl: String?,
-    @ColumnInfo(name = "NAME") val name: String?,
-    @ColumnInfo(name = "WEIGHT") val weight: String?,
-    @ColumnInfo(name = "AGE") val age: String?,
-    @ColumnInfo(name = "TEAM_ID") val teamId: Int?
+    @ColumnInfo(name = "NAME_DESCRIPTION") val description: String? = "",
+    @ColumnInfo(name = "HEIGHT") val height: String? = "",
+    @ColumnInfo(name = "IMAGE_URL") val imageUrl: String? = "",
+    @ColumnInfo(name = "NAME") val name: String? = "",
+    @ColumnInfo(name = "WEIGHT") val weight: String? = "",
+    @ColumnInfo(name = "AGE") val age: String? = "",
+    @ColumnInfo(name = "TEAM_ID") val teamId: Int? = 0
 ) {
 
 }

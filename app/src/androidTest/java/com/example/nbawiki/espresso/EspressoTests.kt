@@ -28,7 +28,7 @@ class EspressoTests {
         onView(withId(R.id.team_recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<TeamViewHolder>(0, click()))
 
-        val teamName = "Atlanta Hawks"
+        val teamName = "Boston Celtics"
 
         onView(withId(R.id.teamName))
             .check(matches(isDisplayed()))

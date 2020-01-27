@@ -1,4 +1,4 @@
-package com.example.nbawiki.datasource.repositories
+package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.example.nbawiki.model.database.db.PlayerDb
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.news.asDatabaseObject
 import com.example.nbawiki.model.dto.players.asDataBaseObject
-import com.example.nbawiki.datasource.repositories.interfaces.api.TeamRepository
+import com.example.nbawiki.repositories.interfaces.api.TeamRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.*
 

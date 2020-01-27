@@ -1,4 +1,4 @@
-package com.example.nbawiki.datasource.repositories.interfaces
+package com.example.nbawiki.repositories.interfaces
 
 import androidx.lifecycle.LiveData
 import com.example.nbawiki.model.database.db.PlayerDb

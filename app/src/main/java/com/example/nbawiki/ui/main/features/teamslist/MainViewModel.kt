@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nbawiki.datasource.repositories.TeamsRepo
+import com.example.nbawiki.repositories.TeamsRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

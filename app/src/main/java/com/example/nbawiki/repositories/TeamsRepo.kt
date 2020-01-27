@@ -1,4 +1,4 @@
-package com.example.nbawiki.datasource.repositories
+package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import com.example.nbawiki.model.database.dao.TeamsDao
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.dto.teams.asDBModel
-import com.example.nbawiki.datasource.repositories.interfaces.api.TeamListRepository
+import com.example.nbawiki.repositories.interfaces.api.TeamListRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.Event
 import com.example.nbawiki.util.TEAM_PREF_KEY

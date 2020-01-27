@@ -2,10 +2,10 @@ package com.example.nbawiki
 
 import android.app.Application
 import com.example.nbawiki.datasource.database.getDatabase
-import com.example.nbawiki.datasource.repositories.PlayerRepo
-import com.example.nbawiki.datasource.repositories.TeamRepo
-import com.example.nbawiki.datasource.repositories.TeamsRepo
-import com.example.nbawiki.datasource.repositories.interfaces.PlayerRepository
+import com.example.nbawiki.repositories.PlayerRepo
+import com.example.nbawiki.repositories.TeamRepo
+import com.example.nbawiki.repositories.TeamsRepo
+import com.example.nbawiki.repositories.interfaces.PlayerRepository
 import com.example.nbawiki.datasource.retrofit.Network
 import com.example.nbawiki.util.TimePreferenceWizard
 

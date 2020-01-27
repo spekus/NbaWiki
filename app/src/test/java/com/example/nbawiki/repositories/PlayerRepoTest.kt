@@ -1,11 +1,10 @@
-package com.example.nbawiki
+package com.example.nbawiki.repositories
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.nbawiki.database.LocalDataSource
-import com.example.nbawiki.ui.main.features.player.Player
-import com.example.nbawiki.network.network.PlayerRepo
+import com.example.nbawiki.model.database.dao.PlayerDao
+import com.example.nbawiki.model.database.db.PlayerDb
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -18,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
@@ -29,7 +29,7 @@ class PlayerRepoTest {
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
-    val mockDatabase = Mockito.mock(LocalDataSource::class.java)
+    val mockDatabase = mock(PlayerDao::class.java)
     val repo = PlayerRepo(mockDatabase)
 
     @Rule
@@ -41,19 +41,19 @@ class PlayerRepoTest {
     var mockitoRule = MockitoJUnit.rule()
 
 
+    val mockPlayer = PlayerDb(12)
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(mainThreadSurrogate)
 
-        Mockito.`when`(mockDatabase.getThePlayer(1))
+        `when`(mockDatabase.getThePlayer(1))
             .thenReturn(
-                MutableLiveData<Player>(mockPlayer)
+                mockPlayer
             )
-
     }
 
-    val mockPlayer = Player(12)
 
     @After
     fun tearDown() {
@@ -64,28 +64,31 @@ class PlayerRepoTest {
 
     @Test
     fun refreshThePlayer__liveDataUpdatedWithExpectedPlayer() = runBlockingTest {
+        `when`(mockDatabase.getThePlayer(2))
+            .thenReturn(PlayerDb(2))
         repo.selectedPlayer.observeForever {  }
-        repo.refreshThePlayer(1)
-        assertEquals(repo.selectedPlayer.value , mockPlayer)
+        repo.refreshThePlayer(2)
+        assertEquals(repo.selectedPlayer.value , PlayerDb(2))
     }
 
     @Test
-    fun refreshThePlayer__onlyInvokedOnce() = runBlockingTest {
+    fun refreshThePlayer__invokeDataBaseOnce() = runBlockingTest {
 
-        repo.refreshThePlayer(1)
+        repo.refreshThePlayer(ArgumentMatchers.anyInt())
 
-        Mockito.verify(mockDatabase, times(0)).getAllTeams()
-        Mockito.verify(mockDatabase, times(0)).getTheTeam(1)
-        Mockito.verify(mockDatabase, times(1)).getThePlayer(1)
+        verify(mockDatabase, times(0)).getAll()
+        verify(mockDatabase, times(0)).insertAll()
+        verify(mockDatabase, times(0)).getPlayersByTeam(ArgumentMatchers.anyInt())
+        verify(mockDatabase, times(1)).getThePlayer(ArgumentMatchers.anyInt())
     }
 
     @Test
-    fun refreshThePlayer__liveDataUpdatedOnlyOnece() = runBlockingTest {
-        val mockObserver  = mock<Observer<Player>>()
+    fun refreshThePlayer__liveDataUpdatedOnlyOnce() = runBlockingTest {
+        val mockObserver  = mock<Observer<PlayerDb>>()
 
         repo.selectedPlayer.observeForever(mockObserver)
-        repo.refreshThePlayer(1)
+        repo.refreshThePlayer(ArgumentMatchers.anyInt())
 
-        verify(mockObserver , times(2)).onChanged(any())
+        verify(mockObserver , times(1)).onChanged(any())
     }
 }

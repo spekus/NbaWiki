@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nbawiki.model.database.db.asRepresentationModel
-import com.example.nbawiki.datasource.repositories.interfaces.PlayerRepository
+import com.example.nbawiki.repositories.interfaces.PlayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
