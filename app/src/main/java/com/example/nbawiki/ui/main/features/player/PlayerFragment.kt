@@ -9,18 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.nbawiki.MyApplication.Companion.playerRepository
+import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
-import com.example.nbawiki.dagger.PocketTreasureComponent
 import com.example.nbawiki.dagger.NamesViewModelProviderFactory
-import com.example.nbawiki.dagger.NamesFragmentModule
 import com.example.nbawiki.databinding.FragmentPlayerBinding
-import com.example.nbawiki.util.ViewModelFactory
+import timber.log.Timber
 import javax.inject.Inject
 
 class PlayerFragment : Fragment() {
     @Inject
     lateinit var daggerFactory: NamesViewModelProviderFactory
+
+    @Inject
+    lateinit var adress : String
 
 
     private lateinit var viewModel: PlayerViewModel
@@ -28,12 +29,7 @@ class PlayerFragment : Fragment() {
 
 
     init {
-        DaggerNamesFragmentComponent.builder()
-////        PocketTreasureComponent.builder()
-//            .namesFragmentModule(NamesFragmentModule(context!!))
-//            .getDaggerComponent
-////            .pocketTreasureComponent((activity!!.application as PocketTreasureApplication).getPocketTreasureComponent())
-//            .build().inject(this)
+        MyApplication.get().component.inject(this)
     }
 
     override fun onCreateView(
@@ -52,6 +48,8 @@ class PlayerFragment : Fragment() {
         setUpViewModel()
         setUpBinding()
 
+        Timber.e(adress)
+
         return binding.root
     }
 
@@ -60,9 +58,11 @@ class PlayerFragment : Fragment() {
             PlayerFragmentArgs.fromBundle(it).playerId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory {
-            PlayerViewModel(playerRepository)
-        }).get(PlayerViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, daggerFactory).get(PlayerViewModel::class.java)
+//
+//        viewModel = ViewModelProviders.of(this, ViewModelFactory {
+//            PlayerViewModel(playerRepository)
+//        }).get(PlayerViewModel::class.java)
 
         viewModel.initializePlayerData(playerId)
 

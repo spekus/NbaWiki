@@ -1,7 +1,9 @@
 package com.example.nbawiki
 
 import android.app.Application
-import com.example.nbawiki.dagger.PocketTreasureComponent
+import com.example.nbawiki.dagger.DaggerMainComponent
+import com.example.nbawiki.dagger.MainComponent
+import com.example.nbawiki.dagger.modules.ContextModule
 import com.example.nbawiki.datasource.database.getDatabase
 import com.example.nbawiki.repositories.PlayerRepo
 import com.example.nbawiki.repositories.TeamRepo
@@ -11,20 +13,35 @@ import com.example.nbawiki.datasource.retrofit.Network
 import com.example.nbawiki.util.TimePreferenceWizard
 import dagger.Component
 
+
 @Component
 interface ApplicationComponent
 
 class MyApplication : Application()  {
 
-    private lateinit var pocketTreasureComponent : PocketTreasureComponent
-    fun getDaggerComponent() = pocketTreasureComponent
+//    private lateinit var pocketTreasureComponent : PocketTreasureComponent
+//    fun getDaggerComponent() = pocketTreasureComponent
 
 //    val appComponent = DaggerApplicationComponent.create()
+
+    lateinit var component: MainComponent
+        private set
 
     override fun onCreate() {
         super.onCreate()
 
-        pocketTreasureComponent = PocketTreasureComponent
+        INSTANCE = this
+//        component = DaggerNamesFragmentComponent.builder()
+//            .namesFragmentModule(NamesFragmentModule(this))
+//            .build()
+
+        component = DaggerMainComponent.builder()
+            .contextModule(ContextModule(this))
+            .build()
+
+//        val contextModule = ContextModule(this)
+//
+//        pocketTreasureComponent = PocketTreasureComponent
 
         // manual injection for repositories
         val timePreferenceWizard = TimePreferenceWizard(this)
@@ -41,5 +58,17 @@ class MyApplication : Application()  {
         lateinit var teamRepository: TeamRepo
         lateinit var teamsRepository: TeamsRepo
         lateinit var playerRepository: PlayerRepository
+
+        private var INSTANCE: MyApplication? = null
+        @JvmStatic
+        fun get(): MyApplication = INSTANCE!!
     }
+//
+//
+//    class Injector private constructor() {
+//        companion object {
+//            fun get() : NamesFragmentComponent =
+//                MyApplication.get().component
+//        }
+//    }
 }

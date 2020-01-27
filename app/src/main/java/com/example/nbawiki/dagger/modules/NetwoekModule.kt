@@ -1,6 +1,5 @@
-package com.example.nbawiki.dagger
+package com.example.nbawiki.dagger.modules
 
-import com.example.nbawiki.datasource.retrofit.BASE_URL
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
