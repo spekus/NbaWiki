@@ -6,6 +6,7 @@ import com.example.nbawiki.dagger.NamesViewModelProviderFactory
 import com.example.nbawiki.datasource.database.AppDatabase
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.repositories.PlayerRepo
+import com.example.nbawiki.repositories.interfaces.PlayerRepository
 import dagger.Module
 import dagger.Provides
 
@@ -14,22 +15,23 @@ class DataBaseModule(){
 //class NamesFragmentModule(private val context: Context){
 
 
-
-    @Provides
-//    @FragmentScope
+//
+//    @Provides
+////    @FragmentScope
+////    fun provideViewModelFactory(
+////        repo: PlayerRepo
+////    ): NamesViewModelProviderFactory {
+////        return NamesViewModelProviderFactory(repo)
+////    }
 //    fun provideViewModelFactory(
 //        repo: PlayerRepo
 //    ): NamesViewModelProviderFactory {
 //        return NamesViewModelProviderFactory(repo)
 //    }
-    fun provideViewModelFactory(
-        repo: PlayerRepo
-    ): NamesViewModelProviderFactory {
-        return NamesViewModelProviderFactory(repo)
-    }
-//    @Provides
-////    @FragmentScope
-//    fun provideNamesRepository(dao: PlayerDao): PlayerRepo = PlayerRepo(dao)
+
+    @Provides
+//    @FragmentScope
+    fun provideNamesRepository(dao: PlayerDao): PlayerRepository = PlayerRepo(dao)
 
 
     @Provides

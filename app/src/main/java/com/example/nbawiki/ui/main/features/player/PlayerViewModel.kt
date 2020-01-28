@@ -8,8 +8,9 @@ import com.example.nbawiki.model.database.db.asRepresentationModel
 import com.example.nbawiki.repositories.interfaces.PlayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlayerViewModel(private val repository : PlayerRepository) : ViewModel() {
+class PlayerViewModel @Inject constructor (private val repository : PlayerRepository) : ViewModel() {
     var player : LiveData<Player> = Transformations.map(repository.selectedPlayer) {
         it.asRepresentationModel()
     }

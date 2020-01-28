@@ -11,14 +11,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
+import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.dagger.NamesViewModelProviderFactory
 import com.example.nbawiki.databinding.FragmentPlayerBinding
+
 import timber.log.Timber
 import javax.inject.Inject
 
 class PlayerFragment : Fragment() {
+//    @Inject
+//    lateinit var daggerFactory: NamesViewModelProviderFactory
+
     @Inject
-    lateinit var daggerFactory: NamesViewModelProviderFactory
+    lateinit var daggerFactory: CustomViewModelFactory
 
     @Inject
     lateinit var adress : String
