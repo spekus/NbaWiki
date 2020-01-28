@@ -15,34 +15,16 @@ import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
-import com.example.nbawiki.repositories.PlayerRepo
-import com.example.nbawiki.ui.main.features.player.PlayerViewModel
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
-import com.example.nbawiki.util.ViewModelFactory
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment : Fragment(), OnItemClickListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding : FragmentListBinding
 
-//    @Inject
-//    lateinit var adress : String
-//
-//    @Inject
-//    lateinit var repo : PlayerRepo
-
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
-
-
-
-    init {
-        MyApplication.get().component.inject(this)
-//        val players = repo.selectedPlayer
-//        Timber.e(adress)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,17 +37,13 @@ class MainFragment : Fragment(), OnItemClickListener {
             false
         )
 
+        MyApplication.get().component.inject(this)
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-//        viewModel = ViewModelProviders.of(this, ViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
-//            .get(MainViewModel::class.java)
-//        viewModel = ViewModelProviders.of(this, ViewModelFactory { MainViewModel(MyApplication.teamsRepository) })
-//            .get(MainViewModel::class.java)
 
         viewModel = ViewModelProviders.of(this, daggerFactory).get(MainViewModel::class.java)
 
@@ -74,7 +52,6 @@ class MainFragment : Fragment(), OnItemClickListener {
                 Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
         })
-
         setUpRecyclerViewAdaper()
     }
 

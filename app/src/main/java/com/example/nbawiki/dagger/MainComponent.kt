@@ -12,7 +12,7 @@ import com.example.nbawiki.ui.main.features.teamslist.MainFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton 
+@Singleton
 @Component(modules = [
     RepositoryModule::class,
     NetworkModule::class,
@@ -28,7 +28,4 @@ interface MainComponent {
     fun inject(teamFragment :TeamFragment)
     fun inject(newsListFragment: NewsListFragment)
     fun inject(playerListFragment: PlayerListFragment)
-//    fun getRepo() : TeamRepository
-//    fun getAdress() : String
-//    fun getContext() : Context
 }

@@ -45,16 +45,15 @@ class TeamRepo @Inject constructor(
 
 
     override suspend fun getTheTeam(teamID: Int) {
-        //pre-load old data from db
-        getCachedData(teamID)
-
+        //pre-load old data from db to live data
+        loadCachedData(teamID)
 
         val shouldNewsBeUpdated =
             wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
-//        if (shouldNewsBeUpdated) {
+        if (shouldNewsBeUpdated) {
             refreshTeamNewsInDataBase(teamID)
             refreshNewsLiveData(teamID)
-//        }
+        }
 
 
         val shouldPlayersBeUpdated =
@@ -65,7 +64,7 @@ class TeamRepo @Inject constructor(
         }
     }
 
-    private fun getCachedData(teamId: Int) {
+    private fun loadCachedData(teamId: Int) {
         // refreshes live data with data from database
         refreshNewsLiveData(teamId)
         refreshPlayersLiveData(teamId)

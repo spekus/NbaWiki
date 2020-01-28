@@ -10,8 +10,4 @@ import javax.inject.Singleton
 class ContextModule(private val appContext : Context) {
     @Provides
     fun appContext() : Context = appContext
-
-    @Provides
-    @Singleton
-    fun provideTimePreferenceWizard(context: Context) : TimePreferenceWizard = TimePreferenceWizard(context)
 }

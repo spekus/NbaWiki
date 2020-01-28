@@ -6,8 +6,9 @@ import com.github.guilhe.sharedprefsutils.ktx.get
 import com.github.guilhe.sharedprefsutils.ktx.put
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class TimePreferenceWizard(context: Context) {
+class TimePreferenceWizard @Inject constructor(context: Context) {
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
 

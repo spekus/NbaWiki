@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TeamViewModel @Inject constructor(private val teamRepository: TeamRepository) : ViewModel() {
-
     var team: LiveData<TeamDetails> = Transformations.map(teamRepository.selectedTeam) {
         it.asTeamDetailsModel()
     }
