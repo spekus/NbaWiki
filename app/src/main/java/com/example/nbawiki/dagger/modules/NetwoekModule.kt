@@ -1,8 +1,16 @@
 package com.example.nbawiki.dagger.modules
 
+import android.content.Context
+import androidx.room.Room
+import com.example.nbawiki.datasource.database.AppDatabase
 import com.example.nbawiki.datasource.retrofit.WebService
+import com.example.nbawiki.model.database.dao.NewDao
+import com.example.nbawiki.model.database.dao.PlayerDao
+import com.example.nbawiki.model.database.dao.TeamsDao
+import com.example.nbawiki.util.TimePreferenceWizard
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -34,5 +42,32 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideBaseUrl() : String = "https://www.thesportsdb.com"
+
+
+    @Provides
+    @Singleton
+    fun provideDatabase(context: Context) : AppDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java,
+        "nba_database"
+    ).fallbackToDestructiveMigration().build()
+
+
+
+    @Provides
+    @Singleton
+    fun provideTeamsDao(database : AppDatabase) : TeamsDao = database.teamDao()
+
+    @Provides
+    @Singleton
+    fun provideNewsDao(database : AppDatabase) : NewDao = database.newsDao()
+
+    @Provides
+    @Singleton
+    fun providePlayerDao(database : AppDatabase) : PlayerDao = database.playerDao()
+
+    @Provides
+    @Singleton
+    fun provideTimePreferenceWizard(context: Context) : TimePreferenceWizard = TimePreferenceWizard(context)
 
 }

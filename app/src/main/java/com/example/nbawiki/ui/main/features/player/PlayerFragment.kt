@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
-import com.example.nbawiki.dagger.NamesViewModelProviderFactory
 import com.example.nbawiki.databinding.FragmentPlayerBinding
 
 import timber.log.Timber

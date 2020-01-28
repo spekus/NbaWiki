@@ -11,14 +11,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.example.nbawiki.MyApplication
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
+import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.ui.main.features.team.models.TeamDetails
+import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
 import com.example.nbawiki.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
+import javax.inject.Inject
 
 class TeamFragment : Fragment() {
+    @Inject
+    lateinit var daggerFactory: CustomViewModelFactory
+
     private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var viewModel : TeamViewModel
@@ -36,6 +43,8 @@ class TeamFragment : Fragment() {
             container,
             false
         )
+
+        MyApplication.get().component.inject(this)
 
         setUpViewModel()
 
@@ -56,8 +65,9 @@ class TeamFragment : Fragment() {
             TeamFragmentArgs.fromBundle(it).teamId
         } ?: 0
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
-            .get(TeamViewModel::class.java)
+//        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
+//            .get(TeamViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, daggerFactory).get(TeamViewModel::class.java)
 
         viewModel.initializeTeamData(teamId)
 

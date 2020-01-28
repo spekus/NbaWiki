@@ -13,8 +13,9 @@ import com.example.nbawiki.model.dto.players.asDataBaseObject
 import com.example.nbawiki.repositories.interfaces.api.TeamRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.*
+import javax.inject.Inject
 
-class TeamRepo(
+class TeamRepo @Inject constructor(
     private val nbaApiService: WebService,
     private val wizard: TimePreferenceWizard,
     private val teamDao: TeamsDao,
@@ -50,10 +51,10 @@ class TeamRepo(
 
         val shouldNewsBeUpdated =
             wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
-        if (shouldNewsBeUpdated) {
+//        if (shouldNewsBeUpdated) {
             refreshTeamNewsInDataBase(teamID)
             refreshNewsLiveData(teamID)
-        }
+//        }
 
 
         val shouldPlayersBeUpdated =

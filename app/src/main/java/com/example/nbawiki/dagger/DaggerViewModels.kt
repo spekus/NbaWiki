@@ -3,6 +3,9 @@ package com.example.nbawiki.dagger
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nbawiki.ui.main.features.player.PlayerViewModel
+import com.example.nbawiki.ui.main.features.team.TeamViewModel
+import com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListViewModel
+import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -35,6 +38,22 @@ abstract class CustomViewModelModule {
     @IntoMap
     @ViewModelKey(PlayerViewModel::class)
     abstract fun bindPlayerViewModel(customViewModel:  PlayerViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(customViewModel:  MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TeamViewModel::class)
+    abstract fun bindTeamViewModel(customViewModel: TeamViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlayerListViewModel::class)
+    abstract fun bindPlayerListViewModel(customViewModel: PlayerListViewModel): ViewModel
 }
 
 

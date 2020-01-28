@@ -10,17 +10,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nbawiki.MyApplication
 import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
+import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
+import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
 import com.example.nbawiki.util.ViewModelFactory
+import javax.inject.Inject
 
 class PlayerListFragment : Fragment(), OnItemClickListener {
-    lateinit var viewModel : TeamViewModel
+    @Inject
+    lateinit var daggerFactory: CustomViewModelFactory
+
+    lateinit var viewModel : PlayerListViewModel
     lateinit var binding : FragmentListBinding
 
     override fun onCreateView(
@@ -34,6 +41,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
             container,
             false
         )
+        MyApplication.get().component.inject(this)
 
         return binding.root
     }
@@ -45,8 +53,9 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
     }
 
     private fun setUpViewModel(){
-        viewModel = ViewModelProviders.of(this , ViewModelFactory { TeamViewModel(teamRepository) })
-            .get(TeamViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, daggerFactory).get(PlayerListViewModel::class.java)
+//        viewModel = ViewModelProviders.of(this , ViewModelFactory { TeamViewModel(teamRepository) })
+//            .get(TeamViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {
@@ -61,6 +70,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
             val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
             binding.update(it)
         })
+
     }
 
     override fun onItemClicked(id: Int) {
