@@ -12,13 +12,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.nbawiki.MyApplication
-import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.ui.main.features.team.models.TeamDetails
-import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
-import com.example.nbawiki.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import javax.inject.Inject
 

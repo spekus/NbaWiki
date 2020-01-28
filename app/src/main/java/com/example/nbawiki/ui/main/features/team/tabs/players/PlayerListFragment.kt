@@ -11,16 +11,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication
-import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
-import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
-import com.example.nbawiki.ui.main.features.team.TeamViewModel
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
-import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
-import com.example.nbawiki.util.ViewModelFactory
+import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import javax.inject.Inject
 
 class PlayerListFragment : Fragment(), OnItemClickListener {

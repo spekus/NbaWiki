@@ -18,12 +18,6 @@ import dagger.Component
 interface ApplicationComponent
 
 class MyApplication : Application()  {
-
-//    private lateinit var pocketTreasureComponent : PocketTreasureComponent
-//    fun getDaggerComponent() = pocketTreasureComponent
-
-//    val appComponent = DaggerApplicationComponent.create()
-
     lateinit var component: MainComponent
         private set
 
@@ -31,44 +25,15 @@ class MyApplication : Application()  {
         super.onCreate()
 
         INSTANCE = this
-//        component = DaggerNamesFragmentComponent.builder()
-//            .namesFragmentModule(NamesFragmentModule(this))
-//            .build()
 
         component = DaggerMainComponent.builder()
             .contextModule(ContextModule(this))
             .build()
-
-//        val contextModule = ContextModule(this)
-//
-//        pocketTreasureComponent = PocketTreasureComponent
-
-        // manual injection for repositories
-        val timePreferenceWizard = TimePreferenceWizard(this)
-        val teamDao = getDatabase(this).teamDao()
-        val newsDao = getDatabase(this).newsDao()
-        val playerDao = getDatabase(this).playerDao()
-
-        teamRepository = TeamRepo(Network.network, timePreferenceWizard, teamDao, playerDao, newsDao)
-        teamsRepository = TeamsRepo(Network.network, timePreferenceWizard, teamDao)
-        playerRepository = PlayerRepo(playerDao)
     }
 
     companion object {
-        lateinit var teamRepository: TeamRepo
-        lateinit var teamsRepository: TeamsRepo
-        lateinit var playerRepository: PlayerRepository
-
         private var INSTANCE: MyApplication? = null
         @JvmStatic
         fun get(): MyApplication = INSTANCE!!
     }
-//
-//
-//    class Injector private constructor() {
-//        companion object {
-//            fun get() : NamesFragmentComponent =
-//                MyApplication.get().component
-//        }
-//    }
 }

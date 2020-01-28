@@ -1,6 +1,7 @@
 package com.example.nbawiki.dagger
 
 import com.example.nbawiki.dagger.modules.ContextModule
+import com.example.nbawiki.dagger.modules.DataBaseModule
 import com.example.nbawiki.dagger.modules.RepositoryModule
 import com.example.nbawiki.dagger.modules.NetworkModule
 import com.example.nbawiki.ui.main.features.player.PlayerFragment
@@ -11,15 +12,16 @@ import com.example.nbawiki.ui.main.features.teamslist.MainFragment
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton //not sure if this needed
+@Singleton 
 @Component(modules = [
     RepositoryModule::class,
     NetworkModule::class,
     ContextModule::class,
     CustomViewModelFactoryModule::class,
-    CustomViewModelModule::class
+    CustomViewModelModule::class,
+    DataBaseModule::class
 ])
-//    , dependencies = [PocketTreasureComponent::class])
+
 interface MainComponent {
     fun inject(playerFragment: PlayerFragment)
     fun inject(mainFragment: MainFragment)

@@ -24,13 +24,13 @@ abstract class RepositoryModule{
 
     @Binds
     @Singleton
-    abstract fun providePlayerRepository(pl : PlayerRepo): PlayerRepository
+    abstract fun providePlayerRepository(pr : PlayerRepo): PlayerRepository
 
     @Binds
     @Singleton
-    abstract fun provideNewsRepository(tm : TeamsRepo): TeamListRepository
+    abstract fun provideNewsRepository(tr : TeamsRepo): TeamListRepository
 
     @Binds
     @Singleton
-    abstract fun provideTeamListRepository(tm :TeamRepo): TeamRepository
+    abstract fun provideTeamListRepository(tr :TeamRepo): TeamRepository
 }

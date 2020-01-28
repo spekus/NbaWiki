@@ -10,14 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nbawiki.MyApplication
-import com.example.nbawiki.MyApplication.Companion.teamRepository
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.models.NewsListElement
-import com.example.nbawiki.ui.main.features.team.TeamViewModel
-import com.example.nbawiki.ui.main.features.teamslist.MainViewModel
-import com.example.nbawiki.util.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
@@ -26,7 +22,7 @@ class NewsListFragment : Fragment() {
     lateinit var daggerFactory: CustomViewModelFactory
 
 
-    lateinit var viewModel: TeamViewModel
+    lateinit var viewModel: NewsListViewModel
     lateinit var binding: FragmentListBinding
 
     init {
@@ -56,7 +52,7 @@ class NewsListFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProviders.of(this, daggerFactory).get(TeamViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, daggerFactory).get(NewsListViewModel::class.java)
 //        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
 //            .get(TeamViewModel::class.java)
     }

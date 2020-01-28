@@ -22,14 +22,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         it.asTeamDetailsModel()
     }
 
-    var newsListElement : LiveData<List<NewsListElement>>  = Transformations.map(teamRepository.news) {
-        it.asNewsListItem()
-    }
-
-//    var players : LiveData<List<PlayerListElement>>  = Transformations.map(teamRepository.players) {
-//        it.asPlayerListItem()
-//    }
-
     val didApiCallFail = teamRepository.didApiCallFail
 
     fun initializeTeamData(teamId: Int) {
