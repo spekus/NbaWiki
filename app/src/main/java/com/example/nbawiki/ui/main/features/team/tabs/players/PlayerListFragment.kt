@@ -1,5 +1,6 @@
 package com.example.nbawiki.ui.main.features.team.tabs.players
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,14 +18,20 @@ import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class PlayerListFragment : Fragment(), OnItemClickListener {
+class PlayerListFragment : DaggerFragment(), OnItemClickListener {
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
     lateinit var viewModel : PlayerListViewModel
     lateinit var binding : FragmentListBinding
+//    override fun onAttach(context: Context) {
+//        AndroidSupportInjection.inject(this)
+//        super.onAttach(context)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +44,7 @@ class PlayerListFragment : Fragment(), OnItemClickListener {
             container,
             false
         )
-        MyApplication.get().component.inject(this)
+//        MyApplication.get().component.inject(this)
 
         return binding.root
     }

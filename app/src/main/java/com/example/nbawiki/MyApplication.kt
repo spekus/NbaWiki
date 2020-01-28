@@ -1,32 +1,16 @@
 package com.example.nbawiki
 
-import android.app.Application
-import com.example.nbawiki.dagger.DaggerMainComponent
-import com.example.nbawiki.dagger.MainComponent
+//import com.example.nbawiki.dagger.MainComponent
+import com.example.nbawiki.dagger.DaggerAppComponent
 import com.example.nbawiki.dagger.modules.ContextModule
-import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 
+class MyApplication : DaggerApplication() {
 
-@Component
-interface ApplicationComponent
-
-class MyApplication : Application()  {
-    lateinit var component: MainComponent
-        private set
-
-    override fun onCreate() {
-        super.onCreate()
-
-        INSTANCE = this
-
-        component = DaggerMainComponent.builder()
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder()
             .contextModule(ContextModule(this))
             .build()
-    }
-
-    companion object {
-        private var INSTANCE: MyApplication? = null
-        @JvmStatic
-        fun get(): MyApplication = INSTANCE!!
     }
 }

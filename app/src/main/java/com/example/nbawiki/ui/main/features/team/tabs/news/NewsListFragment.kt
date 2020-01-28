@@ -1,5 +1,6 @@
 package com.example.nbawiki.ui.main.features.team.tabs.news
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,12 @@ import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.models.NewsListElement
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
-class NewsListFragment : Fragment() {
+class NewsListFragment : DaggerFragment() {
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
@@ -25,8 +28,13 @@ class NewsListFragment : Fragment() {
     lateinit var viewModel: NewsListViewModel
     lateinit var binding: FragmentListBinding
 
+//    override fun onAttach(context: Context) {
+//        AndroidSupportInjection.inject(this)
+//        super.onAttach(context)
+//    }
+
     init {
-        MyApplication.get().component.inject(this)
+//        MyApplication.get().component.inject(this)
     }
 
     override fun onCreateView(

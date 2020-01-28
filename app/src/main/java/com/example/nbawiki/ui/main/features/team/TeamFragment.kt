@@ -1,5 +1,6 @@
 package com.example.nbawiki.ui.main.features.team
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,11 @@ import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentTeamBinding
 import com.example.nbawiki.ui.main.features.team.models.TeamDetails
 import com.google.android.material.tabs.TabLayout
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class TeamFragment : Fragment() {
+class TeamFragment : DaggerFragment() {
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
@@ -29,6 +32,10 @@ class TeamFragment : Fragment() {
     private lateinit var binding : FragmentTeamBinding
     private var teamId : Int = 0
 
+//    override fun onAttach(context: Context) {
+//        AndroidSupportInjection.inject(this)
+//        super.onAttach(context)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +48,7 @@ class TeamFragment : Fragment() {
             false
         )
 
-        MyApplication.get().component.inject(this)
+//        MyApplication.get().component.inject(this)
 
         setUpViewModel()
 

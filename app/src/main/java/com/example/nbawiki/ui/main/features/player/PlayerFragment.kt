@@ -1,5 +1,6 @@
 package com.example.nbawiki.ui.main.features.player
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,13 @@ import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentPlayerBinding
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 
 import timber.log.Timber
 import javax.inject.Inject
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : DaggerFragment()  {
 //    @Inject
 //    lateinit var daggerFactory: NamesViewModelProviderFactory
 
@@ -31,9 +34,13 @@ class PlayerFragment : Fragment() {
     private lateinit var viewModel: PlayerViewModel
     private lateinit var binding: FragmentPlayerBinding
 
+//    override fun onAttach(context: Context) {
+//        AndroidSupportInjection.inject(this)
+//        super.onAttach(context)
+//    }
 
     init {
-        MyApplication.get().component.inject(this)
+//        MyApplication.get().component.inject(this)
     }
 
     override fun onCreateView(
