@@ -35,10 +35,6 @@ class CustomViewModelFactory @Inject constructor(private val viewModelsMap: Map<
 
 @Module
 abstract class CustomViewModelModule {
-    @Binds
-    @IntoMap
-    @ViewModelKey(PlayerViewModel::class)
-    abstract fun bindPlayerViewModel(customViewModel:  PlayerViewModel): ViewModel
 
 
     @Binds

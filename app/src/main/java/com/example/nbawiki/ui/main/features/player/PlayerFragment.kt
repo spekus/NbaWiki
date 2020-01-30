@@ -1,53 +1,41 @@
 package com.example.nbawiki.ui.main.features.player
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentPlayerBinding
-import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
-
 import timber.log.Timber
 import javax.inject.Inject
 
 class PlayerFragment : DaggerFragment()  {
-//    @Inject
-//    lateinit var daggerFactory: NamesViewModelProviderFactory
-
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
     @Inject
     lateinit var adress : String
 
-
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel by lazy { ViewModelProviders
+        .of(this, daggerFactory)[PlayerViewModel::class.java]
+    }
     private lateinit var binding: FragmentPlayerBinding
 
-//    override fun onAttach(context: Context) {
-//        AndroidSupportInjection.inject(this)
-//        super.onAttach(context)
-//    }
+    //        viewModel = ViewModelProviders.of(this, ViewModelFactory {
+//            PlayerViewModel(playerRepository)
+//        }).get(PlayerViewModel::class.java)
 
-    init {
-//        MyApplication.get().component.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        PlayersomthingFragmentComponent.
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -65,18 +53,6 @@ class PlayerFragment : DaggerFragment()  {
     }
 
     private fun setUpViewModel() {
-        val playerId: Int = arguments?.let {
-            PlayerFragmentArgs.fromBundle(it).playerId
-        } ?: 0
-
-        viewModel = ViewModelProviders.of(this, daggerFactory).get(PlayerViewModel::class.java)
-//
-//        viewModel = ViewModelProviders.of(this, ViewModelFactory {
-//            PlayerViewModel(playerRepository)
-//        }).get(PlayerViewModel::class.java)
-
-        viewModel.initializePlayerData(playerId)
-
     }
 
     private fun setUpBinding() {
