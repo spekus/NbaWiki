@@ -1,18 +1,21 @@
 package com.example.nbawiki.ui.main.features.teamslist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.nbawiki.repositories.TeamsRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(teamsRepository : TeamsRepo) : ViewModel() {
-    val teams : LiveData<List<TeamCard>> = Transformations.map(teamsRepository.allTeams) {
-        it?.asPresentationModel()
+    val teams = Transformations.map(teamukai) {
+//        it.asPresentationModel()
+//        it?.asPresentationModel()
     }
+
+    private val teamukai = liveData(Dispatchers.IO) {
+        val teamsss = teamsRepository.getTeamsWithResponse()
+        emitSource(teamsss)
+}
 
     val didApiCallFail = teamsRepository.didApiCallFail
 

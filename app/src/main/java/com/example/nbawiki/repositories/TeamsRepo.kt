@@ -2,16 +2,15 @@ package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+
 import com.example.nbawiki.model.database.dao.TeamsDao
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.model.dto.teams.TeamDTO
 import com.example.nbawiki.model.dto.teams.asDBModel
 import com.example.nbawiki.repositories.interfaces.api.TeamListRepository
 import com.example.nbawiki.datasource.retrofit.WebService
-import com.example.nbawiki.util.Event
-import com.example.nbawiki.util.TEAM_PREF_KEY
-import com.example.nbawiki.util.TimePreferenceWizard
-import com.example.nbawiki.util.UpdateTime
+import com.example.nbawiki.util.*
 import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
@@ -31,6 +30,21 @@ class TeamsRepo @Inject constructor (
 
     override val allTeams: LiveData<List<TeamDb?>>
         get() = _teams
+
+    suspend fun getTeamsWithResponse(): LiveData<Resource<List<TeamDb?>>> = liveData {
+        emit(Resource.Loading())
+        try {
+            val req = nbaApiService.getAllTeams(LEAGUE_KEY)
+            if (req.isSuccessful()) {
+                updateDatabase(req.body()!!.teams)
+                emit(Resource.Success(dataBase.getAllTeams()))
+            }else{
+                emit(Resource.Error("", dataBase.getAllTeams()))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toString()))
+        }
+    }
 
 
     override suspend fun getTeams() {
@@ -66,4 +80,29 @@ class TeamsRepo @Inject constructor (
             it.asDBModel()
         }.forEach { dataBase.insertAll(it) }
     }
+}
+
+suspend fun getData2(): LiveData<Resource<List<TeamDb>>> {
+    val result = MutableLiveData<Resource<List<TeamDb>>>()
+
+}
+
+fun getData(): LiveData<Resource<somedata>> {
+    val result = MutableLiveData<Resource<somedata>>()
+    launch {
+        if (isDataOld) {
+            try {
+                val response = remoteService.getData() // getData() is a suspend function returns a Response object
+                if(response.isSuccessful) {
+                    myDao.addData(response.body)
+                    val dataFromDb = myDao.getData() // returns new data
+                    withContext(Dispatchers.Main) { result.value = Resource.success(dataFromDb)}
+                }
+            } catch (e: Exception) {
+                val dataFromDb = myDao.getData() // returns old data but include error message
+                withContext(Dispatchers.Main) { result.value = Resource.error(e.message, dataFromDb) }
+            }
+        }
+    }
+    return result
 }

@@ -6,6 +6,6 @@ import com.example.nbawiki.model.database.db.PlayerDb
 interface PlayerRepository {
     val selectedPlayer: LiveData<PlayerDb>
 
-    suspend fun refreshThePlayer(id : Int)
-    suspend fun getThePlayer(id : Int) : PlayerDb
+//    suspend fun refreshThePlayer(id : Int)
+    suspend fun getThePlayer(id : Int) : LiveData<PlayerDb>
 }

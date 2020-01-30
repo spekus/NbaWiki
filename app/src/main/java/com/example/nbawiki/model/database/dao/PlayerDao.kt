@@ -14,7 +14,7 @@ interface PlayerDao {
     fun getAll(): List<PlayerDb>
 
     @Query("SELECT * FROM player WHERE playerId=:id")
-    fun getThePlayer(id : Int): PlayerDb
+    fun getThePlayer(id : Int): LiveData<PlayerDb>
 
     @Query("SELECT * FROM player WHERE TEAM_ID=:teamId")
     fun getPlayersByTeam(teamId : Int): List<PlayerDb>

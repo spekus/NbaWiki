@@ -56,7 +56,7 @@ class PlayerFragment : DaggerFragment()  {
     }
 
     private fun setUpBinding() {
-        viewModel.player.observe(viewLifecycleOwner, Observer {
+        viewModel.playerAsUiElement.observe(viewLifecycleOwner, Observer {
             binding.player = it
         })
 

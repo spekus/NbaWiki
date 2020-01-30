@@ -2,16 +2,10 @@ package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.model.database.db.PlayerDb
 import com.example.nbawiki.repositories.interfaces.PlayerRepository
-import com.example.nbawiki.ui.main.features.player.Player
 import javax.inject.Inject
-import com.example.nbawiki.util.Result
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class PlayerRepo @Inject constructor (private val database: PlayerDao) :
     PlayerRepository {
@@ -26,12 +20,12 @@ class PlayerRepo @Inject constructor (private val database: PlayerDao) :
         get() = _selectedPlayer
 
     private var _selectedPlayer: MutableLiveData<PlayerDb> = MutableLiveData()
+//
+//    override suspend fun refreshThePlayer(id: Int) {
+//        _selectedPlayer.postValue(database.getThePlayer(id))
+//    }
 
-    override suspend fun refreshThePlayer(id: Int) {
-        _selectedPlayer.postValue(database.getThePlayer(id))
-    }
-
-    override suspend fun getThePlayer(id: Int): PlayerDb {
+    override suspend fun getThePlayer(id: Int): LiveData<PlayerDb> {
         return database.getThePlayer(id)
     }
 //
