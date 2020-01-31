@@ -16,8 +16,8 @@ class TeamViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _team: LiveData<TeamDb> = liveData(Dispatchers.IO) {
-           val  teamDb =teamRepository.getTheTeam(teamId)
-            emitSource(teamDb)
+           val  teamEntity =teamRepository.getTheTeam(teamId)
+            emitSource(teamEntity)
     }
 
     val team: LiveData<TeamDetails> = Transformations.map(_team) {

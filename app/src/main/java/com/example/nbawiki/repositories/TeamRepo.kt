@@ -1,7 +1,6 @@
 package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.nbawiki.model.database.dao.NewDao
 import com.example.nbawiki.model.database.dao.PlayerDao
@@ -25,30 +24,9 @@ class TeamRepo @Inject constructor(
     private val newsDao: NewDao
 ) : TeamRepository {
 
-    private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
-
-    override val didApiCallFail: LiveData<Event<Boolean>>
-        get() = _didApiCallFail
-
-    private var _selectedTeam: MutableLiveData<TeamDb> = MutableLiveData()
-
-    override val selectedTeam: LiveData<TeamDb>
-        get() = _selectedTeam
-
-    private var _players: MutableLiveData<List<PlayerDb>> = MutableLiveData()
-
-    override val players: LiveData<List<PlayerDb>>
-        get() = _players
-
-    private var _news: MutableLiveData<List<NewsDb>> = MutableLiveData()
-
-    override val news: LiveData<List<NewsDb>>
-        get() = _news
-
-
-    override suspend fun getTheTeam(teamID: Int) : LiveData<TeamDb>{
+    override suspend fun getTheTeam(teamId: Int) : LiveData<TeamDb>{
         return liveData(Dispatchers.IO) {
-            val team =teamDao.getByID(teamID)
+            val team =teamDao.getByID(teamId)
             emit(team)
         }
         //pre-load old data from db to live data
@@ -70,26 +48,40 @@ class TeamRepo @Inject constructor(
 //        }
     }
 
-    private fun loadCachedData(teamId: Int) {
-        // refreshes live data with data from database
-        refreshNewsLiveData(teamId)
-        refreshPlayersLiveData(teamId)
-        refreshTeamLiveData(teamId)
+    override suspend fun getPlayers(teamId: Int): LiveData<List<PlayerDb>> {
+        return liveData(Dispatchers.IO) {
+            val players =playerDao.getPlayersByTeam(teamId)
+            emit(players)
+        }
     }
 
-    private fun refreshNewsLiveData(teamId: Int) {
-        val news = newsDao.getNewsByTeam(teamId)
-        _news.postValue(news)
+    override suspend fun getNews(teamId: Int): LiveData<List<NewsDb>> {
+        return liveData(Dispatchers.IO) {
+            val news = newsDao.getNewsByTeam(teamId)
+            emit(news)
+        }
     }
 
-    private fun refreshPlayersLiveData(teamId: Int) {
-        val allTeamPlayers = playerDao.getPlayersByTeam(teamId)
-        _players.postValue(allTeamPlayers)
-    }
-
-    private fun refreshTeamLiveData(teamId: Int) {
-        _selectedTeam.postValue(teamDao.getByID(teamId))
-    }
+//    private fun loadCachedData(teamId: Int) {
+//        // refreshes live data with data from database
+//        refreshNewsLiveData(teamId)
+//        refreshPlayersLiveData(teamId)
+//        refreshTeamLiveData(teamId)
+//    }
+//
+//    private fun refreshNewsLiveData(teamId: Int) {
+//        val news = newsDao.getNewsByTeam(teamId)
+//        _news.postValue(news)
+//    }
+//
+//    private fun refreshPlayersLiveData(teamId: Int) {
+//        val allTeamPlayers = playerDao.getPlayersByTeam(teamId)
+//        _players.postValue(allTeamPlayers)
+//    }
+//
+//    private fun refreshTeamLiveData(teamId: Int) {
+//        _selectedTeam.postValue(teamDao.getByID(teamId))
+//    }
 
     private suspend fun refreshTeamPlayerInDataBase(teamID: Int) {
         var teamName: String = teamDao.getNameByID(teamID)
@@ -103,7 +95,7 @@ class TeamRepo @Inject constructor(
                 }
                 wizard.updateTimePreferences(PLAYER_PREF_KEY, teamID)
             }
-            else -> _didApiCallFail.postValue(Event(true))
+//            else -> _didApiCallFail.postValue(Event(true))
         }
     }
 
@@ -118,7 +110,7 @@ class TeamRepo @Inject constructor(
                 }
                 wizard.updateTimePreferences(NEWS_PREF_KEY, teamId)
             }
-            else -> _didApiCallFail.postValue(Event(true))
+//            else -> _didApiCallFail.postValue(Event(true))
         }
     }
 }
