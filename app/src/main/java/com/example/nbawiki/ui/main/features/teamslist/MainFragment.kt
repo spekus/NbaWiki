@@ -16,23 +16,21 @@ import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
+import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
+import com.example.nbawiki.util.Resource
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment(), OnItemClickListener {
-    private lateinit var viewModel: MainViewModel
     private lateinit var binding : FragmentListBinding
 
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
-//    override fun onAttach(context: Context) {
-//        AndroidSupportInjection.inject(this)
-//        super.onAttach(context)
-//    }
+    val viewModel  by lazy { ViewModelProviders.of(this, daggerFactory).get(MainViewModel::class.java)}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +44,7 @@ class MainFragment : DaggerFragment(), OnItemClickListener {
         )
 
 //        MyApplication.get().component.inject(this)
+        setUpRecyclerViewAdaper()
 
         return binding.root
     }
@@ -53,27 +52,35 @@ class MainFragment : DaggerFragment(), OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, daggerFactory).get(MainViewModel::class.java)
-
-        viewModel.didApiCallFail.observe(this, Observer {
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
-            }
-        })
-        setUpRecyclerViewAdaper()
+//        viewModel = ViewModelProviders.of(this, daggerFactory).get(MainViewModel::class.java)
+//
+//        viewModel.didApiCallFail.observe(viewLifecycleOwner, Observer {
+//            it.getContentIfNotHandled()?.let {
+//                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+//            }
+//        })
+//        setUpRecyclerViewAdaper()
     }
 
     private fun setUpRecyclerViewAdaper(){
-        val nbaTeams = viewModel.teams.value ?: emptyList()
+//        val nbaTeams = viewModel.teams.value ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = TeamListAdapter(nbaTeams, this@MainFragment, layoutInflater)
+            adapter = TeamListAdapter(emptyList(), this@MainFragment, layoutInflater)
         }
 
-        viewModel.teams.observe(viewLifecycleOwner, Observer<List<TeamCard>> {
+        viewModel.teams.observe(viewLifecycleOwner, Observer< Resource< out List<TeamCard>?>> {
             val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
-            adapter.update(it)
+            when(it){
+                is Resource.Success -> adapter.update(it.data ?: emptyList())
+                is Resource.Loading -> {
+                    if (it.data.isNullOrEmpty()) {  }  // inform user of loading
+                    else { adapter.update(it.data) }
+                }
+                is Resource.Error -> Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+            }
+
         })
     }
 
