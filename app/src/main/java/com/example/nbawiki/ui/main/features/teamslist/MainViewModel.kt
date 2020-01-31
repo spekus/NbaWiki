@@ -1,6 +1,7 @@
 package com.example.nbawiki.ui.main.features.teamslist
 
 import androidx.lifecycle.*
+import com.bumptech.glide.Glide.init
 import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.repositories.TeamsRepo
 import com.example.nbawiki.util.Resource
@@ -15,18 +16,11 @@ class MainViewModel @Inject constructor(teamsRepository : TeamsRepo) : ViewModel
             emitSource(teamsEntity)
         }
     val teams = Transformations.map(_teams){
-        when(it){
+        when(it) {
             is Resource.Success -> Resource.Success(it.data?.asPresentationModel())
-            is Resource.Loading -> Resource.Loading(it.data?.asPresentationModel() ?: emptyList())
+            is Resource.CachedData -> Resource.CachedData(it.data?.asPresentationModel() ?: emptyList())
+            is Resource.Loading -> Resource.Loading()
             is Resource.Error -> Resource.Error("something bad happenened")
-        }
-    }
-
-//    val didApiCallFail = teamsRepository.didApiCallFail
-
-    init {
-        viewModelScope.launch(Dispatchers.IO){
-//            teamsRepository.getTeams()
         }
     }
 }

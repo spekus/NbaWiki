@@ -42,28 +42,12 @@ class MainFragment : DaggerFragment(), OnItemClickListener {
             container,
             false
         )
-
-//        MyApplication.get().component.inject(this)
         setUpRecyclerViewAdaper()
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-//        viewModel = ViewModelProviders.of(this, daggerFactory).get(MainViewModel::class.java)
-//
-//        viewModel.didApiCallFail.observe(viewLifecycleOwner, Observer {
-//            it.getContentIfNotHandled()?.let {
-//                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
-//            }
-//        })
-//        setUpRecyclerViewAdaper()
-    }
-
     private fun setUpRecyclerViewAdaper(){
-//        val nbaTeams = viewModel.teams.value ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -74,13 +58,10 @@ class MainFragment : DaggerFragment(), OnItemClickListener {
             val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
             when(it){
                 is Resource.Success -> adapter.update(it.data ?: emptyList())
-                is Resource.Loading -> {
-                    if (it.data.isNullOrEmpty()) {  }  // inform user of loading
-                    else { adapter.update(it.data) }
-                }
+                is Resource.CachedData -> adapter.update(it.data ?: emptyList())
+                is Resource.Loading ->  {  }  // inform user of loading
                 is Resource.Error -> Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
-
         })
     }
 

@@ -12,77 +12,50 @@ import com.example.nbawiki.repositories.interfaces.api.TeamListRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.*
 import kotlinx.coroutines.Dispatchers
-import timber.log.Timber
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
 
-class TeamsRepo @Inject constructor (
+class TeamsRepo @Inject constructor(
     private val nbaApiService: WebService,
     private val wizard: TimePreferenceWizard,
     private val dataBase: TeamsDao
 ) : TeamListRepository {
 
-    private val _didApiCallFail = MutableLiveData<Event<Boolean>>()
+    override suspend fun getTeamsWithResponse(): LiveData<Resource<List<TeamDb?>>> =
+        liveData(Dispatchers.IO) {
+            emit(Resource.CachedData(dataBase.getAllTeams())) //preLoad data
 
-    override val didApiCallFail: LiveData<Event<Boolean>>
-        get() = _didApiCallFail
-
-    private var _teams: MutableLiveData<List<TeamDb?>> = MutableLiveData()
-
-    override val allTeams: LiveData<List<TeamDb?>>
-        get() = _teams
-
-    suspend fun getTeamsWithResponse(): LiveData<Resource<List<TeamDb?>>> = liveData(Dispatchers.IO) {
-        emit(Resource.Loading(dataBase.getAllTeams())) //preLoad data
-//
-//        when (isItTimeToUpdate()){
-//            false -> emit(Resource.Success(dataBase.getAllTeams()))
-//        }
-
-        emit(Resource.Loading(dataBase.getAllTeams())) //preLoad data
-        try {
-            val req = nbaApiService.getAllTeams(LEAGUE_KEY)
-            if (req.isSuccessful) {
-                updateDatabase(req.body()!!.teams)
-                emit(Resource.Success(dataBase.getAllTeams()))
-            }else if (!req.isSuccessful){
-                emit(Resource.Error("", dataBase.getAllTeams()))
+            when (isItTimeToUpdate()) {
+                false -> emit(Resource.Success(dataBase.getAllTeams()))
+                true -> {
+                    emit(Resource.Loading())
+                    val teams = returnApiCallResult()
+                    emit(returnApiCallResult())
+                    if (teams is Resource.Success) {
+                        changeUpdateTimeToNow()
+                    }
+                }
             }
-        } catch (e: Exception) {
-            emit(Resource.Error(e.toString()))
         }
-    }
 
-    fun isItTimeToUpdate() : Boolean{
+    private fun isItTimeToUpdate(): Boolean {
         return wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)
     }
 
-
-    override suspend fun getTeams() {
-        // pre load data
-//        _teams.postValue(dataBase.getAllTeams())
-//
-//        if (wizard.isItTimeToUpdate(TEAM_PREF_KEY, UpdateTime.TEAM.timeBeforeUpdate)) {
-//            refreshTeams()
-//        }
+    private fun changeUpdateTimeToNow() {
+        wizard.updateTimePreferences(TEAM_PREF_KEY)
     }
 
-    private suspend fun refreshTeams() {
-        try {
-            val teamsResponse = nbaApiService.getAllTeams(LEAGUE_KEY)
-            when (teamsResponse.isSuccessful) {
-                true -> {
-                    updateDatabase(teamsResponse.body()!!.teams)
-                    wizard.updateTimePreferences(TEAM_PREF_KEY)
-                    _teams.postValue(dataBase.getAllTeams())
-                    _didApiCallFail.postValue(Event(false))
-                }
-
-                else -> _didApiCallFail.postValue(Event(true))
+    private suspend fun returnApiCallResult(): Resource<List<TeamDb?>> {
+        return safeApiCall {
+            val req = nbaApiService.getAllTeams(LEAGUE_KEY)
+            if (req.isSuccessful) {
+                updateDatabase(req.body()!!.teams)
+                Resource.Success(dataBase.getAllTeams())
+            } else {
+                Resource.Error(req.message(), dataBase.getAllTeams())
             }
-        } catch (exception: Exception) {
-            Timber.e(exception)
-            _didApiCallFail.postValue(Event(true))
         }
     }
 
@@ -92,28 +65,12 @@ class TeamsRepo @Inject constructor (
         }.forEach { dataBase.insertAll(it) }
     }
 }
-//
-//suspend fun getData2(): LiveData<Resource<List<TeamDb>>> {
-//    val result = MutableLiveData<Resource<List<TeamDb>>>()
-//
-//}
-//
-//fun getData(): LiveData<Resource<somedata>> {
-//    val result = MutableLiveData<Resource<somedata>>()
-//    launch {
-//        if (isDataOld) {
-//            try {
-//                val response = remoteService.getData() // getData() is a suspend function returns a Response object
-//                if(response.isSuccessful) {
-//                    myDao.addData(response.body)
-//                    val dataFromDb = myDao.getData() // returns new data
-//                    withContext(Dispatchers.Main) { result.value = Resource.success(dataFromDb)}
-//                }
-//            } catch (e: Exception) {
-//                val dataFromDb = myDao.getData() // returns old data but include error message
-//                withContext(Dispatchers.Main) { result.value = Resource.error(e.message, dataFromDb) }
-//            }
-//        }
-//    }
-//    return result
-//}
+
+suspend fun <T> safeApiCall(responseFunction: suspend () -> Resource<T>): Resource<T> {
+    return try {
+        val response = withContext(Dispatchers.IO) { responseFunction() }
+        response
+    } catch (e: Exception) {
+        Resource.Error(e.message.toString())
+    }
+}
