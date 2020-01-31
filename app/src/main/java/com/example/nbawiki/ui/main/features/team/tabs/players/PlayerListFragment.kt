@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,6 +19,7 @@ import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
+import com.example.nbawiki.util.Status
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -62,16 +64,22 @@ class PlayerListFragment : DaggerFragment(), OnItemClickListener {
     }
 
     private fun setUpRecyclerView() {
-        val players = viewModel.players.value ?: emptyList()
+//        val players = viewModel.players.value ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = PlayerListAdapter(players, this@PlayerListFragment, layoutInflater)
+            adapter = PlayerListAdapter(emptyList(), this@PlayerListFragment, layoutInflater)
         }
 
-        viewModel.players.observe(viewLifecycleOwner, Observer<List<PlayerListElement>> {
+        viewModel.players.observe(viewLifecycleOwner, Observer<Status<List<PlayerListElement>?>> {
             val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
-            binding.update(it)
+            if(it is Status.Success || it is Status.CachedData){
+                binding.update(it.data)
+            }
+            if(it is Status.Error){
+                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+            }
+
         })
 
     }

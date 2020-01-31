@@ -11,8 +11,6 @@ import com.example.nbawiki.repositories.interfaces.api.TeamListRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 class TeamsRepo @Inject constructor(
@@ -26,11 +24,10 @@ class TeamsRepo @Inject constructor(
             emit(Status.CachedData(dataBase.getAllTeams())) //preLoad data
 
             when (isItTimeToUpdate()) {
-                false -> emit(Status.Success(dataBase.getAllTeams()))
                 true -> {
                     emit(Status.Loading())
                     val teams = returnApiCallResult()
-                    emit(returnApiCallResult())
+                    emit(teams)
                     if (teams is Status.Success) {
                         changeUpdateTimeToNow()
                     }
@@ -50,7 +47,7 @@ class TeamsRepo @Inject constructor(
         return safeApiCall {
             val req = nbaApiService.getAllTeams(LEAGUE_KEY)
             if (req.isSuccessful) {
-                updateDatabase(req.body()!!.teams)
+                updateDatabaseWithDto(req.body()!!.teams)
                 Status.Success(dataBase.getAllTeams())
             } else {
                 Status.Error(req.message(), dataBase.getAllTeams())
@@ -58,18 +55,11 @@ class TeamsRepo @Inject constructor(
         }
     }
 
-    private fun updateDatabase(teams: List<TeamDTO>) {
+    private fun updateDatabaseWithDto(teams: List<TeamDTO>) {
         teams.map {
             it.asDBModel()
         }.forEach { dataBase.insertAll(it) }
     }
 }
 
-suspend fun <T> safeApiCall(responseFunction: suspend () -> Status<T>): Status<T> {
-    return try {
-        val response = withContext(Dispatchers.IO) { responseFunction() }
-        response
-    } catch (e: Exception) {
-        Status.Error(e.message.toString())
-    }
-}
+

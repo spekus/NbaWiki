@@ -24,13 +24,13 @@ class NewsListViewModel @Inject constructor(
     private val teamId: Int
 ) : ViewModel() {
 
-    private var _newsList: LiveData<List<NewsDb>> = liveData(Dispatchers.IO) {
+    private var _newsList: LiveData<Status<List<NewsDb>>> = liveData(Dispatchers.IO) {
         val teamsEntity = teamRepo.getNews(teamId)
         emitSource(teamsEntity)
     }
 
-    var newsListElement: LiveData<List<NewsListElement>> = Transformations.map(_newsList) {
-        it.asNewsListItem()
+    var newsListElement: LiveData<Status<List<NewsListElement>?>> = Transformations.map(_newsList) {
+        wrapWithNewStatusInstance(it) {it.data?.asNewsListItem()}
     }
 
 }

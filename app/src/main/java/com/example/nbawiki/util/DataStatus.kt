@@ -1,5 +1,9 @@
 package com.example.nbawiki.util
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.lang.Exception
+
 sealed class Status<T>(
     val data: T? = null,
     val message: String? = null
@@ -16,6 +20,15 @@ fun <Y,T> wrapWithNewStatusInstance(status : Status<T>, function : () -> Y) : St
         is Status.CachedData -> Status.CachedData(function())
         is Status.Loading -> Status.Loading()
         is Status.Error -> Status.Error(status.message ?: "Unknown issue")
+    }
+}
+
+suspend fun <T> safeApiCall(responseFunction: suspend () -> Status<T>): Status<T> {
+    return try {
+        val response = withContext(Dispatchers.IO) { responseFunction() }
+        response
+    } catch (e: Exception) {
+        Status.Error(e.message.toString())
     }
 }
 

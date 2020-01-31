@@ -12,6 +12,8 @@ import com.example.nbawiki.model.dto.news.asDatabaseObject
 import com.example.nbawiki.model.dto.players.asDataBaseObject
 import com.example.nbawiki.repositories.interfaces.api.TeamRepository
 import com.example.nbawiki.datasource.retrofit.WebService
+import com.example.nbawiki.model.dto.news.NewsListDTO
+import com.example.nbawiki.model.dto.players.PlayersListDTO
 import com.example.nbawiki.util.*
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -24,12 +26,10 @@ class TeamRepo @Inject constructor(
     private val newsDao: NewDao
 ) : TeamRepository {
 
-    override suspend fun getTheTeam(teamId: Int) : LiveData<TeamDb>{
-        return liveData(Dispatchers.IO) {
-            val team =teamDao.getByID(teamId)
-            emit(team)
-        }
-        //pre-load old data from db to live data
+    override suspend fun getTheTeam(teamId: Int): LiveData<TeamDb> {
+        return teamDao.getByID(teamId)
+    }
+    //pre-load old data from db to live data
 //        loadCachedData(teamID)
 //
 //        val shouldNewsBeUpdated =
@@ -46,19 +46,89 @@ class TeamRepo @Inject constructor(
 //            refreshTeamPlayerInDataBase(teamID)
 //            refreshPlayersLiveData(teamID)
 //        }
-    }
 
-    override suspend fun getPlayers(teamId: Int): LiveData<List<PlayerDb>> {
+
+    override suspend fun getPlayers(teamId: Int): LiveData<Status<List<PlayerDb>>> {
         return liveData(Dispatchers.IO) {
-            val players =playerDao.getPlayersByTeam(teamId)
-            emit(players)
+            val players = playerDao.getPlayersByTeam(teamId)
+            emit(Status.CachedData(players))
+
+            when (shouldPlayersBeUpdated(teamId)) {
+                true ->{
+                    emit(Status.Loading())
+                    emit(
+                        getPlayerApiCallResult(teamId)
+                    )
+
+                }
+                false -> emit(Status.Success(players))
+            }
         }
     }
 
-    override suspend fun getNews(teamId: Int): LiveData<List<NewsDb>> {
+    private suspend fun getPlayerApiCallResult(teamId: Int): Status<List<PlayerDb>> {
+        return safeApiCall {
+            val teamName: String = teamDao.getNameByID(teamId)
+            val response = nbaApiService.getAllPlayers(teamName)
+            if (response.isSuccessful) {
+                updateDatabasePlayerWith(response.body(), teamId)
+                wizard.updateTimePreferences(PLAYER_PREF_KEY, teamId)
+                Status.Success(playerDao.getPlayersByTeam(teamId))
+            }else{
+                Status.Error(response.message(), playerDao.getPlayersByTeam(teamId))
+            }
+        }
+    }
+
+    private fun updateDatabasePlayerWith(body: PlayersListDTO?, teamId: Int) {
+        body!!.player.map {
+            it.asDataBaseObject(teamId)
+        }.forEach {
+            playerDao.insertAll(it)
+        }
+    }
+
+    private fun shouldPlayersBeUpdated(teamID: Int): Boolean {
+        return wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
+    }
+
+    override suspend fun getNews(teamId: Int): LiveData<Status<List<NewsDb>>> {
         return liveData(Dispatchers.IO) {
             val news = newsDao.getNewsByTeam(teamId)
-            emit(news)
+            emit(Status.CachedData(news))
+            when (shouldNewsBeUpdated(teamId)) {
+                true -> {
+                    emit(Status.Loading())
+                    emit(getNewsApiCallResult(teamId))
+                }
+                false -> emit(Status.Success(news))
+            }
+        }
+    }
+
+    private suspend fun getNewsApiCallResult(teamId: Int): Status<List<NewsDb>> {
+        return safeApiCall {
+            val response = nbaApiService.getAllNews(teamId.toString())
+            if (response.isSuccessful) {
+                updateDatabaseWith(response.body(), teamId)
+                wizard.updateTimePreferences(NEWS_PREF_KEY, teamId)
+                Status.Success(newsDao.getNewsByTeam(teamId))
+            }else{
+                Status.Error(response.message(), newsDao.getNewsByTeam(teamId))
+            }
+        }
+    }
+
+    private fun shouldNewsBeUpdated(teamID: Any): Boolean {
+        return wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+    }
+
+
+    private fun updateDatabaseWith(body: NewsListDTO?, teamId: Int) {
+        body!!.results.map {
+            it.asDatabaseObject(teamId)
+        }.forEach {
+            newsDao.insertAll(it)
         }
     }
 

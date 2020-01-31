@@ -14,7 +14,7 @@ interface TeamsDao {
     fun getAllTeams() : List<TeamDb?>
 
     @Query("SELECT * FROM TeamDb WHERE id =:teamId")
-    fun getByID(teamId : Int) : TeamDb
+    fun getByID(teamId : Int) : LiveData<TeamDb>
 
     @Query("SELECT TEAM_NAME FROM TeamDb WHERE id =:teamId")
     fun getNameByID(teamId : Int) : String
