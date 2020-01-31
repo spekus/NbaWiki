@@ -42,16 +42,6 @@ abstract class CustomViewModelModule {
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(customViewModel:  MainViewModel): ViewModel
 
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(PlayerListViewModel::class)
-    abstract fun bindPlayerListViewModel(customViewModel: PlayerListViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(NewsListViewModel::class)
-    abstract fun bindNewsListViewModel(customViewModel: NewsListViewModel): ViewModel
 }
 
 

@@ -9,11 +9,16 @@ import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
 import com.example.nbawiki.ui.main.features.team.models.asPlayerListItem
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
+import javax.inject.Named
 
-class PlayerListViewModel @Inject constructor(teamRepository: TeamRepository) : ViewModel() {
+class PlayerListViewModel @Inject constructor(
+    teamRepository: TeamRepository,
+    @Named("TeamId")
+    private val teamId: Int
+) : ViewModel() {
 
-    var players : LiveData<List<PlayerListElement>> =
+    var players: LiveData<List<PlayerListElement>> =
         Transformations.map(teamRepository.players) {
-        it.asPlayerListItem()
-    }
+            it.asPlayerListItem()
+        }
 }

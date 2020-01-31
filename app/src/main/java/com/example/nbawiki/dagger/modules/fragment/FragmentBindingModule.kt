@@ -16,12 +16,6 @@ abstract class FragmentBindingModule {
     @ContributesAndroidInjector(modules = [PlayerModule::class])
     abstract fun contributePlayerFragment(): PlayerFragment
 
-    @ContributesAndroidInjector
-    abstract fun contributePlayerListFragment(): PlayerListFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributeNewsListFragment(): NewsListFragment
-
-    @ContributesAndroidInjector(modules = [TeamModule::class])
+    @ContributesAndroidInjector(modules = [TeamModule::class, TeamIdModule::class])
     abstract fun contributeTeamFragment(): TeamFragment
 }
