@@ -1,28 +1,22 @@
 package com.example.nbawiki.ui.main.features.teamslist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.nbawiki.MyApplication
 import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
-import com.example.nbawiki.model.database.db.TeamDb
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapter
-import com.example.nbawiki.util.Resource
-import dagger.android.support.AndroidSupportInjection
+import com.example.nbawiki.util.Status
 import dagger.android.support.DaggerFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment(), OnItemClickListener {
@@ -55,13 +49,13 @@ class MainFragment : DaggerFragment(), OnItemClickListener {
             adapter = TeamListAdapter(emptyList(), this@MainFragment, layoutInflater)
         }
 
-        viewModel.teams.observe(viewLifecycleOwner, Observer< Resource< out List<TeamCard>?>> {
+        viewModel.teams.observe(viewLifecycleOwner, Observer<Status<List<TeamCard>?>> {
             val adapter = binding.teamRecyclerView.adapter as TeamListAdapter
             when(it){
-                is Resource.Success -> adapter.update(it.data ?: emptyList())
-                is Resource.CachedData -> adapter.update(it.data ?: emptyList())
-                is Resource.Loading ->  {  }  // inform user of loading
-                is Resource.Error -> Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+                is Status.Success -> adapter.update(it.data ?: emptyList())
+                is Status.CachedData -> adapter.update(it.data ?: emptyList())
+                is Status.Loading ->  {  }  // inform user of loading
+                is Status.Error -> Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
         })
     }

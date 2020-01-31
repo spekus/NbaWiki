@@ -59,11 +59,11 @@ class TeamFragment : DaggerFragment() {
             binding.teamDetails = it
         })
 
-        viewModel.didApiCallFail.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
-            }
-        })
+//        viewModel.didApiCallFail.observe(viewLifecycleOwner, Observer {
+//            it.getContentIfNotHandled()?.let {
+//                Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+//            }
+//        })
     }
 
     private fun setUpTabLayout(view: View) {

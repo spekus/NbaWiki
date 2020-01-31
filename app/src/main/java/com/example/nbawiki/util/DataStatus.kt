@@ -1,16 +1,22 @@
 package com.example.nbawiki.util
 
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
-
-sealed class Resource<T>(
-    var data: T? = null,
+sealed class Status<T>(
+    val data: T? = null,
     val message: String? = null
 ) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Loading<T> : Resource<T>()
-    class CachedData<T>(data: T? = null) : Resource<T>(data)
-    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
+    class Success<T>(data: T) : Status<T>(data)
+    class Loading<T> : Status<T>()
+    class CachedData<T>(data: T? = null) : Status<T>(data)
+    class Error<T>(message: String, data: T? = null) : Status<T>(data, message)
+}
+
+fun <Y,T> wrapWithNewStatusInstance(status : Status<T>, function : () -> Y) : Status<Y> {
+    return when(status) {
+        is Status.Success -> Status.Success(function())
+        is Status.CachedData -> Status.CachedData(function())
+        is Status.Loading -> Status.Loading()
+        is Status.Error -> Status.Error(status.message ?: "Unknown issue")
+    }
 }
 
 

@@ -1,7 +1,6 @@
 package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 
 import com.example.nbawiki.model.database.dao.TeamsDao
@@ -22,17 +21,17 @@ class TeamsRepo @Inject constructor(
     private val dataBase: TeamsDao
 ) : TeamListRepository {
 
-    override suspend fun getTeamsWithResponse(): LiveData<Resource<List<TeamDb?>>> =
+    override suspend fun getTeamsWithResponse(): LiveData<Status<List<TeamDb?>>> =
         liveData(Dispatchers.IO) {
-            emit(Resource.CachedData(dataBase.getAllTeams())) //preLoad data
+            emit(Status.CachedData(dataBase.getAllTeams())) //preLoad data
 
             when (isItTimeToUpdate()) {
-                false -> emit(Resource.Success(dataBase.getAllTeams()))
+                false -> emit(Status.Success(dataBase.getAllTeams()))
                 true -> {
-                    emit(Resource.Loading())
+                    emit(Status.Loading())
                     val teams = returnApiCallResult()
                     emit(returnApiCallResult())
-                    if (teams is Resource.Success) {
+                    if (teams is Status.Success) {
                         changeUpdateTimeToNow()
                     }
                 }
@@ -47,14 +46,14 @@ class TeamsRepo @Inject constructor(
         wizard.updateTimePreferences(TEAM_PREF_KEY)
     }
 
-    private suspend fun returnApiCallResult(): Resource<List<TeamDb?>> {
+    private suspend fun returnApiCallResult(): Status<List<TeamDb?>> {
         return safeApiCall {
             val req = nbaApiService.getAllTeams(LEAGUE_KEY)
             if (req.isSuccessful) {
                 updateDatabase(req.body()!!.teams)
-                Resource.Success(dataBase.getAllTeams())
+                Status.Success(dataBase.getAllTeams())
             } else {
-                Resource.Error(req.message(), dataBase.getAllTeams())
+                Status.Error(req.message(), dataBase.getAllTeams())
             }
         }
     }
@@ -66,11 +65,11 @@ class TeamsRepo @Inject constructor(
     }
 }
 
-suspend fun <T> safeApiCall(responseFunction: suspend () -> Resource<T>): Resource<T> {
+suspend fun <T> safeApiCall(responseFunction: suspend () -> Status<T>): Status<T> {
     return try {
         val response = withContext(Dispatchers.IO) { responseFunction() }
         response
     } catch (e: Exception) {
-        Resource.Error(e.message.toString())
+        Status.Error(e.message.toString())
     }
 }

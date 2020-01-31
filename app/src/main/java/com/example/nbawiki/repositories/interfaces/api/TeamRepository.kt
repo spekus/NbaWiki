@@ -10,6 +10,6 @@ interface TeamRepository : ApiErrorHolder {
     val players: LiveData<List<PlayerDb>>
     val news: LiveData<List<NewsDb>>
 
-    suspend fun getTheTeam(id : Int)
+    suspend fun getTheTeam(id : Int) : LiveData<TeamDb>
 
 }

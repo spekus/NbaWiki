@@ -30,7 +30,6 @@ class CustomViewModelFactory @Inject constructor(private val viewModelsMap: Map<
             throw RuntimeException(e)
         }
     }
-
 }
 
 @Module

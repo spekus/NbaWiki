@@ -2,6 +2,7 @@ package com.example.nbawiki.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.nbawiki.model.database.dao.NewDao
 import com.example.nbawiki.model.database.dao.PlayerDao
 import com.example.nbawiki.model.database.dao.TeamsDao
@@ -13,6 +14,7 @@ import com.example.nbawiki.model.dto.players.asDataBaseObject
 import com.example.nbawiki.repositories.interfaces.api.TeamRepository
 import com.example.nbawiki.datasource.retrofit.WebService
 import com.example.nbawiki.util.*
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class TeamRepo @Inject constructor(
@@ -44,24 +46,28 @@ class TeamRepo @Inject constructor(
         get() = _news
 
 
-    override suspend fun getTheTeam(teamID: Int) {
+    override suspend fun getTheTeam(teamID: Int) : LiveData<TeamDb>{
+        return liveData(Dispatchers.IO) {
+            val team =teamDao.getByID(teamID)
+            emit(team)
+        }
         //pre-load old data from db to live data
-        loadCachedData(teamID)
-
-        val shouldNewsBeUpdated =
-            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
-        if (shouldNewsBeUpdated) {
-            refreshTeamNewsInDataBase(teamID)
-            refreshNewsLiveData(teamID)
-        }
-
-
-        val shouldPlayersBeUpdated =
-            wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
-        if (shouldPlayersBeUpdated) {
-            refreshTeamPlayerInDataBase(teamID)
-            refreshPlayersLiveData(teamID)
-        }
+//        loadCachedData(teamID)
+//
+//        val shouldNewsBeUpdated =
+//            wizard.isItTimeToUpdate(NEWS_PREF_KEY + teamID, UpdateTime.EVENT.timeBeforeUpdate)
+//        if (shouldNewsBeUpdated) {
+//            refreshTeamNewsInDataBase(teamID)
+//            refreshNewsLiveData(teamID)
+//        }
+//
+//
+//        val shouldPlayersBeUpdated =
+//            wizard.isItTimeToUpdate(PLAYER_PREF_KEY + teamID, UpdateTime.PLAYER.timeBeforeUpdate)
+//        if (shouldPlayersBeUpdated) {
+//            refreshTeamPlayerInDataBase(teamID)
+//            refreshPlayersLiveData(teamID)
+//        }
     }
 
     private fun loadCachedData(teamId: Int) {
