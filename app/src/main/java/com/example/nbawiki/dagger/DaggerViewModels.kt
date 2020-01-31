@@ -42,10 +42,6 @@ abstract class CustomViewModelModule {
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(customViewModel:  MainViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(TeamViewModel::class)
-    abstract fun bindTeamViewModel(customViewModel: TeamViewModel): ViewModel
 
     @Binds
     @IntoMap

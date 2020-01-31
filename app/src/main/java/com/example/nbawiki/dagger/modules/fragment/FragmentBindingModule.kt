@@ -1,7 +1,6 @@
-package com.example.nbawiki.dagger.modules
+package com.example.nbawiki.dagger.modules.fragment
 
 import com.example.nbawiki.ui.main.features.player.PlayerFragment
-import com.example.nbawiki.ui.main.features.player.PlayerModule
 import com.example.nbawiki.ui.main.features.team.TeamFragment
 import com.example.nbawiki.ui.main.features.team.tabs.news.NewsListFragment
 import com.example.nbawiki.ui.main.features.team.tabs.players.PlayerListFragment
@@ -23,6 +22,6 @@ abstract class FragmentBindingModule {
     @ContributesAndroidInjector
     abstract fun contributeNewsListFragment(): NewsListFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [TeamModule::class])
     abstract fun contributeTeamFragment(): TeamFragment
 }

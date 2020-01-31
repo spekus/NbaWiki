@@ -15,18 +15,28 @@ import com.example.nbawiki.ui.main.features.team.models.asPlayerListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
-class TeamViewModel @Inject constructor(private val teamRepository: TeamRepository) : ViewModel() {
+class TeamViewModel @Inject constructor(
+    private val teamRepository: TeamRepository,
+    @Named("TeamId")
+    private val teamId : Int) : ViewModel() {
     val team: LiveData<TeamDetails> = Transformations.map(teamRepository.selectedTeam) {
         it.asTeamDetailsModel()
     }
 
     val didApiCallFail = teamRepository.didApiCallFail
 
-    fun initializeTeamData(teamId: Int) {
+    init {
         viewModelScope.launch(Dispatchers.IO) {
             teamRepository.getTheTeam(teamId)
         }
     }
+
+//    fun initializeTeamData(teamId: Int) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            teamRepository.getTheTeam(teamId)
+//        }
+//    }
 }
 

@@ -1,7 +1,10 @@
-package com.example.nbawiki.ui.main.features.player
+package com.example.nbawiki.dagger.modules.fragment
 
 import androidx.lifecycle.ViewModel
 import com.example.nbawiki.dagger.ViewModelKey
+import com.example.nbawiki.ui.main.features.player.PlayerFragment
+import com.example.nbawiki.ui.main.features.player.PlayerFragmentArgs
+import com.example.nbawiki.ui.main.features.player.PlayerViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -13,7 +16,7 @@ abstract class PlayerModule {
     @Binds
     @IntoMap
     @ViewModelKey(PlayerViewModel::class)
-    abstract fun bindPlayerViewModel(customViewModel:  PlayerViewModel): ViewModel
+    abstract fun bindPlayerViewModel(customViewModel: PlayerViewModel): ViewModel
 
     @Module
     companion object {
@@ -21,6 +24,8 @@ abstract class PlayerModule {
         @Provides
         @JvmStatic
         fun providePlayerId(fragment: PlayerFragment): Int =
-            PlayerFragmentArgs.fromBundle(fragment.requireArguments()).playerId
+            PlayerFragmentArgs.fromBundle(
+                fragment.requireArguments()
+            ).playerId
     }
 }

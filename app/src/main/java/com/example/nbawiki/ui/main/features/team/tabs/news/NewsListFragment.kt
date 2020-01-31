@@ -28,15 +28,6 @@ class NewsListFragment : DaggerFragment() {
     lateinit var viewModel: NewsListViewModel
     lateinit var binding: FragmentListBinding
 
-//    override fun onAttach(context: Context) {
-//        AndroidSupportInjection.inject(this)
-//        super.onAttach(context)
-//    }
-
-    init {
-//        MyApplication.get().component.inject(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +40,6 @@ class NewsListFragment : DaggerFragment() {
             false
         )
 
-
         return binding.root
     }
 
@@ -61,8 +51,6 @@ class NewsListFragment : DaggerFragment() {
 
     private fun setUpViewModel() {
         viewModel = ViewModelProviders.of(this, daggerFactory).get(NewsListViewModel::class.java)
-//        viewModel = ViewModelProviders.of(this, ViewModelFactory { TeamViewModel(teamRepository) })
-//            .get(TeamViewModel::class.java)
     }
 
     private fun setUpRecyclerViewAdapter() {
