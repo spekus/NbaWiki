@@ -18,9 +18,9 @@ class MainViewModel @Inject constructor(teamsRepository : TeamsRepo) : ViewModel
     val teams = Transformations.map(_teams){
         when(it) {
             is Resource.Success -> Resource.Success(it.data?.asPresentationModel())
-            is Resource.CachedData -> Resource.CachedData(it.data?.asPresentationModel() ?: emptyList())
+            is Resource.CachedData -> Resource.CachedData(it.data?.asPresentationModel())
             is Resource.Loading -> Resource.Loading()
-            is Resource.Error -> Resource.Error("something bad happenened")
+            is Resource.Error -> Resource.Error(it.message ?: "Unknown issue")
         }
     }
 }

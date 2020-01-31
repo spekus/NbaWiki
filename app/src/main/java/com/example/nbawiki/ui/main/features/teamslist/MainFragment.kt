@@ -22,6 +22,7 @@ import com.example.nbawiki.ui.main.features.teamslist.recycleview.TeamListAdapte
 import com.example.nbawiki.util.Resource
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment(), OnItemClickListener {
