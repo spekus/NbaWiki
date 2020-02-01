@@ -18,7 +18,9 @@ import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.TeamFragmentDirections
 import com.example.nbawiki.ui.main.features.team.models.PlayerListElement
+import com.example.nbawiki.ui.main.features.teamslist.hideShiver
 import com.example.nbawiki.ui.main.features.teamslist.recycleview.OnItemClickListener
+import com.example.nbawiki.ui.main.features.teamslist.showShiver
 import com.example.nbawiki.util.Status
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
@@ -28,12 +30,9 @@ class PlayerListFragment : DaggerFragment(), OnItemClickListener {
     @Inject
     lateinit var daggerFactory: CustomViewModelFactory
 
-    lateinit var viewModel : PlayerListViewModel
+    private val viewModel by lazy{ ViewModelProviders.of(this, daggerFactory).get(PlayerListViewModel::class.java) }
+
     lateinit var binding : FragmentListBinding
-//    override fun onAttach(context: Context) {
-//        AndroidSupportInjection.inject(this)
-//        super.onAttach(context)
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,25 +45,16 @@ class PlayerListFragment : DaggerFragment(), OnItemClickListener {
             container,
             false
         )
-//        MyApplication.get().component.inject(this)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpViewModel()
         setUpRecyclerView()
     }
 
-    private fun setUpViewModel(){
-        viewModel = ViewModelProviders.of(this, daggerFactory).get(PlayerListViewModel::class.java)
-//        viewModel = ViewModelProviders.of(this , ViewModelFactory { TeamViewModel(teamRepository) })
-//            .get(TeamViewModel::class.java)
-    }
-
     private fun setUpRecyclerView() {
-//        val players = viewModel.players.value ?: emptyList()
 
         binding.teamRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -74,12 +64,15 @@ class PlayerListFragment : DaggerFragment(), OnItemClickListener {
         viewModel.players.observe(viewLifecycleOwner, Observer<Status<List<PlayerListElement>?>> {
             val binding = binding.teamRecyclerView.adapter as PlayerListAdapter
             if(it is Status.Success || it is Status.CachedData){
+                hideShiver()
                 binding.update(it.data)
             }
             if(it is Status.Error){
                 Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
             }
-
+            if(it is Status.Loading){
+                showShiver()
+            }
         })
 
     }

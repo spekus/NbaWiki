@@ -16,6 +16,8 @@ import com.example.nbawiki.R
 import com.example.nbawiki.dagger.CustomViewModelFactory
 import com.example.nbawiki.databinding.FragmentListBinding
 import com.example.nbawiki.ui.main.features.team.models.NewsListElement
+import com.example.nbawiki.ui.main.features.teamslist.hideShiver
+import com.example.nbawiki.ui.main.features.teamslist.showShiver
 import com.example.nbawiki.util.Status
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
@@ -64,10 +66,14 @@ class NewsListFragment : DaggerFragment() {
         viewModel.newsListElement.observe(viewLifecycleOwner, Observer<Status<List<NewsListElement>?>> {
             val adapter = team_recycler_view.adapter as NewsListAdapter
             if(it is Status.Success || it is Status.CachedData){
+                hideShiver()
                 adapter.update(it.data ?: emptyList())
             }
             if(it is Status.Error){
                 Toast.makeText(context, "Api call went wrong", Toast.LENGTH_LONG).show()
+            }
+            else if(it is Status.Loading){
+                showShiver()
             }
         })
     }
